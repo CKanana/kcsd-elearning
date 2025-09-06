@@ -12,7 +12,7 @@
   --color-text-dark: var(--color-primary-darkest);
 
   min-height: 100vh;
-  background-color: var(--color-primary);
+  background: linear-gradient(180deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
   color: var(--color-text-light);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   margin: 0;
@@ -22,7 +22,7 @@
 /* Navigation Styles */
 .nav {
   /* Using RGB values of #ea580c for opacity */
-  background: rgba(234, 88, 12, 0.7);
+  background: rgba(234, 88, 12, 0.5);
   box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -157,10 +157,27 @@
 }
 
 .heroTitle {
+  background: linear-gradient(180deg, white, #ffedd5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
   font-size: 2.25rem;
-  font-weight: bold;
+  font-weight: 800; /* Bolder */
   margin-bottom: 1.5rem;
   line-height: 1.2;
+  animation: fadeInDown 1s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .aboutCard {
@@ -168,8 +185,10 @@
   color: var(--color-text-dark);
   padding: 2rem;
   border-radius: 0.5rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .aboutTitle {
@@ -256,8 +275,10 @@
   background-color: var(--color-text-light);
   color: var(--color-text-dark);
   padding: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-radius: 0.75rem; /* Slightly more rounded */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .cardTitle {
@@ -273,10 +294,16 @@
 
 .valueCard {
   background-color: var(--color-primary-dark);
-  padding: 1.5rem;
+  padding: 2rem;
   border-radius: 50%;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover, .valueCard:hover, .aboutCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.15);
 }
 
 .goalCard {
@@ -340,7 +367,7 @@
 /* Footer */
 .footer {
   /* Using RGB values of #9a3412 for opacity */
-  background: rgba(154, 52, 18, 0.7);
+  background: rgba(124, 45, 18, 0.5); /* --color-primary-deepest at 50% */
   box-shadow: 0 -4px 24px 0 rgba(0,0,0,0.10);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -387,7 +414,7 @@
   }
   
   .heroTitle {
-    font-size: 3.75rem;
+    font-size: 4.5rem; /* Even larger for more impact */
   }
   
   .grid2 {

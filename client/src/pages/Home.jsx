@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone, Mail, MapPin, ChevronRight, User } from 'lucide-react';
 import styles from './Home.module.css';
 
@@ -6,6 +6,17 @@ const KCSDHomepage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  // TikTok embed script loader
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !document.getElementById('tiktok-embed-script')) {
+      const script = document.createElement('script');
+      script.id = 'tiktok-embed-script';
+      script.src = 'https://www.tiktok.com/embed.js';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, []);
 
   return (
     <div className={styles.body}>
@@ -87,9 +98,19 @@ const KCSDHomepage = () => {
           </div>
           
           <div className={styles.videoCard}>
-            <h2 className={styles.videoTitle}>YouTube Video</h2>
+            <h2 className={styles.videoTitle}>Sign Language Video</h2>
             <div className={styles.videoPlaceholder}>
-              <p>Featured Video Content</p>
+              {/* YouTube Embed (user provided) */}
+              <iframe
+                width="100%"
+                height="315"
+                src="https://www.youtube.com/embed/CrUk8oOPUKM?si=SFE-qR7JxPC80HQU"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              ></iframe>
             </div>
           </div>
         </div>
