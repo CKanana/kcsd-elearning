@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Phone, Mail, MapPin, ChevronRight, User, Hand } from 'lucide-react';
+import { Menu, X, Phone, Mail, MapPin, User, Hand, Facebook, Twitter, Instagram, Youtube, Users, Cpu, Handshake, Briefcase } from 'lucide-react';
 import styles from './Home.module.css';
 
 
@@ -9,6 +9,26 @@ const heroImages = [
   '/assets/images/download (2).jpg',
   '/assets/images/images.jpg',
 ];
+
+const futureGoals = [
+  {
+    icon: Users,
+    text: 'Expand access by increasing enrollment capacity'
+  },
+  {
+    icon: Cpu,
+    text: 'Develop advanced assistive technologies and digital learning tools'
+  },
+  {
+    icon: Handshake,
+    text: 'Strengthen partnerships to influence inclusive education policy'
+  },
+  {
+    icon: Briefcase,
+    text: 'Launch post-graduation programs for job placement and mentorship'
+  }
+];
+
 
 const KCSDHomepage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,20 +62,22 @@ const KCSDHomepage = () => {
         <div className={styles.navContainer}>
           <div className={styles.navContent}>
             <div className={styles.logo}>
-              <h1>KCSD</h1>
+              <img src="/assets/images/logo.jpg" alt="KCSD Logo" style={{ height: '48px', width: '48px', objectFit: 'cover', borderRadius: '50%', border: '2px solid var(--color-primary)' }} />
             </div>
             
             {/* Desktop Menu */}
             <div className={styles.desktopMenu}>
-              <a href="#home" className={styles.navLink}>Home</a>
-              <a href="#about" className={styles.navLink}>About</a>
-              <a href="#courses" className={styles.navLink}>Courses</a>
-              <a href="#gallery" className={styles.navLink}>Gallery</a>
-              <a href="#contact" className={styles.navLink}>Contact</a>
-              <button className={styles.loginButton}>
-                <User size={16} />
-                Login / Sign Up
-              </button>
+              <div className={styles.desktopMenuLinks}>
+                <a href="#home" className={styles.navLink}>Home</a>
+                <a href="#about" className={styles.navLink}>About</a>
+                <a href="#courses" className={styles.navLink}>Courses</a>
+                <a href="#gallery" className={styles.navLink}>Gallery</a>
+                <a href="#contact" className={styles.navLink}>Contact</a>
+                <button className={styles.loginButton}>
+                  <User size={16} />
+                  Login / Sign Up
+                </button>
+              </div>
             </div>
             
             {/* Mobile menu button */}
@@ -90,7 +112,7 @@ const KCSDHomepage = () => {
         <div className={styles.heroGlass}>
           <div className={styles.heroContent}>
             <h1 className={styles.heroTitle}>
-              Hello
+              Karibu
               <span className={styles.heroIcon} aria-label="Sign Language Hand" title="Sign Language">
                 <Hand size={64} className={styles.waveHand} />
               </span>
@@ -246,32 +268,16 @@ const KCSDHomepage = () => {
       {/* Future Goals */}
       <section className={styles.section}>
         <div className={styles.containerMd}>
-          <h2 className={styles.sectionTitle}>Future Goals</h2>
+          <h2 className={styles.sectionTitle}>Our Vision for the Future</h2>
           <div className={styles.grid2}>
-            <div className={styles.goalCard}>
-              <span className={styles.flexStart}>
-                <ChevronRight size={20} />
-              </span>
-              <p>Expand access by increasing enrollment capacity</p>
-            </div>
-            <div className={styles.goalCard}>
-              <span className={styles.flexStart}>
-                <ChevronRight size={20} />
-              </span>
-              <p>Develop advanced assistive technologies and digital learning tools</p>
-            </div>
-            <div className={styles.goalCard}>
-              <span className={styles.flexStart}>
-                <ChevronRight size={20} />
-              </span>
-              <p>Strengthen partnerships to influence inclusive education policy</p>
-            </div>
-            <div className={styles.goalCard}>
-              <span className={styles.flexStart}>
-                <ChevronRight size={20} />
-              </span>
-              <p>Launch post-graduation programs for job placement and mentorship</p>
-            </div>
+            {futureGoals.map((goal, index) => (
+              <div key={index} className={styles.goalCard}>
+                <div className={styles.goalIconWrapper}>
+                  <goal.icon size={24} />
+                </div>
+                <p>{goal.text}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -316,13 +322,27 @@ const KCSDHomepage = () => {
                 >
                   Visit our website →
                 </a>
-                <div className={styles.socialIcons}>
-                  {/* Social media icons (links to be provided) */}
-                  <span className={styles.socialIconPlaceholder} title="Facebook" />
-                  <span className={styles.socialIconPlaceholder} title="Twitter" />
-                  <span className={styles.socialIconPlaceholder} title="Instagram" />
+                <div className={styles.contactLinks}>
+                  <a href="/donate" className={styles.ctaButton} target="_blank" rel="noopener noreferrer">Donate / Support Us</a>
+                  <a href="/admissions" className={styles.ctaButton} target="_blank" rel="noopener noreferrer">Admissions Information</a>
+                  <a href="/news" className={styles.ctaButton} target="_blank" rel="noopener noreferrer">News & Events</a>
                 </div>
               </div>
+            </div>
+            <div className={styles.socialIcons}>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" title="Facebook" className={styles.socialIcon}><Facebook size={28} /></a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" title="Twitter" className={styles.socialIcon}><Twitter size={28} /></a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" title="Instagram" className={styles.socialIcon}><Instagram size={28} /></a>
+              <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" title="WhatsApp" className={styles.socialIcon}>
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="16" cy="16" r="16" fill="#25D366"/>
+                  <path d="M23.472 19.339c-.355-.177-2.104-1.037-2.43-1.155-.326-.119-.563-.177-.8.177-.237.355-.914 1.155-1.12 1.392-.207.237-.412.266-.767.089-.355-.178-1.5-.553-2.86-1.763-1.057-.944-1.77-2.108-1.98-2.463-.207-.355-.022-.546.155-.723.159-.158.355-.414.533-.622.178-.207.237-.355.355-.592.119-.237.06-.444-.03-.622-.089-.178-.8-1.92-1.096-2.63-.289-.695-.583-.601-.8-.612-.207-.009-.444-.011-.681-.011-.237 0-.622.089-.948.444-.326.355-1.24 1.211-1.24 2.951 0 1.74 1.267 3.422 1.444 3.659.178.237 2.5 3.82 6.055 5.207.847.292 1.507.466 2.022.596.849.215 1.624.185 2.236.112.682-.08 2.104-.859 2.402-1.689.296-.83.296-1.541.207-1.689-.089-.148-.326-.237-.681-.414z" fill="#fff"/>
+                </svg>
+              </a>
+              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" title="TikTok" className={styles.socialIcon}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 17a5 5 0 1 0 5-5V3h3a5 5 0 0 0 5 5"/><circle cx="9" cy="17" r="5"/></svg>
+              </a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" title="YouTube" className={styles.socialIcon}><Youtube size={28} /></a>
             </div>
           </div>
         </div>
