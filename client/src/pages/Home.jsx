@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone, Mail, MapPin, User, Hand, Facebook, Twitter, Instagram, Youtube, Users, Cpu, Handshake, Briefcase } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
 
 
@@ -73,10 +74,10 @@ const KCSDHomepage = () => {
                 <a href="#courses" className={styles.navLink}>Courses</a>
                 <a href="#gallery" className={styles.navLink}>Gallery</a>
                 <a href="#contact" className={styles.navLink}>Contact</a>
-                <button className={styles.loginButton}>
+                <Link to="/auth" className={styles.loginButton}>
                   <User size={16} />
                   Login / Sign Up
-                </button>
+                </Link>
               </div>
             </div>
             
@@ -98,10 +99,10 @@ const KCSDHomepage = () => {
               <a href="#courses" className={styles.mobileNavLink}>Courses</a>
               <a href="#gallery" className={styles.mobileNavLink}>Gallery</a>
               <a href="#contact" className={styles.mobileNavLink}>Contact</a>
-              <button className={styles.mobileLoginButton}>
+              <Link to="/auth" className={styles.mobileLoginButton} onClick={toggleMenu}>
                 <User size={16} />
                 Login / Sign Up
-              </button>
+              </Link>
             </div>
           </div>
         )}
