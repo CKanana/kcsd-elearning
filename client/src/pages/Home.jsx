@@ -1,11 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Phone, Mail, MapPin, ChevronRight, User } from 'lucide-react';
+import { Menu, X, Phone, Mail, MapPin, ChevronRight, User, Hand } from 'lucide-react';
 import styles from './Home.module.css';
+
+
+const heroImages = [
+  '/assets/images/download.jpg',
+  '/assets/images/download (1).jpg',
+  '/assets/images/download (2).jpg',
+  '/assets/images/images.jpg',
+];
 
 const KCSDHomepage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [heroIndex, setHeroIndex] = useState(0);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  // Hero slideshow
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHeroIndex((prev) => (prev + 1) % heroImages.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
 
   // TikTok embed script loader
   useEffect(() => {
@@ -69,34 +86,39 @@ const KCSDHomepage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className={styles.hero}>
-        <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>
-            Hello{' '}
-            <span className={styles.heroIcon} aria-label="Sign Language Hand" title="Sign Language">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style={{verticalAlign: 'middle'}}>
-                <path d="M12 36c0 4 4 8 8 8s8-4 8-8V12a2 2 0 1 1 4 0v24c0 6.627-5.373 12-12 12S4 42.627 4 36V20a2 2 0 1 1 4 0v16z" fill="#FF6B35"/>
-                <rect x="28" y="4" width="4" height="20" rx="2" fill="#2563EB"/>
-                <rect x="36" y="8" width="4" height="16" rx="2" fill="#2563EB"/>
-              </svg>
-            </span>
-          </h1>
-          
-          {/* About KCSD */}
-          <div className={styles.aboutCard}>
-            <h2 className={styles.aboutTitle}>
-              Empowering Deaf Children Through Education, Innovation & Inclusion
-            </h2>
-            <p className={styles.aboutText}>
-              Kenya Christian School for the Deaf (KCSD) is a pioneering institution dedicated to empowering 
-              children with hearing impairments. We provide holistic education, comprehensive guidance, and 
-              essential life skills to ensure every deaf and hard-of-hearing child can thrive. Founded to meet 
-              the unique needs of deaf learners, KCSD fosters an inclusive environment where children excel 
-              academically and socially. We also lead innovation in assistive technology and digital content, 
-              supporting early sign language acquisition to give every child the tools they need to succeed.
-            </p>
+      <section className={styles.hero} style={{backgroundImage: `url(${heroImages[heroIndex]})`}}>
+        <div className={styles.heroGlass}>
+          <div className={styles.heroContent}>
+            <h1 className={styles.heroTitle}>
+              Hello
+              <span className={styles.heroIcon} aria-label="Sign Language Hand" title="Sign Language">
+                <Hand size={64} className={styles.waveHand} />
+              </span>
+            </h1>
+            {/* About KCSD */}
+            <div className={styles.aboutCardGlass}>
+              <h2 className={styles.aboutTitle}>
+                Empowering Deaf Children Through Education, Innovation & Inclusion
+              </h2>
+              <p className={styles.aboutText}>
+                Kenya Christian School for the Deaf (KCSD) is a pioneering institution dedicated to empowering 
+                children with hearing impairments. We provide holistic education, comprehensive guidance, and 
+                essential life skills to ensure every deaf and hard-of-hearing child can thrive. Founded to meet 
+                the unique needs of deaf learners, KCSD fosters an inclusive environment where children excel 
+                academically and socially. We also lead innovation in assistive technology and digital content, 
+                supporting early sign language acquisition to give every child the tools they need to succeed.
+              </p>
+            </div>
           </div>
-          
+        </div>
+      </section>
+
+
+
+      
+      {/* Video Section - now below all main sections */}
+      <section className={styles.section}>
+        <div className={styles.containerMd}>
           <div className={styles.videoCard}>
             <h2 className={styles.videoTitle}>Sign Language Video</h2>
             <div className={styles.videoPlaceholder}>
@@ -120,16 +142,16 @@ const KCSDHomepage = () => {
       <section id="about" className={`${styles.section} ${styles.sectionOrange}`}>
         <div className={styles.container}>
           <div className={styles.grid2}>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Mission</h3>
-              <p className={styles.cardText}>
+            <div className={styles.aboutCardGlass}>
+              <h3 className={styles.missionVisionTitle}>Mission</h3>
+              <p className={styles.missionVisionText}>
                 To provide high-quality, accessible, and inclusive education for deaf and hard-of-hearing children, 
                 equipping them with the knowledge, skills, and values to lead meaningful and independent lives.
               </p>
             </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Vision</h3>
-              <p className={styles.cardText}>
+            <div className={styles.aboutCardGlass}>
+              <h3 className={styles.missionVisionTitle}>Vision</h3>
+              <p className={styles.missionVisionText}>
                 A world where every child, regardless of hearing ability, achieves their full potential 
                 in a supportive and inclusive community.
               </p>
@@ -143,9 +165,33 @@ const KCSDHomepage = () => {
         <div className={`${styles.containerMd} ${styles.textCenter}`}>
           <h2 className={styles.sectionTitle}>Core Values</h2>
           <div className={styles.grid4}>
-            {['Inclusion', 'Empowerment', 'Excellence', 'Community'].map((value, index) => (
-              <div key={index} className={styles.valueCard}>
-                <h3>{value}</h3>
+            {[
+              {
+                value: 'Inclusion',
+                desc: 'We embrace diversity and ensure every child feels welcome and valued.'
+              },
+              {
+                value: 'Empowerment',
+                desc: 'We equip students with skills and confidence to reach their full potential.'
+              },
+              {
+                value: 'Excellence',
+                desc: 'We strive for the highest standards in education and personal growth.'
+              },
+              {
+                value: 'Community',
+                desc: 'We foster a supportive environment where everyone collaborates and thrives.'
+              }
+            ].map((item, index) => (
+              <div key={index} className={styles.valueCardFlip}>
+                <div className={styles.valueCardInner}>
+                  <div className={styles.valueCardFront}>
+                    <h3>{item.value}</h3>
+                  </div>
+                  <div className={styles.valueCardBack}>
+                    <p>{item.desc}</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -157,39 +203,39 @@ const KCSDHomepage = () => {
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>Programs & Services</h2>
           <div className={styles.grid3}>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Academic Education</h3>
-              <p className={styles.cardText}>
+            <div className={styles.aboutCardGlass}>
+              <h3 className={styles.programCardTitle}>Academic Education</h3>
+              <p className={styles.missionVisionText}>
                 Robust curriculum tailored for deaf learners with specialized KSL instruction.
               </p>
             </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>E-Learning & ICT</h3>
-              <p className={styles.cardText}>
+            <div className={styles.aboutCardGlass}>
+              <h3 className={styles.programCardTitle}>E-Learning & ICT</h3>
+              <p className={styles.missionVisionText}>
                 Online sign language training programs for adults and children.
               </p>
             </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Assistive Technology</h3>
-              <p className={styles.cardText}>
+            <div className={styles.aboutCardGlass}>
+              <h3 className={styles.programCardTitle}>Assistive Technology</h3>
+              <p className={styles.missionVisionText}>
                 Development of devices and digital content for early sign language acquisition.
               </p>
             </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Vocational Training</h3>
-              <p className={styles.cardText}>
+            <div className={styles.aboutCardGlass}>
+              <h3 className={styles.programCardTitle}>Vocational Training</h3>
+              <p className={styles.missionVisionText}>
                 Hands-on training to prepare students for careers and self-reliance.
               </p>
             </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Spiritual Development</h3>
-              <p className={styles.cardText}>
+            <div className={styles.aboutCardGlass}>
+              <h3 className={styles.programCardTitle}>Spiritual Development</h3>
+              <p className={styles.missionVisionText}>
                 Christian-based teaching to nurture moral and ethical values.
               </p>
             </div>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>Advocacy & Awareness</h3>
-              <p className={styles.cardText}>
+            <div className={styles.aboutCardGlass}>
+              <h3 className={styles.programCardTitle}>Advocacy & Awareness</h3>
+              <p className={styles.missionVisionText}>
                 Promoting inclusion and understanding through community outreach.
               </p>
             </div>
@@ -270,6 +316,12 @@ const KCSDHomepage = () => {
                 >
                   Visit our website →
                 </a>
+                <div className={styles.socialIcons}>
+                  {/* Social media icons (links to be provided) */}
+                  <span className={styles.socialIconPlaceholder} title="Facebook" />
+                  <span className={styles.socialIconPlaceholder} title="Twitter" />
+                  <span className={styles.socialIconPlaceholder} title="Instagram" />
+                </div>
               </div>
             </div>
           </div>
