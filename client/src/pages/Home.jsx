@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Phone, Mail, MapPin, User, Hand, Facebook, Twitter, Instagram, Youtube, Users, Cpu, Handshake, Briefcase } from 'lucide-react';
+import { Phone, Mail, MapPin, User, Hand, Facebook, Twitter, Instagram, Youtube, Users, Cpu, Handshake, Briefcase, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
+import HomepageHeader from '../components/common/HomepageHeader';
 
 
 const heroImages = [
@@ -30,12 +31,32 @@ const futureGoals = [
   }
 ];
 
+const teamMembers = [
+  {
+    name: 'Dr. Evelyn Wanjiku',
+    role: 'Founder & Director',
+    image: '/assets/images/founder.jpg', // Placeholder image
+    bio: 'With over 20 years in special needs education, Dr. Wanjiku founded KCSD to create a world of opportunity for every deaf child.',
+    linkedin: 'https://linkedin.com/in/evelynwanjiku'
+  },
+  {
+    name: 'Samuel Kiprop',
+    role: 'Head of Curriculum',
+    image: '/assets/images/teacher-1.jpg', // Placeholder image
+    bio: 'Samuel is a KSL specialist who designs our innovative curriculum to be engaging, accessible, and effective for all learners.',
+    linkedin: 'https://linkedin.com/in/samuelkiprop'
+  },
+  {
+    name: 'Grace Adhiambo',
+    role: 'Lead Vocational Trainer',
+    image: '/assets/images/teacher-2.jpg', // Placeholder image
+    bio: 'Grace empowers our students with practical skills, preparing them for independent and successful futures in various trades.',
+    linkedin: 'https://linkedin.com/in/graceadhiambo'
+  }
+];
 
 const KCSDHomepage = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [heroIndex, setHeroIndex] = useState(0);
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   // Hero slideshow
   useEffect(() => {
@@ -59,54 +80,7 @@ const KCSDHomepage = () => {
   return (
     <div className={styles.body}>
       {/* Navigation */}
-      <nav className={styles.nav}>
-        <div className={styles.navContainer}>
-          <div className={styles.navContent}>
-            <div className={styles.logo}>
-              <img src="/assets/images/logo.jpg" alt="KCSD Logo" style={{ height: '48px', width: '48px', objectFit: 'cover', borderRadius: '50%', border: '2px solid var(--color-primary)' }} />
-            </div>
-            
-            {/* Desktop Menu */}
-            <div className={styles.desktopMenu}>
-              <div className={styles.desktopMenuLinks}>
-                <a href="#home" className={styles.navLink}>Home</a>
-                <a href="#about" className={styles.navLink}>About</a>
-                <a href="#courses" className={styles.navLink}>Courses</a>
-                <a href="#gallery" className={styles.navLink}>Gallery</a>
-                <a href="#contact" className={styles.navLink}>Contact</a>
-                <Link to="/auth" className={styles.loginButton}>
-                  <User size={16} />
-                  Login / Sign Up
-                </Link>
-              </div>
-            </div>
-            
-            {/* Mobile menu button */}
-            <div>
-              <button onClick={toggleMenu} className={styles.mobileMenuButton}>
-                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className={styles.mobileMenu}>
-            <div className={styles.mobileMenuContent}>
-              <a href="#home" className={styles.mobileNavLink}>Home</a>
-              <a href="#about" className={styles.mobileNavLink}>About</a>
-              <a href="#courses" className={styles.mobileNavLink}>Courses</a>
-              <a href="#gallery" className={styles.mobileNavLink}>Gallery</a>
-              <a href="#contact" className={styles.mobileNavLink}>Contact</a>
-              <Link to="/auth" className={styles.mobileLoginButton} onClick={toggleMenu}>
-                <User size={16} />
-                Login / Sign Up
-              </Link>
-            </div>
-          </div>
-        )}
-      </nav>
+      <HomepageHeader />
 
       {/* Hero Section */}
       <section className={styles.hero} style={{backgroundImage: `url(${heroImages[heroIndex]})`}}>
@@ -161,28 +135,6 @@ const KCSDHomepage = () => {
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className={`${styles.section} ${styles.sectionOrange}`}>
-        <div className={styles.container}>
-          <div className={styles.grid2}>
-            <div className={styles.aboutCardGlass}>
-              <h3 className={styles.missionVisionTitle}>Mission</h3>
-              <p className={styles.missionVisionText}>
-                To provide high-quality, accessible, and inclusive education for deaf and hard-of-hearing children, 
-                equipping them with the knowledge, skills, and values to lead meaningful and independent lives.
-              </p>
-            </div>
-            <div className={styles.aboutCardGlass}>
-              <h3 className={styles.missionVisionTitle}>Vision</h3>
-              <p className={styles.missionVisionText}>
-                A world where every child, regardless of hearing ability, achieves their full potential 
-                in a supportive and inclusive community.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Core Values */}
       <section className={styles.section}>
         <div className={`${styles.containerMd} ${styles.textCenter}`}>
@@ -222,7 +174,7 @@ const KCSDHomepage = () => {
       </section>
 
       {/* Programs & Services */}
-      <section id="courses" className={`${styles.section} ${styles.sectionOrange}`}>
+      <section id="programs" className={`${styles.section} ${styles.sectionOrange}`}>
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>Programs & Services</h2>
           <div className={styles.grid3}>

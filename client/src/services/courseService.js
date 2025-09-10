@@ -1,4 +1,13 @@
-// Course service placeholder
+import { api } from './api';
+
 export const courseService = {
-  // Course methods here
+  createCourse: async (courseData) => {
+    try {
+      const response = await api.post('/courses', courseData);
+      return response.data;
+    } catch (error) {
+      console.error('Error creating course:', error);
+      throw error;
+    }
+  },
 };

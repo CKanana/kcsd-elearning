@@ -1,10 +1,9 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, User } from "lucide-react";
 import styles from "../../pages/Home.module.css";
 
-export default function Header() {
+export default function TeacherHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   return (
@@ -17,10 +16,8 @@ export default function Header() {
           {/* Desktop Menu */}
           <div className={styles.desktopMenu}>
             <div className={styles.desktopMenuLinks}>
-              <Link to="/student-dashboard" className={styles.navLink}>Dashboard</Link>
-              <Link to="/my-courses" className={styles.navLink}>My Courses</Link>
-              <Link to="/assessments" className={styles.navLink}>Assessments</Link>
-              <Link to="/community" className={styles.navLink}>Community</Link>
+              <Link to="/teacher-dashboard" className={styles.navLink}>Dashboard</Link>
+              <Link to="/teacher-courses" className={styles.navLink}>Courses</Link>
               <Link to="/profile" className={styles.navLink}>Profile</Link>
               <Link to="/auth" className={styles.loginButton}>
                 <User size={16} />
@@ -40,10 +37,8 @@ export default function Header() {
       {isMenuOpen && (
         <div className={styles.mobileMenu}>
           <div className={styles.mobileMenuContent}>
-            <Link to="/student-dashboard" className={styles.mobileNavLink} onClick={toggleMenu}>Dashboard</Link>
-            <Link to="/my-courses" className={styles.mobileNavLink} onClick={toggleMenu}>My Courses</Link>
-            <Link to="/assessments" className={styles.mobileNavLink} onClick={toggleMenu}>Assessments</Link>
-            <Link to="/community" className={styles.mobileNavLink} onClick={toggleMenu}>Community</Link>
+            <Link to="/teacher-dashboard" className={styles.mobileNavLink} onClick={toggleMenu}>Dashboard</Link>
+            <Link to="/teacher-courses" className={styles.mobileNavLink} onClick={toggleMenu}>Courses</Link>
             <Link to="/profile" className={styles.mobileNavLink} onClick={toggleMenu}>Profile</Link>
             <Link to="/auth" className={styles.mobileLoginButton} onClick={toggleMenu}>
               <User size={16} />

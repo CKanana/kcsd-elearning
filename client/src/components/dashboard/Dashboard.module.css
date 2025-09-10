@@ -1,0 +1,367 @@
+/* Dashboard.module.css */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffe6c7 60%, #ffd8a8 100%);
+  padding: 2rem 0;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.sectionTitle {
+  font-size: 1.375rem; /* 22px */
+  font-weight: 700;
+  color: #c2410c; /* var(--color-primary-darker) */
+  margin-bottom: 0;
+}
+
+/* Welcome Header */
+.welcomeHeader {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.profileImage {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid #f97316; /* var(--color-primary) */
+  object-fit: cover;
+}
+
+.welcomeTitle {
+  font-size: 1.75rem; /* 28px */
+  font-weight: 800;
+  color: #ea580c; /* var(--color-primary-dark) */
+  margin: 0;
+}
+
+.welcomeSubtitle {
+  color: #6b7280;
+  font-size: 1.125rem; /* 18px */
+}
+
+/* Grid for cards */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.progressContainer {
+  height: 8px;
+  background: #ffe6c7;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+  overflow: hidden;
+}
+
+.progressBar {
+  height: 100%;
+  background: #f97316; /* var(--color-primary) */
+  border-radius: 4px;
+}
+
+.progressText {
+  font-size: 0.8125rem; /* 13px */
+  color: #6b7280;
+}
+
+.scheduleItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ffe6c7;
+}
+
+.scheduleItem:last-child {
+  border-bottom: none;
+}
+
+.scheduleTime {
+  color: #f97316; /* var(--color-primary) */
+  font-weight: 600;
+}
+
+.scheduleSubject {
+  color: #444;
+}
+
+.scheduleTeacher {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.assignmentCard {
+  margin-bottom: 1rem;
+}
+
+.assignmentDetails {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.assignmentPriority {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 0.125rem 0.5rem;
+  border-radius: 1rem;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.priorityHigh {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.priorityMedium {
+  background-color: #ffedd5;
+  color: #c2410c;
+}
+
+.actionCard {
+  text-align: center;
+  cursor: pointer;
+}
+
+.actionIcon {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 auto 1rem auto;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewAllLink {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color 0.2s;
+}
+
+
+
+/* Notifications */
+.notificationList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.notificationItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.notificationIcon {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.icon_grade { background-color: #22c55e; } /* green */
+.icon_announcement { background-color: #3b82f6; } /* blue */
+.icon_assignment { background-color: #f97316; } /* orange */
+
+.notificationText p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.notificationText small {
+  color: #6b7280;
+  font-size: 0.8125rem;
+}
+
+/* Resource Hub */
+.resourceCard {
+  margin-bottom: 1rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.resourceCard .cardTitle {
+  font-size: 1rem;
+}
+
+/* Teacher Dashboard Specifics */
+.cardHeaderAction {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.cardSubheading {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin: 0;
+}
+
+.createButton {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.itemList {
+  padding-left: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.itemList li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.itemMeta {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.itemAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.75rem;
+}
+
+/* Modal Styles */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modalContent {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.10);
+  padding: 2rem;
+  width: 90%;
+  max-width: 450px;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.modalHeader h2 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin: 0;
+}
+
+.closeModalButton {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+.inputGroup {
+  margin-bottom: 1rem;
+}
+
+.inputGroup label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.inputGroup input,
+.inputGroup textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.cancelButton, .submitButton {
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background: #e5e7eb;
+  color: #4b5563;
+}
+
+.submitButton {
+  background: var(--color-primary);
+  color: white;
+}

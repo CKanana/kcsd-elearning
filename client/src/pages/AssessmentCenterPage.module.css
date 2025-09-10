@@ -1,0 +1,167 @@
+/* AssessmentCenterPage.module.css */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #fff7ed; /* Light cream background */
+}
+
+.main {
+  flex-grow: 1;
+}
+
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.pageHeader {
+  background: var(--color-primary);
+  color: white;
+  padding: 4rem 1rem;
+  text-align: center;
+}
+
+.pageTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.pageSubtitle {
+  font-size: 1.25rem;
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0.9;
+}
+
+.section {
+  padding: 3rem 1rem;
+}
+
+.lightBackground {
+  background-color: white;
+}
+
+.sectionTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 2rem;
+}
+
+.assessmentGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.assessmentCard {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
+}
+
+.courseName {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.statusBadge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.statusNotStarted {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+
+.statusInProgress {
+  background-color: #ffedd5;
+  color: #9a3412;
+}
+
+.statusCompleted {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.actionButton {
+  width: 100%;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.startButton {
+  background-color: var(--color-primary);
+  color: white;
+}
+.startButton:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.continueButton {
+  background-color: #2563eb;
+  color: white;
+}
+.continueButton:hover {
+  background-color: #1d4ed8;
+}
+
+.resultsButton {
+  background-color: transparent;
+  color: var(--color-primary-dark);
+  border: 2px solid var(--color-primary);
+}
+.resultsButton:hover {
+  background-color: #fff7ed;
+}
+
+.certificateButton {
+  width: 100%;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  background-color: #facc15;
+  color: #422006;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+}
+.certificateButton:hover {
+  background-color: #f59e0b;
+}
