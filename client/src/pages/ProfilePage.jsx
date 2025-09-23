@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { User, Settings, Shield, Upload, Save, Eye, Contrast, Languages } from 'lucide-react';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import styles from './ProfilePage.module.css';
 
-const userProfile = {
-  name: 'Jane Doe',
-  studentId: 'KCSD-12345',
-  email: 'jane.doe@kcsd.ac.ke',
-  dob: '2008-05-20',
-  profilePhoto: '/assets/images/student-profile.jpg',
+
+const defaultProfile = {
+  name: '',
+  studentId: '',
+  email: '',
+  dob: '',
+  profilePhoto: '',
   emergencyContact: {
-    name: 'John Doe',
-    relationship: 'Father',
-    phone: '+254 712 345 678'
+    name: '',
+    relationship: '',
+    phone: ''
   },
   preferences: {
     highContrast: false,
@@ -28,13 +29,43 @@ const userProfile = {
   }
 };
 
+
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState('profile');
-  const [profileData, setProfileData] = useState(userProfile);
+  const [profileData, setProfileData] = useState(defaultProfile);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const fileInputRef = useRef();
+
+  useEffect(() => {
+    fetch('/api/auth/profile', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => {
+        setProfileData({
+          ...defaultProfile,
+          ...data,
+          emergencyContact: { ...defaultProfile.emergencyContact, ...data.emergencyContact },
+          preferences: { ...defaultProfile.preferences, ...data.preferences }
+        });
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProfileData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleEmergencyChange = (e) => {
+    const { name, value } = e.target;
+    setProfileData(prev => ({
+      ...prev,
+      emergencyContact: { ...prev.emergencyContact, [name]: value }
+    }));
   };
 
   const handlePreferenceChange = (pref, value) => {
@@ -44,6 +75,64 @@ const ProfilePage = () => {
     }));
   };
 
+  const handleNotificationChange = (notif, value) => {
+    setProfileData(prev => ({
+      ...prev,
+      preferences: {
+        ...prev.preferences,
+        notifications: { ...prev.preferences.notifications, [notif]: value }
+      }
+    }));
+  };
+
+  const handlePhotoUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setError('');
+    setSuccess('');
+    const formData = new FormData();
+    formData.append('profilePhoto', file);
+    try {
+      const res = await fetch('/api/auth/profile/photo', {
+        method: 'POST',
+        credentials: 'include',
+        body: formData
+      });
+      if (!res.ok) throw new Error('Failed to upload photo');
+      const data = await res.json();
+      setProfileData(prev => ({ ...prev, profilePhoto: data.profilePhoto }));
+      setSuccess('Profile photo updated!');
+    } catch (err) {
+      setError('Could not upload photo.');
+    }
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    setError('');
+    setSuccess('');
+    try {
+      const res = await fetch('/api/auth/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(profileData)
+      });
+      if (!res.ok) throw new Error('Failed to save profile');
+      setSuccess('Profile updated successfully!');
+    } catch (err) {
+      setError('Could not save profile.');
+    }
+    setSaving(false);
+  };
+
+  // Compute the correct photo URL for display
+  const photoUrl = profileData.profilePhoto
+    ? profileData.profilePhoto.startsWith('http')
+      ? profileData.profilePhoto
+      : `http://localhost:3001${profileData.profilePhoto}`
+    : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(profileData.name || 'User');
+
   const renderContent = () => {
     switch (activeTab) {
       case 'profile':
@@ -51,8 +140,21 @@ const ProfilePage = () => {
           <div className={styles.formSection}>
             <h3 className={styles.sectionTitle}>Personal Information</h3>
             <div className={styles.profilePhotoSection}>
-              <img src={profileData.profilePhoto} alt="Profile" className={styles.profilePhoto} />
-              <button className={styles.uploadButton}><Upload size={16} /> Upload New Photo</button>
+              <img src={photoUrl} alt="Profile" className={styles.profilePhoto} />
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                ref={fileInputRef}
+                onChange={handlePhotoUpload}
+              />
+              <button
+                className={styles.uploadButton}
+                onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                type="button"
+              >
+                <Upload size={16} /> Upload New Photo
+              </button>
               <p>For best results, use a clear, front-facing photo.</p>
             </div>
             <div className={styles.formGrid}>
@@ -66,7 +168,7 @@ const ProfilePage = () => {
               </div>
               <div className={styles.inputGroup}>
                 <label htmlFor="email">Email Address</label>
-                <input type="email" id="email" name="email" value={profileData.email} onChange={handleInputChange} />
+                <input type="email" id="email" name="email" value={profileData.email} readOnly />
               </div>
               <div className={styles.inputGroup}>
                 <label htmlFor="dob">Date of Birth</label>
@@ -77,15 +179,15 @@ const ProfilePage = () => {
             <div className={styles.formGrid}>
               <div className={styles.inputGroup}>
                 <label htmlFor="emergencyName">Contact Name</label>
-                <input type="text" id="emergencyName" name="emergencyName" value={profileData.emergencyContact.name} onChange={() => {}} />
+                <input type="text" id="emergencyName" name="name" value={profileData.emergencyContact.name} onChange={handleEmergencyChange} />
               </div>
               <div className={styles.inputGroup}>
                 <label htmlFor="emergencyRelationship">Relationship</label>
-                <input type="text" id="emergencyRelationship" name="emergencyRelationship" value={profileData.emergencyContact.relationship} onChange={() => {}} />
+                <input type="text" id="emergencyRelationship" name="relationship" value={profileData.emergencyContact.relationship} onChange={handleEmergencyChange} />
               </div>
               <div className={styles.inputGroup}>
                 <label htmlFor="emergencyPhone">Phone Number</label>
-                <input type="tel" id="emergencyPhone" name="emergencyPhone" value={profileData.emergencyContact.phone} onChange={() => {}} />
+                <input type="tel" id="emergencyPhone" name="phone" value={profileData.emergencyContact.phone} onChange={handleEmergencyChange} />
               </div>
             </div>
           </div>
@@ -124,13 +226,13 @@ const ProfilePage = () => {
             <p>Choose how you receive updates from the school.</p>
             <div className={styles.preferenceItem}>
               <h4>New Grade Notifications</h4>
-              <button className={`${styles.toggle} ${profileData.preferences.notifications.grades ? styles.active : ''}`} onClick={() => {}}>
+              <button className={`${styles.toggle} ${profileData.preferences.notifications.grades ? styles.active : ''}`} onClick={() => handleNotificationChange('grades', !profileData.preferences.notifications.grades)}>
                 <span className={styles.toggleKnob}></span>
               </button>
             </div>
             <div className={styles.preferenceItem}>
               <h4>Assignment Reminders</h4>
-              <button className={`${styles.toggle} ${profileData.preferences.notifications.assignments ? styles.active : ''}`} onClick={() => {}}>
+              <button className={`${styles.toggle} ${profileData.preferences.notifications.assignments ? styles.active : ''}`} onClick={() => handleNotificationChange('assignments', !profileData.preferences.notifications.assignments)}>
                 <span className={styles.toggleKnob}></span>
               </button>
             </div>
@@ -140,7 +242,7 @@ const ProfilePage = () => {
                 <h4><Eye size={18} /> Profile Visibility</h4>
                 <p>Control who can see your profile information.</p>
               </div>
-              <select value={profileData.preferences.profileVisibility} onChange={() => {}}>
+              <select value={profileData.preferences.profileVisibility} onChange={(e) => handlePreferenceChange('profileVisibility', e.target.value)}>
                 <option value="teachers">Teachers Only</option>
                 <option value="all-students">All Students</option>
                 <option value="private">Private</option>
@@ -168,7 +270,11 @@ const ProfilePage = () => {
             <div className={styles.content}>
               {renderContent()}
               <div className={styles.formActions}>
-                <button className={styles.saveButton}><Save size={16} /> Save Changes</button>
+                {error && <div className={styles.error}>{error}</div>}
+                {success && <div className={styles.success}>{success}</div>}
+                <button className={styles.saveButton} onClick={handleSave} disabled={saving}>
+                  <Save size={16} /> {saving ? 'Saving...' : 'Save Changes'}
+                </button>
               </div>
             </div>
           </div>

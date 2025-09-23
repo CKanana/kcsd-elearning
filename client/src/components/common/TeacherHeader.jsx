@@ -18,7 +18,7 @@ export default function TeacherHeader() {
             <div className={styles.desktopMenuLinks}>
               <Link to="/teacher-dashboard" className={styles.navLink}>Dashboard</Link>
               <Link to="/teacher-courses" className={styles.navLink}>Courses</Link>
-              <Link to="/profile" className={styles.navLink}>Profile</Link>
+              <Link to="/teacher-profile" className={styles.navLink}>Profile</Link>
               <Link to="/auth" className={styles.loginButton}>
                 <User size={16} />
                 Logout
@@ -39,7 +39,7 @@ export default function TeacherHeader() {
           <div className={styles.mobileMenuContent}>
             <Link to="/teacher-dashboard" className={styles.mobileNavLink} onClick={toggleMenu}>Dashboard</Link>
             <Link to="/teacher-courses" className={styles.mobileNavLink} onClick={toggleMenu}>Courses</Link>
-            <Link to="/profile" className={styles.mobileNavLink} onClick={toggleMenu}>Profile</Link>
+            <Link to="/teacher-profile" className={styles.mobileNavLink} onClick={toggleMenu}>Profile</Link>
             <Link to="/auth" className={styles.mobileLoginButton} onClick={toggleMenu}>
               <User size={16} />
               Logout

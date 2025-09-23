@@ -5,20 +5,21 @@ import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import styles from './CoursesPage.module.css'; // Reusing styles is efficient
 
-// Using the same data source for now
-const courseData = [
-  { id: 1, title: 'KSL Level 1: Foundations', category: 'KSL', teacher: { name: 'Samuel Kiprop', image: '/assets/images/teacher-1.jpg' }, difficulty: 'Beginner', prerequisites: ['None'], rating: 4.8, reviews: 120, enrolled: true, progress: 75, previewVideo: 'https://www.youtube.com/embed/CrUk8oOPUKM' },
-  { id: 2, title: 'Introduction to Algebra', category: 'Mathematics', teacher: { name: 'Dr. Evelyn Wanjiku', image: '/assets/images/founder.jpg' }, difficulty: 'Beginner', prerequisites: ['Basic Arithmetic'], rating: 4.6, reviews: 95, enrolled: false },
-  { id: 3, title: 'Vocational Skills: Carpentry', category: 'Vocational', teacher: { name: 'Grace Adhiambo', image: '/assets/images/teacher-2.jpg' }, difficulty: 'Intermediate', prerequisites: ['Safety Basics'], rating: 4.9, reviews: 150, enrolled: true, progress: 30 },
-  { id: 4, title: 'Conversational KSL', category: 'KSL', teacher: { name: 'Samuel Kiprop', image: '/assets/images/teacher-1.jpg' }, difficulty: 'Intermediate', prerequisites: ['KSL Level 1'], rating: 4.7, reviews: 88, enrolled: false },
-  { id: 5, title: 'Basic ICT Skills', category: 'ICT', teacher: { name: 'Dr. Evelyn Wanjiku', image: '/assets/images/founder.jpg' }, difficulty: 'Beginner', prerequisites: ['None'], rating: 4.5, reviews: 110, enrolled: true, progress: 100 },
-  { id: 6, title: 'Advanced Geometry', category: 'Mathematics', teacher: { name: 'Dr. Evelyn Wanjiku', image: '/assets/images/founder.jpg' }, difficulty: 'Advanced', prerequisites: ['Introduction to Algebra'], rating: 4.8, reviews: 75, enrolled: false },
-];
-
 const MyCoursesPage = () => {
   const [videoModalUrl, setVideoModalUrl] = useState(null);
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const enrolledCourses = courseData.filter(course => course.enrolled);
+  React.useEffect(() => {
+    setLoading(true);
+    fetch('/api/my-courses', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setEnrolledCourses(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   const openVideoModal = (url) => setVideoModalUrl(url);
   const closeVideoModal = () => setVideoModalUrl(null);
@@ -38,14 +39,16 @@ const MyCoursesPage = () => {
 
         <section className={styles.section}>
           <div className={styles.container}>
-            {enrolledCourses.length > 0 ? (
+            {loading ? (
+              <div>Loading your courses...</div>
+            ) : enrolledCourses.length > 0 ? (
               <div className={styles.courseGrid}>
                 {enrolledCourses.map(course => (
-                  <div key={course.id} className={styles.courseCard}>
+                  <div key={course._id} className={styles.courseCard}>
                     <div className={styles.cardImageContainer}>
-                      <img src={`/assets/images/courses/course-${course.id}.jpg`} alt={course.title} className={styles.cardImage} />
+                      <img src={course.image || '/assets/images/courses/default.jpg'} alt={course.title} className={styles.cardImage} />
                       <div className={styles.imageOverlay}>
-                        <button className={styles.previewButton} onClick={() => openVideoModal(course.previewVideo)}>
+                        <button className={styles.previewButton} onClick={() => alert('Resume lesson feature coming soon!')}>
                           <PlayCircle size={48} />
                           <span>Resume Lesson</span>
                         </button>
@@ -53,17 +56,19 @@ const MyCoursesPage = () => {
                     </div>
                     <div className={styles.cardContent}>
                       <h3 className={styles.cardTitle}>{course.title}</h3>
-                      <div className={styles.teacherInfo}>
-                        <img src={course.teacher.image} alt={course.teacher.name} className={styles.teacherImage} />
-                        <span>{course.teacher.name}</span>
-                      </div>
+                      {course.teacher && (
+                        <div className={styles.teacherInfo}>
+                          <img src={course.teacher.profilePhoto || '/assets/images/teacher-profile.jpg'} alt={course.teacher.name} className={styles.teacherImage} />
+                          <span>{course.teacher.name}</span>
+                        </div>
+                      )}
                       <div className={styles.progressWrapper}>
                         <div className={styles.progressText}>
                           <span>In Progress</span>
-                          <span>{course.progress}%</span>
+                          <span>{course.progress || 0}%</span>
                         </div>
                         <div className={styles.progressBarContainer}>
-                          <div className={styles.progressBar} style={{ width: `${course.progress}%` }}></div>
+                          <div className={styles.progressBar} style={{ width: `${course.progress || 0}%` }}></div>
                         </div>
                       </div>
                     </div>

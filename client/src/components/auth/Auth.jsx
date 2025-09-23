@@ -29,6 +29,86 @@ const AuthPage = () => {
     setIsLoginView(false);
   };
 
+  // State for form fields and errors
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    studentId: '',
+    dob: '',
+    profilePhoto: null,
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Handle input changes
+  const handleInput = (e) => {
+    if (e.target.type === 'file') {
+      setForm({ ...form, profilePhoto: e.target.files[0] });
+    } else {
+      setForm({ ...form, [e.target.name]: e.target.value });
+    }
+  };
+
+  // Signup handler
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    if (form.password !== form.confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append('email', form.email);
+      formData.append('password', form.password);
+      formData.append('role', role === 'parent' ? 'parent' : 'student');
+      formData.append('name', form.name);
+      if (form.profilePhoto) {
+        formData.append('profilePhoto', form.profilePhoto);
+      }
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Signup failed');
+      setIsLoginView(true);
+      setRole(null);
+      setForm({ name: '', email: '', password: '', confirmPassword: '', studentId: '', dob: '', profilePhoto: null });
+      alert('Account created! Please log in.');
+    } catch (err) {
+      setError(err.message);
+    }
+    setLoading(false);
+  };
+
+  // Login handler
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email, password: form.password }),
+        credentials: 'include', // Send cookies
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Login failed');
+      // JWT is now stored in HTTP-only cookie
+      window.location.href = '/student-dashboard';
+    } catch (err) {
+      setError(err.message);
+    }
+    setLoading(false);
+  };
+
   const renderContent = () => {
     // View 3: Sign-up form for a specific role
     if (role) {
@@ -39,29 +119,33 @@ const AuthPage = () => {
           </button>
           <h1 className={styles.title}>Create {role === 'parent' ? 'Parent' : 'Student'} Account</h1>
           <p className={styles.subtitle}>Let's get you started.</p>
-          <form className={styles.form}>
+          <form className={styles.form} onSubmit={handleSignup}>
             <div className={styles.inputGroup}>
               <User className={styles.inputIcon} size={20} />
-              <input type="text" placeholder="Full Name" className={styles.input} required />
+              <input type="text" name="name" placeholder="Full Name" className={styles.input} required value={form.name} onChange={handleInput} />
+            </div>
+            <div className={styles.inputGroup}>
+              <label htmlFor="profilePhoto" style={{ marginRight: 8 }}>Profile Photo:</label>
+              <input type="file" name="profilePhoto" accept="image/*" onChange={handleInput} />
             </div>
             {role === 'parent' ? (
               <div className={styles.inputGroup}>
                 <Mail className={styles.inputIcon} size={20} />
-                <input type="email" placeholder="Email Address" className={styles.input} required />
+                <input type="email" name="email" placeholder="Email Address" className={styles.input} required value={form.email} onChange={handleInput} />
               </div>
             ) : (
               <>
                 <div className={styles.inputGroup}>
                   <BookUser className={styles.inputIcon} size={20} />
-                  <input type="text" placeholder="Student ID" className={styles.input} required />
+                  <input type="text" name="studentId" placeholder="Student ID" className={styles.input} value={form.studentId} onChange={handleInput} />
                 </div>
                 <div className={styles.inputGroup}>
                   <Mail className={styles.inputIcon} size={20} />
-                  <input type="email" placeholder="Email Address" className={styles.input} required />
+                  <input type="email" name="email" placeholder="Email Address" className={styles.input} required value={form.email} onChange={handleInput} />
                 </div>
                 <div className={styles.inputGroup}>
                   <Calendar className={styles.inputIcon} size={20} />
-                  <input type="date" placeholder="Date of Birth" className={styles.input} required />
+                  <input type="date" name="dob" placeholder="Date of Birth" className={styles.input} value={form.dob} onChange={handleInput} />
                 </div>
               </>
             )}
@@ -69,10 +153,13 @@ const AuthPage = () => {
               <Lock className={styles.inputIcon} size={20} />
               <input
                 type={showPassword ? "text" : "password"}
+                name="password"
                 placeholder="Create Password"
                 className={styles.input}
                 required
                 style={{ paddingRight: '2.5rem' }}
+                value={form.password}
+                onChange={handleInput}
               />
               <span
                 className={styles.eyeIcon}
@@ -88,10 +175,13 @@ const AuthPage = () => {
               <Lock className={styles.inputIcon} size={20} />
               <input
                 type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
                 placeholder="Confirm Password"
                 className={styles.input}
                 required
                 style={{ paddingRight: '2.5rem' }}
+                value={form.confirmPassword}
+                onChange={handleInput}
               />
               <span
                 className={styles.eyeIcon}
@@ -103,7 +193,8 @@ const AuthPage = () => {
                 {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </span>
             </div>
-            <button type="submit" className={styles.submitButton}>Create Account</button>
+            {error && <div style={{ color: 'red', marginBottom: 8 }}>{error}</div>}
+            <button type="submit" className={styles.submitButton} disabled={loading}>{loading ? 'Creating...' : 'Create Account'}</button>
           </form>
           <p className={styles.toggleText}>
             Already have an account?{' '}
@@ -142,35 +233,36 @@ const AuthPage = () => {
       <>
         <h1 className={styles.title}>Welcome Back!</h1>
         <p className={styles.subtitle}>Please log in to access your dashboard.</p>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleLogin}>
           <div className={styles.inputGroup}>
             <Mail className={styles.inputIcon} size={20} />
-            <input type="email" placeholder="Email or Student ID" className={styles.input} required />
+            <input type="email" name="email" placeholder="Email or Student ID" className={styles.input} required value={form.email} onChange={handleInput} />
           </div>
           <div className={styles.inputGroup}>
             <Lock className={styles.inputIcon} size={20} />
-            <div className={styles.inputGroup}>
-              <Lock className={styles.inputIcon} size={20} />
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                className={styles.input}
-                required
-                style={{ paddingRight: '2.5rem' }}
-              />
-              <span
-                className={styles.eyeIcon}
-                onClick={() => setShowPassword((v) => !v)}
-                style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
-                tabIndex={0}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </span>
-            </div>
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              className={styles.input}
+              required
+              style={{ paddingRight: '2.5rem' }}
+              value={form.password}
+              onChange={handleInput}
+            />
+            <span
+              className={styles.eyeIcon}
+              onClick={() => setShowPassword((v) => !v)}
+              style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+              tabIndex={0}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </span>
           </div>
+          {error && <div style={{ color: 'red', marginBottom: 8 }}>{error}</div>}
           <a href="#" className={styles.forgotPassword}>Forgot Password?</a>
-          <button type="submit" className={styles.submitButton}>Log In</button>
+          <button type="submit" className={styles.submitButton} disabled={loading}>{loading ? 'Logging in...' : 'Log In'}</button>
         </form>
         <p className={styles.toggleText}>
           Don't have an account?{' '}

@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import TeacherHeader from '../common/TeacherHeader';
 import Footer from '../common/Footer';
@@ -7,18 +6,26 @@ import Card from '../common/Card';
 import styles from './Dashboard.module.css';
 import { BookOpen, Users, ClipboardList, ArrowRight } from 'lucide-react';
 
-const initialCourses = [
-  { id: 1, title: 'KSL Level 1: Foundations', students: 15 },
-  { id: 2, title: 'Introduction to Algebra', students: 12 },
-];
-
-const students = [
-  { id: 1, name: 'Jane Doe', profilePhoto: '/assets/images/student-profile.jpg' },
-  { id: 2, name: 'David O.', profilePhoto: '/assets/images/student-1.jpg' },
-  { id: 3, name: 'Grace A.', profilePhoto: '/assets/images/student-2.jpg' },
-];
-
 export default function TeacherDashboard() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/auth/me', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => {
+        setUser(data.user);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  // Compute the correct photo URL for display
+  const photoUrl = user && user.profilePhoto
+    ? user.profilePhoto.startsWith('http')
+      ? user.profilePhoto
+      : `http://localhost:3001${user.profilePhoto}`
+    : '/assets/images/teacher-profile.jpg';
 
   return (
     <div className={styles.page}>
@@ -27,9 +34,9 @@ export default function TeacherDashboard() {
         <div className={styles.container}>
           <section className={styles.section}>
             <div className={styles.welcomeHeader}>
-              <img src="/assets/images/teacher-profile.jpg" alt="Profile" className={styles.profileImage} />
+              <img src={photoUrl} alt="Profile" className={styles.profileImage} />
               <div>
-                <h1 className={styles.welcomeTitle}>Welcome, Teacher!</h1>
+                <h1 className={styles.welcomeTitle}>Welcome, {user ? user.name : 'Teacher'}!</h1>
                 <div className={styles.welcomeSubtitle}>Manage your courses, students, and assignments.</div>
               </div>
             </div>

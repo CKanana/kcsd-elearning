@@ -1,18 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { X, Star, BarChart, Hand, Sigma, Code, PlayCircle, List } from 'lucide-react';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import styles from './CoursesPage.module.css';
 
-const courseData = [
-  { id: 1, title: 'KSL Level 1: Foundations', category: 'KSL', teacher: { name: 'Samuel Kiprop', image: '/assets/images/teacher-1.jpg' }, difficulty: 'Beginner', prerequisites: ['None'], rating: 4.8, reviews: 120, enrolled: true, progress: 75, previewVideo: 'https://www.youtube.com/embed/CrUk8oOPUKM' },
-  { id: 2, title: 'Introduction to Algebra', category: 'Mathematics', teacher: { name: 'Dr. Evelyn Wanjiku', image: '/assets/images/founder.jpg' }, difficulty: 'Beginner', prerequisites: ['Basic Arithmetic'], rating: 4.6, reviews: 95, enrolled: false },
-  { id: 3, title: 'Vocational Skills: Carpentry', category: 'Vocational', teacher: { name: 'Grace Adhiambo', image: '/assets/images/teacher-2.jpg' }, difficulty: 'Intermediate', prerequisites: ['Safety Basics'], rating: 4.9, reviews: 150, enrolled: true, progress: 30 },
-  { id: 4, title: 'Conversational KSL', category: 'KSL', teacher: { name: 'Samuel Kiprop', image: '/assets/images/teacher-1.jpg' }, difficulty: 'Intermediate', prerequisites: ['KSL Level 1'], rating: 4.7, reviews: 88, enrolled: false },
-  { id: 5, title: 'Basic ICT Skills', category: 'ICT', teacher: { name: 'Dr. Evelyn Wanjiku', image: '/assets/images/founder.jpg' }, difficulty: 'Beginner', prerequisites: ['None'], rating: 4.5, reviews: 110, enrolled: true, progress: 100 },
-  { id: 6, title: 'Advanced Geometry', category: 'Mathematics', teacher: { name: 'Dr. Evelyn Wanjiku', image: '/assets/images/founder.jpg' }, difficulty: 'Advanced', prerequisites: ['Introduction to Algebra'], rating: 4.8, reviews: 75, enrolled: false },
-];
+// No more dummy data. Courses will be fetched from backend.
 
 const categories = [
   { id: 'all', name: 'All Courses', icon: List },
@@ -23,15 +16,44 @@ const categories = [
 ];
 
 const CoursesPage = () => {
+
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [videoModalUrl, setVideoModalUrl] = useState(null);
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/courses')
+      .then(res => res.json())
+      .then(data => {
+        setCourses(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   const filteredCourses = selectedCategory === 'all'
-    ? courseData
-    : courseData.filter(course => course.category === selectedCategory);
+    ? courses
+    : courses.filter(course => course.category === selectedCategory);
 
   const openVideoModal = (url) => setVideoModalUrl(url);
   const closeVideoModal = () => setVideoModalUrl(null);
+
+  const handleEnroll = async (courseId) => {
+    try {
+      const res = await fetch(`/api/courses/${courseId}/enroll`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.message || 'Failed to enroll');
+      }
+      alert('Successfully enrolled!');
+    } catch (err) {
+      alert(`Error: ${err.message}`);
+    }
+  };
 
   return (
     <div className={styles.page}>
@@ -66,46 +88,26 @@ const CoursesPage = () => {
         <section className={styles.section}>
           <div className={styles.container}>
             <div className={styles.courseGrid}>
-              {filteredCourses.map(course => (
-                <div key={course.id} className={styles.courseCard}>
+              {loading ? (
+                <div>Loading courses...</div>
+              ) : filteredCourses.length === 0 ? (
+                <div>No courses found.</div>
+              ) : filteredCourses.map(course => (
+                <div key={course._id} className={styles.courseCard}>
                   <div className={styles.cardImageContainer}>
-                    <img src={`/assets/images/courses/course-${course.id}.jpg`} alt={course.title} className={styles.cardImage} />
-                    <div className={styles.imageOverlay}>
-                      <button className={styles.previewButton} onClick={() => openVideoModal(course.previewVideo)}>
-                        <PlayCircle size={48} />
-                        <span>KSL Preview</span>
-                      </button>
-                    </div>
+                    <img src={course.image || '/assets/images/courses/default.jpg'} alt={course.title} className={styles.cardImage} />
                   </div>
                   <div className={styles.cardContent}>
-                    <div className={styles.cardHeader}>
-                      <span className={`${styles.difficultyBadge} ${styles[course.difficulty.toLowerCase()]}`}>{course.difficulty}</span>
-                      <div className={styles.rating}>
-                        <Star size={16} className={styles.starIcon} />
-                        <span>{course.rating} ({course.reviews} reviews)</span>
-                      </div>
-                    </div>
                     <h3 className={styles.cardTitle}>{course.title}</h3>
                     <div className={styles.teacherInfo}>
-                      <img src={course.teacher.image} alt={course.teacher.name} className={styles.teacherImage} />
-                      <span>{course.teacher.name}</span>
+                      {course.teacher && course.teacher.profilePhoto && (
+                        <img src={course.teacher.profilePhoto} alt={course.teacher.name} className={styles.teacherImage} />
+                      )}
+                      <span>{course.teacher ? course.teacher.name : 'Unknown Teacher'}</span>
                     </div>
-                    <p className={styles.prerequisites}>
-                      <strong>Prerequisites:</strong> {course.prerequisites.join(', ')}
-                    </p>
-                    {course.enrolled ? (
-                      <div className={styles.progressWrapper}>
-                        <div className={styles.progressText}>
-                          <span>In Progress</span>
-                          <span>{course.progress}%</span>
-                        </div>
-                        <div className={styles.progressBarContainer}>
-                          <div className={styles.progressBar} style={{ width: `${course.progress}%` }}></div>
-                        </div>
-                      </div>
-                    ) : (
-                      <button className={styles.enrollButton}>Enroll Now</button>
-                    )}
+                    <p className={styles.courseDescription}>{course.description}</p>
+                    <p className={styles.category}><strong>Category:</strong> {course.category || 'General'}</p>
+                    <button onClick={() => handleEnroll(course._id)} className={styles.enrollButton}>Enroll Now</button>
                   </div>
                 </div>
               ))}

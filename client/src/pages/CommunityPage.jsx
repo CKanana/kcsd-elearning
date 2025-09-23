@@ -1,17 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search, Users, MessageSquare, BookCopy } from 'lucide-react';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import styles from './CommunityPage.module.css';
 
-const studentsData = [
-  { id: 1, name: 'Jane Doe', profilePhoto: '/assets/images/student-profile.jpg', bio: 'Loves science and art. Eager to learn new things!' },
-  { id: 2, name: 'David O.', profilePhoto: '/assets/images/student-1.jpg', bio: 'Passionate about carpentry and vocational skills.' },
-  { id: 3, name: 'Grace A.', profilePhoto: '/assets/images/student-2.jpg', bio: 'Future ICT expert and coding enthusiast.' },
-  { id: 4, name: 'Samuel K.', profilePhoto: '/assets/images/student-3.jpg', bio: 'Enjoys mathematics and helping classmates.' },
-  { id: 5, name: 'Mary W.', profilePhoto: '/assets/images/student-4.jpg', bio: 'Loves reading and is a leader in the English club.' },
-  { id: 6, name: 'John P.', profilePhoto: '/assets/images/student-5.jpg', bio: 'Aspiring athlete and team player.' },
-];
+
+// No more dummy data. Students will be fetched from backend.
 
 const forumsData = [
   { id: 1, topic: 'KSL Practice', description: 'Share videos and get feedback on your signing.', posts: 128, lastPost: '2 hours ago' },
@@ -27,13 +21,26 @@ const studyGroupsData = [
 ];
 
 const CommunityPage = () => {
+
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('directory');
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/students')
+      .then(res => res.json())
+      .then(data => {
+        setStudents(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   const filteredStudents = useMemo(() =>
-    studentsData.filter(student =>
+    students.filter(student =>
       student.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ), [searchTerm]
+    ), [searchTerm, students]
   );
 
   const renderContent = () => {
@@ -84,9 +91,13 @@ const CommunityPage = () => {
               />
             </div>
             <div className={styles.studentGrid}>
-              {filteredStudents.map(student => (
-                <div key={student.id} className={styles.studentCard}>
-                  <img src={student.profilePhoto} alt={student.name} className={styles.studentImage} />
+              {loading ? (
+                <div>Loading students...</div>
+              ) : filteredStudents.length === 0 ? (
+                <div>No students found.</div>
+              ) : filteredStudents.map(student => (
+                <div key={student._id} className={styles.studentCard}>
+                  <img src={student.profilePhoto || '/assets/images/student-profile.jpg'} alt={student.name} className={styles.studentImage} />
                   <h3 className={styles.studentName}>{student.name}</h3>
                   <p className={styles.studentBio}>{student.bio}</p>
                   <button className={styles.connectButton}>Connect</button>

@@ -1,0 +1,68 @@
+.authContainer {
+  max-width: 400px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  text-align: center;
+}
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.inputGroup label {
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+.inputGroup input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+.submitButton {
+  background: #1e88e5;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 0;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+}
+.submitButton:hover {
+  background: #1565c0;
+}
+.toggleLink {
+  margin-top: 1.2rem;
+  font-size: 0.98rem;
+}
+.toggleLink button {
+  background: none;
+  border: none;
+  color: #1e88e5;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+  padding: 0;
+}
+.error {
+  color: #d32f2f;
+  font-size: 0.98rem;
+  margin-top: -0.5rem;
+}
+.success {
+  color: #388e3c;
+  font-size: 0.98rem;
+  margin-top: -0.5rem;
+}
