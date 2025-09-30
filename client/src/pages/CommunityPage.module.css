@@ -1,3 +1,62 @@
+.studentGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0 1rem 0;
+}
+.studentCard {
+  background: rgba(255,255,255,0.85);
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px 0 rgba(31,38,135,0.10);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1.5rem 1rem 1rem 1rem;
+  transition: box-shadow 0.3s;
+}
+.studentCard:hover {
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18), 0 4px 32px 0 rgba(249,115,22,0.12);
+}
+.studentImage {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px 0 rgba(31,38,135,0.10);
+}
+.studentName {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-primary-darkest);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.studentBio {
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+.connectButton {
+  background: var(--color-primary-dark);
+  color: white;
+  font-weight: 700;
+  padding: 0.5rem 1.25rem;
+  border-radius: 2rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px 0 rgba(249,115,22,0.15);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.connectButton:hover {
+  background: var(--color-primary-darker);
+  box-shadow: 0 4px 16px 0 rgba(249,115,22,0.25);
+  transform: translateY(-2px) scale(1.04);
+}
 /* CommunityPage.module.css */
 
 .page {

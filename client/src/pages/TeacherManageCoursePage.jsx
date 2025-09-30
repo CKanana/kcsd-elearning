@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import TeacherHeader from '../components/common/TeacherHeader';
 import Footer from '../components/common/Footer';
 import dashboardStyles from '../components/dashboard/Dashboard.module.css';
+import styles from './TeacherPages.module.css';
 
 const TeacherManageCoursePage = () => {
   const { id } = useParams();
@@ -15,6 +16,23 @@ const TeacherManageCoursePage = () => {
   const [unitFile, setUnitFile] = useState(null);
   const unitFileInputRef = useRef();
 
+    // Delete course
+    const handleDeleteCourse = async () => {
+      if (!window.confirm('Are you sure you want to delete this course? This action cannot be undone.')) return;
+      try {
+        const res = await fetch(`/api/courses/${id}`, { method: 'DELETE', credentials: 'include' });
+        if (!res.ok) throw new Error('Failed to delete course');
+        alert('Course deleted successfully');
+        // Redirect to teacher's courses page (assuming /teacher/courses/:teacherId)
+        if (course && course.teacher && course.teacher._id) {
+          navigate(`/teacher/courses/${course.teacher._id}`);
+        } else {
+          navigate('/teacher/courses');
+        }
+      } catch (err) {
+        alert('Error deleting course: ' + err.message);
+      }
+    };
   useEffect(() => {
     fetch(`/api/courses/${id}`)
       .then(res => res.json())
@@ -85,73 +103,95 @@ const TeacherManageCoursePage = () => {
   };
 
   return (
-    <div>
+
+    <div className={styles.page}>
       <TeacherHeader />
-      <main className={dashboardStyles.main}>
-        <h1>Manage Course</h1>
-        {course ? (
-          <div style={{ marginBottom: 32 }}>
-            <h2>{course.title}</h2>
-            {course.image && (
-              <img src={course.image.startsWith('http') ? course.image : `http://localhost:3001${course.image}`} alt={course.title} style={{ maxWidth: 300, borderRadius: 8, marginBottom: 8 }} />
-            )}
-            <p>{course.description}</p>
-            <p><b>Category:</b> {course.category}</p>
-            <p><b>Teacher:</b> {course.teacher?.name}</p>
+      <main className={styles.main}>
+        <div className={styles.pageHeader}>
+          <div className={styles.container}>
+            <h1 className={styles.pageTitle}>Manage Course</h1>
+            <p className={styles.pageSubtitle}>{course ? course.title : 'Loading...'}</p>
           </div>
-        ) : <div>Loading course...</div>}
+        </div>
 
-        {/* Units Section */}
-        <section style={{ marginBottom: 32 }}>
-          <h2>Units</h2>
-          <form onSubmit={handleUnitUpload} encType="multipart/form-data" style={{ marginBottom: 16 }}>
-            <input type="text" placeholder="Unit label" value={unitLabel} onChange={e => setUnitLabel(e.target.value)} />
-            <input type="file" ref={unitFileInputRef} onChange={e => setUnitFile(e.target.files[0])} required />
-            <button type="submit">Upload Unit</button>
-            {unitError && <span style={{ color: 'red', marginLeft: 8 }}>{unitError}</span>}
-          </form>
-          {course && Array.isArray(course.units) && course.units.length > 0 ? (
-            <ul>
-              {course.units.map((unit, idx) => (
-                <li key={idx} style={{ marginBottom: 8 }}>
-                  <a href={`http://localhost:3001${unit.file}`} target="_blank" rel="noopener noreferrer">{unit.label || unit.file}</a>
-                  <button style={{ marginLeft: 8 }} onClick={() => handleDeleteUnit(idx)}>Delete</button>
-                  <button style={{ marginLeft: 4 }} onClick={() => {
-                    const newLabel = prompt('Edit unit label:', unit.label);
-                    if (newLabel !== null && newLabel !== unit.label) handleEditUnit(idx, newLabel);
-                  }}>Edit</button>
-                </li>
-              ))}
-            </ul>
-          ) : <div>No units uploaded yet.</div>}
-        </section>
+        <div className={styles.container}>
+          <div className={styles.manageCourseGrid}>
+            {/* Left: Course Details Card */}
+            <div className={styles.detailsCard}>
+              {course ? (
+                <>
+                  {course.image && (
+                    <img src={course.image.startsWith('http') ? course.image : `http://localhost:3001${course.image}`} alt={course.title} className={styles.detailsImage} />
+                  )}
+                  <h2 className={styles.detailsTitle}>{course.title}</h2>
+                  <p className={styles.detailsDescription}>{course.description}</p>
+                  <div className={styles.detailsMeta}><strong>Category:</strong> {course.category}</div>
+                  <div className={styles.detailsMeta}><strong>Teacher:</strong> {course.teacher?.name}</div>
+                  <div className={styles.detailsActions}>
+                    <button className={styles.actionButtonPrimary} onClick={() => navigate(`/teacher/courses/${id}/students`)}>View Students</button>
+                    <button className={styles.actionButtonDanger} onClick={handleDeleteCourse}>Delete Course</button>
+                  </div>
+                </>
+              ) : <div className={styles.loadingText}>Loading course details...</div>}
+            </div>
 
-        {/* Assessments Section */}
-        <section style={{ marginBottom: 32 }}>
-          <h2>Assessments</h2>
-          {assessments && assessments.length > 0 ? (
-            <ul>
-              {assessments.filter(a => a.course === id || a.course?._id === id).map(a => (
-                <li key={a._id}>
-                  <b>{a.title}</b> ({a.type}) - {a.questions} questions
-                  {a.dueDate && <> | Due: {new Date(a.dueDate).toLocaleDateString()}</>}
-                </li>
-              ))}
-            </ul>
-          ) : <div>No assessments for this course.</div>}
-        </section>
+            {/* Right: Management Sections */}
+            <div className={styles.managementCards}>
+              {/* Units Card */}
+              <div className={styles.sectionCard}>
+                <h3 className={styles.sectionTitle}>Course Units</h3>
+                <form onSubmit={handleUnitUpload} className={styles.uploadForm}>
+                  <input type="text" placeholder="Unit label" value={unitLabel} onChange={e => setUnitLabel(e.target.value)} className={styles.formInput} required />
+                  <input type="file" ref={unitFileInputRef} onChange={e => setUnitFile(e.target.files[0])} className={styles.formInput} required />
+                  <button type="submit" className={styles.submitButton}>Upload Unit</button>
+                  {unitError && <span className={styles.errorText}>{unitError}</span>}
+                </form>
+                {course && Array.isArray(course.units) && course.units.length > 0 ? (
+                  <ul className={styles.itemList}>
+                    {course.units.map((unit, idx) => (
+                      <li key={idx} className={styles.item}>
+                        <a href={`http://localhost:3001${unit.file}`} target="_blank" rel="noopener noreferrer">{unit.label || unit.file}</a>
+                        <div className={styles.itemActions}>
+                          <button className={styles.editButton} onClick={() => {
+                            const newLabel = prompt('Edit unit label:', unit.label);
+                            if (newLabel !== null && newLabel !== unit.label) handleEditUnit(idx, newLabel);
+                          }}>Edit</button>
+                          <button className={styles.deleteButton} onClick={() => handleDeleteUnit(idx)}>Delete</button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : <div className={styles.emptyState}>No units uploaded yet.</div>}
+              </div>
 
-        {/* Students Section */}
-        <section>
-          <h2>Enrolled Students</h2>
-          {students && students.length > 0 ? (
-            <ul>
-              {students.map(s => (
-                <li key={s._id}>{s.name} ({s.email})</li>
-              ))}
-            </ul>
-          ) : <div>No students enrolled yet.</div>}
-        </section>
+              {/* Assessments Card */}
+              <div className={styles.sectionCard}>
+                <h3 className={styles.sectionTitle}>Assessments</h3>
+                {assessments && assessments.length > 0 ? (
+                  <ul className={styles.itemList}>
+                    {assessments.filter(a => a.course === id || a.course?._id === id).map(a => (
+                      <li key={a._id} className={styles.item}>
+                        <span><b>{a.title}</b> ({a.type}) - {a.questions} questions {a.dueDate && <>| Due: {new Date(a.dueDate).toLocaleDateString()}</>}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : <div className={styles.emptyState}>No assessments for this course.</div>}
+              </div>
+
+              {/* Students Card */}
+              <div className={styles.sectionCard}>
+                <h3 className={styles.sectionTitle}>Enrolled Students</h3>
+                {students && students.length > 0 ? (
+                  <ul className={styles.itemList}>
+                    {students.map(s => (
+                      <li key={s._id} className={styles.item}>{s.name} ({s.email})</li>
+                    ))}
+                  </ul>
+                ) : <div className={styles.emptyState}>No students enrolled yet.</div>}
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
       <Footer />
     </div>

@@ -1,29 +1,117 @@
-/* GalleryPage.module.css */
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  border: 1px solid #e5e7eb;
+  padding: 2rem 1rem;
+}
 
-.page {
+.galleryItem {
+  position: relative;
+}
+
+.imgWrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.imgOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.38);
+  opacity: 0;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background-color: #fff7ed; /* Light cream background */
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+  cursor: pointer;
+  z-index: 2;
 }
 
-.main {
-  flex-grow: 1;
+.imgWrapper:hover .imgOverlay {
+  opacity: 1;
 }
 
-.container {
-  max-width: 80rem;
-  margin: 0 auto;
-  padding: 0 1rem;
+.overlayIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
 }
 
-.pageHeader {
-  background: var(--color-primary);
-  color: white;
-  padding: 4rem 1rem;
-  text-align: center;
+.overlayText {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+.galleryDescription {
+  font-size: 1.08rem;
+  color: #444;
+  margin-bottom: 1.5rem;
+  max-width: 700px;
+  line-height: 1.6;
+}
+/* Responsive Gallery Grid */
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
 }
 
+.galleryItem img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.galleryItem img:hover {
+  transform: scale(1.04);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+/* GalleryPage.module.css */
+
+/* ...existing code... */
+.imgWrapper {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 70%;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px 0 rgba(31,38,135,0.10);
+  transition: box-shadow 0.3s;
+}
+.imgWrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.imgWrapper:hover {
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18), 0 4px 32px 0 rgba(249,115,22,0.12);
+}
+.imgWrapper:hover img {
+  transform: scale(1.04);
+}
 .pageTitle {
   font-size: 3rem;
   font-weight: 800;

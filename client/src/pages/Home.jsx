@@ -92,6 +92,12 @@ const KCSDHomepage = () => {
                 <Hand size={64} className={styles.waveHand} />
               </span>
             </h1>
+            {/* CTA Buttons - Hero Section */}
+            <div className={styles.ctaRow}>
+              <a href="/donate" className={styles.ctaButton}>Donate Now</a>
+              <a href="/admissions" className={styles.ctaButton}>Enroll Today</a>
+              <a href="/partner" className={styles.ctaButton}>Partner With Us</a>
+            </div>
             {/* About KCSD */}
             <div className={styles.aboutCardGlass}>
               <h2 className={styles.aboutTitle}>
@@ -110,6 +116,31 @@ const KCSDHomepage = () => {
         </div>
       </section>
 
+      {/* Featured Images Section */}
+      <section className={styles.section}>
+        <div className={styles.containerMd}>
+          <h2 className={styles.sectionTitle}>KCSD in Action</h2>
+          <p className={styles.sectionCaption}>
+            KCSD transforms lives by empowering deaf children through education, sign language, and community support. See our students and programs in action below.
+          </p>
+          <div className={styles.featuredGrid}>
+            {[
+              '/assets/images/Learning how to sign.png',
+              '/assets/images/1.jpg',
+              '/assets/images/2.jpg',
+              '/assets/images/3.jpg',
+              '/assets/images/4.jpg',
+              '/assets/images/5.jpg',
+              '/assets/images/6.jpg'
+            ].map((src, idx) => (
+              <div key={src} className={styles.featuredItem}>
+                <img src={src} alt={`KCSD featured ${idx + 1}`} className={styles.featuredImg} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
 
       
@@ -121,9 +152,9 @@ const KCSDHomepage = () => {
             <div className={styles.videoPlaceholder}>
               {/* YouTube Embed (user provided) */}
               <iframe
-                width="100%"
-                height="315"
-                src="https://www.youtube.com/embed/CrUk8oOPUKM?si=SFE-qR7JxPC80HQU"
+                width="360"
+                height="215"
+                src="https://www.youtube.com/embed/PJoo3gh03KI?si=LnU9nOwLl_0xQE3n"
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

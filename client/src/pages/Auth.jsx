@@ -5,7 +5,7 @@ import styles from './Auth.module.css';
 
 const AuthPage = () => {
   const [isLoginView, setIsLoginView] = useState(true);
-  const [role, setRole] = useState(null); // null, 'parent', 'student', or 'teacher'
+  const [role, setRole] = useState(null); // null, 'student', or 'teacher'
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -87,7 +87,7 @@ const AuthPage = () => {
 
       if (data.user.role === 'teacher') navigate('/teacher-dashboard');
       else if (data.user.role === 'student') navigate('/student-dashboard');
-      else navigate('/dashboard'); // A generic dashboard for parents or others
+  else navigate('/student-dashboard'); // Default to student dashboard
     } catch (err) {
       setError(err.message);
     } finally {
@@ -110,7 +110,7 @@ const AuthPage = () => {
               <User className={styles.inputIcon} size={20} />
               <input type="text" name="name" placeholder="Full Name" className={styles.input} value={form.name} onChange={handleInput} required />
             </div>
-            {role === 'parent' || role === 'teacher' ? (
+            {role === 'teacher' ? (
               <div className={styles.inputGroup}>
                 <Mail className={styles.inputIcon} size={20} />
                 <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required />
@@ -194,10 +194,7 @@ const AuthPage = () => {
           <h1 className={styles.title}>Join Our Community</h1>
           <p className={styles.subtitle}>First, please tell us who you are.</p>
           <div className={styles.roleSelection}>
-            <button onClick={() => handleRoleSelect('parent')} className={styles.roleButton}>
-              <Users size={40} />
-              <span>I'm a Parent or Guardian</span>
-            </button>
+            {/* Parent role removed */}
             <button onClick={() => handleRoleSelect('student')} className={styles.roleButton}>
               <UserCheck size={40} />
               <span>I'm a Student</span>

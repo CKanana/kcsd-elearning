@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { X } from 'lucide-react';
 import HomepageHeader from '../components/common/HomepageHeader';
+import { Link } from 'react-router-dom';
 import Footer from '../components/common/Footer';
 import styles from './GalleryPage.module.css';
 
 const galleryImages = [
-  { id: 1, src: '/assets/images/gallery/gallery-1.jpg', alt: 'Students in a classroom learning sign language' },
-  { id: 2, src: '/assets/images/gallery/gallery-2.jpg', alt: 'A student smiling while working on a computer' },
-  { id: 3, src: '/assets/images/gallery/gallery-3.jpg', alt: 'Children playing together in the schoolyard' },
-  { id: 4, src: '/assets/images/gallery/gallery-4.jpg', alt: 'A teacher guiding a student through a vocational training task' },
-  { id: 5, src: '/assets/images/gallery/gallery-5.jpg', alt: 'Students proudly displaying their artwork' },
-  { id: 6, src: '/assets/images/gallery/gallery-6.jpg', alt: 'A group photo of students and staff during a school event' },
-  { id: 7, src: '/assets/images/gallery/gallery-7.jpg', alt: 'A student engaged in a science experiment' },
-  { id: 8, src: '/assets/images/gallery/gallery-8.jpg', alt: 'The school building on a sunny day' },
+  { id: 1, src: '/assets/images/1.jpg', alt: 'Gallery image 1' },
+  { id: 2, src: '/assets/images/2.jpg', alt: 'Gallery image 2' },
+  { id: 3, src: '/assets/images/3.jpg', alt: 'Gallery image 3' },
+  { id: 4, src: '/assets/images/4.jpg', alt: 'Gallery image 4' },
+  { id: 5, src: '/assets/images/5.jpg', alt: 'Gallery image 5' },
+  { id: 6, src: '/assets/images/6.jpg', alt: 'Gallery image 6' },
+  { id: 7, src: '/assets/images/7.jpg', alt: 'Gallery image 7' },
+  { id: 8, src: '/assets/images/8.jpg', alt: 'Gallery image 8' },
+  { id: 9, src: '/assets/images/9.jpg', alt: 'Gallery image 9' },
+  { id: 10, src: '/assets/images/10.jpg', alt: 'Gallery image 10' }
 ];
 
 const GalleryPage = () => {
@@ -24,28 +30,44 @@ const GalleryPage = () => {
   return (
     <div className={styles.page}>
       <HomepageHeader />
+      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', padding: '1rem 2rem 0 2rem' }}>
+        <Link to="/login" style={{ color: '#ea580c', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}>Login</Link>
+        <Link to="/signup" style={{ color: '#ea580c', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}>Sign Up</Link>
+        <Link to="/admissions" style={{ color: '#ea580c', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}>Admissions</Link>
+      </div>
       <main className={styles.main}>
         <div className={styles.pageHeader}>
           <div className={styles.container}>
             <h1 className={styles.pageTitle}>Our Gallery</h1>
             <p className={styles.pageSubtitle}>
-              A glimpse into the vibrant life and community at KCSD.
+              The integration of the four subjects into a cohesive, interdisciplinary and applied learning approach. This isn't academic theory—STEM education includes the appropriate real-world application and teaching methods. As a result, learners in any subject can benefit from STEM education.
             </p>
+            {/* Removed old gallery subtitle as requested */}
           </div>
         </div>
 
-        <section className={styles.section}>
-          <div className={styles.container}>
-            <div className={styles.galleryGrid}>
-              {galleryImages.map((image) => (
-                <div key={image.id} className={styles.galleryItem} onClick={() => openLightbox(image)}>
-                  <img src={image.src} alt={image.alt} loading="lazy" />
-                  <div className={styles.itemOverlay}>
-                    <span>View Photo</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+                    <section className={styles.section}>
+                      <div className={styles.container}>
+                        <div className={styles.galleryGrid}>
+                          {galleryImages.map((image) => (
+                            <div key={image.id} className={styles.galleryItem}>
+                              <div className={styles.imgWrapper}>
+                                <img
+                                  src={image.src}
+                                  alt={image.alt}
+                                  onClick={() => openLightbox(image)}
+                                />
+                                <div className={styles.imgOverlay} onClick={() => openLightbox(image)}>
+                                  <span className={styles.overlayIcon}>
+                                    {/* Magnifying glass SVG */}
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                  </span>
+                                  <span className={styles.overlayText}>View</span>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
           </div>
         </section>
 
@@ -60,7 +82,16 @@ const GalleryPage = () => {
           </div>
         )}
       </main>
-      <Footer />
+      <footer className={styles.footer}>
+        <div className={styles.containerMd}>
+          <p className={styles.footerTitle}>
+            Kenya Christian School for the Deaf (KCSD)
+          </p>
+          <p className={styles.footerText}>
+            © 2024 KCSD. Transforming lives through inclusive education.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };

@@ -20,6 +20,29 @@ const StudentCoursePage = () => {
     setLoading(false);
   }, [id]);
 
+  const [unenrollLoading, setUnenrollLoading] = useState(false);
+  const [unenrollSuccess, setUnenrollSuccess] = useState('');
+  const [unenrollError, setUnenrollError] = useState('');
+
+  const handleUnenroll = async () => {
+    setUnenrollLoading(true);
+    setUnenrollSuccess('');
+    setUnenrollError('');
+    try {
+      const res = await fetch(`/api/courses/${id}/unenroll`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Unenroll failed');
+      setUnenrollSuccess('You have been unenrolled from this course.');
+    } catch (err) {
+      setUnenrollError(err.message);
+    }
+    setUnenrollLoading(false);
+  };
+
   return (
     <div className={styles.page}>
       <Header />
@@ -29,6 +52,15 @@ const StudentCoursePage = () => {
             <h1>{course.title}</h1>
             {course.image && <img src={course.image.startsWith('http') ? course.image : `http://localhost:3001${course.image}`} alt={course.title} style={{ maxWidth: 300, borderRadius: 8, marginBottom: 8 }} />}
             <p>{course.description}</p>
+            <button
+              style={{ background: '#ea580c', color: 'white', fontWeight: 700, padding: '0.5rem 1.5rem', borderRadius: '2rem', border: 'none', margin: '1rem 0', cursor: 'pointer', fontSize: '1rem' }}
+              onClick={handleUnenroll}
+              disabled={unenrollLoading}
+            >
+              {unenrollLoading ? 'Unenrolling...' : 'Unenroll from Course'}
+            </button>
+            {unenrollSuccess && <div style={{ color: 'green', marginBottom: 8 }}>{unenrollSuccess}</div>}
+            {unenrollError && <div style={{ color: 'red', marginBottom: 8 }}>{unenrollError}</div>}
             <h2>Units</h2>
             {Array.isArray(course.units) && course.units.length > 0 ? (
               <ul>

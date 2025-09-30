@@ -6,6 +6,17 @@ import Footer from '../components/common/Footer';
 import styles from './CoursesPage.module.css'; // Reusing styles is efficient
 
 const MyCoursesPage = () => {
+  const handleUnenroll = async (courseId) => {
+    if (!window.confirm('Are you sure you want to unenroll from this course?')) return;
+    try {
+      const res = await fetch(`/api/courses/${courseId}/unenroll`, { method: 'POST', credentials: 'include' });
+      if (!res.ok) throw new Error('Failed to unenroll');
+      setEnrolledCourses(courses => courses.filter(c => c._id !== courseId));
+      alert('You have been unenrolled from the course.');
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
+  };
   const [videoModalUrl, setVideoModalUrl] = useState(null);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -70,6 +81,10 @@ const MyCoursesPage = () => {
                         <div className={styles.progressBarContainer}>
                           <div className={styles.progressBar} style={{ width: `${course.progress || 0}%` }}></div>
                         </div>
+                      </div>
+                      <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
+                        <Link to={`/courses/${course._id}`} className={styles.enrollButton} style={{ flex: 1 }}>View Course</Link>
+                        <button className={styles.enrollButton} style={{ background: '#d32f2f', color: 'white', flex: 1 }} onClick={() => handleUnenroll(course._id)}>Unenroll</button>
                       </div>
                     </div>
                   </div>

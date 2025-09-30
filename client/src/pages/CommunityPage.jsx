@@ -38,9 +38,10 @@ const CommunityPage = () => {
   }, []);
 
   const filteredStudents = useMemo(() =>
-    students.filter(student =>
-      student.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ), [searchTerm, students]
+    students
+      .filter(student => student.role === 'student')
+      .filter(student => student.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    , [searchTerm, students]
   );
 
   const renderContent = () => {

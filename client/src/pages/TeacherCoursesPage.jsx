@@ -121,8 +121,14 @@ const TeacherCoursesPage = () => {
                       >
                         <Edit size={16} /> Manage Course
                       </button>
+                      <button
+                        className={styles.manageButton}
+                        style={{ marginLeft: 8, background: '#1976d2', color: 'white' }}
+                        onClick={() => navigate(`/teacher/courses/${course._id}/students`)}
+                      >
+                        <Users size={16} /> Go to Students
+                      </button>
                     </div>
-      {/* Manage Course Modal removed: now handled by dedicated page */}
                   </Card>
                 ))
               )}

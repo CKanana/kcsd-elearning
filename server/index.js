@@ -1,3 +1,13 @@
+// Delete an assessment by ID
+app.delete('/api/assessments/:id', async (req, res) => {
+  try {
+    const assessment = await Assessment.findByIdAndDelete(req.params.id);
+    if (!assessment) return res.status(404).json({ message: 'Assessment not found' });
+    res.json({ message: 'Assessment deleted' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting assessment', error: err.message });
+  }
+});
 // --- Express, Models, Middleware ---
 const express = require('express');
 const cors = require('cors');
@@ -31,6 +41,27 @@ connectDB();
 app.use('/api/auth', authRoutes);
 
 // --- Route Handlers ---
+// --- Route Handlers ---
+
+// Unenroll from a course
+app.post('/api/courses/:id/unenroll', authenticate, async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id);
+    const user = await User.findById(req.userId);
+    if (!course || !user) return res.status(404).json({ message: 'Course or user not found' });
+
+    // Remove user from course.students
+    course.students = course.students.filter(sid => sid.toString() !== user._id.toString());
+    // Remove course from user.enrolledCourses
+    user.enrolledCourses = user.enrolledCourses.filter(cid => cid.toString() !== course._id.toString());
+
+    await course.save();
+    await user.save();
+    res.json({ message: 'Unenrolled successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error unenrolling from course', error: err.message });
+  }
+});
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -60,7 +91,9 @@ app.get('/api/assessments', async (req, res) => {
 // Get all courses
 app.get('/api/courses', async (req, res) => {
   try {
-    const courses = await Course.find().populate('teacher', 'name profilePhoto');
+    const courses = await Course.find()
+      .populate('teacher', 'name profilePhoto')
+      .populate('students', 'name email');
     res.json(courses);
   } catch (err) {
     console.error('Error fetching courses:', err);
@@ -82,7 +115,11 @@ app.get('/api/courses/:id', async (req, res) => {
 // Get students enrolled in a course
 app.get('/api/courses/:id/students', async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id).populate('students', 'name email');
+    const course = await Course.findById(req.params.id).populate({
+      path: 'students',
+      select: 'name email role',
+      match: { role: 'student' }
+    });
     if (!course) return res.status(404).json({ message: 'Course not found' });
     res.json(course.students);
   } catch (err) {

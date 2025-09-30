@@ -49,7 +49,7 @@ export default function TeacherDashboard() {
                   <span className={styles.viewAllLink}>Go to Courses <ArrowRight size={16} /></span>
                 </Card>
               </Link>
-              <Link to="/my-students" className={styles.cardLink}>
+              <Link to="/teacher/all-students" className={styles.cardLink}>
                 <Card title="My Students" icon={<Users size={32} />}>
                   <p>View student profiles, track their progress, and communicate with them.</p>
                   <span className={styles.viewAllLink}>Go to Students <ArrowRight size={16} /></span>

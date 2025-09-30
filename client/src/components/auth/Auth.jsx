@@ -5,7 +5,7 @@ import styles from './Auth.module.css';
 
 const AuthPage = () => {
   const [isLoginView, setIsLoginView] = useState(true);
-  const [role, setRole] = useState(null); // null, 'parent', or 'student'
+  const [role, setRole] = useState(null); // null, 'student'
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -65,7 +65,7 @@ const AuthPage = () => {
       const formData = new FormData();
       formData.append('email', form.email);
       formData.append('password', form.password);
-      formData.append('role', role === 'parent' ? 'parent' : 'student');
+  formData.append('role', 'student');
       formData.append('name', form.name);
       if (form.profilePhoto) {
         formData.append('profilePhoto', form.profilePhoto);
@@ -117,7 +117,7 @@ const AuthPage = () => {
           <button onClick={resetToRoleSelection} className={styles.backButton}>
             <ArrowLeft size={16} /> Back to role selection
           </button>
-          <h1 className={styles.title}>Create {role === 'parent' ? 'Parent' : 'Student'} Account</h1>
+          <h1 className={styles.title}>Create Student Account</h1>
           <p className={styles.subtitle}>Let's get you started.</p>
           <form className={styles.form} onSubmit={handleSignup}>
             <div className={styles.inputGroup}>
@@ -128,27 +128,20 @@ const AuthPage = () => {
               <label htmlFor="profilePhoto" style={{ marginRight: 8 }}>Profile Photo:</label>
               <input type="file" name="profilePhoto" accept="image/*" onChange={handleInput} />
             </div>
-            {role === 'parent' ? (
+            <>
+              <div className={styles.inputGroup}>
+                <BookUser className={styles.inputIcon} size={20} />
+                <input type="text" name="studentId" placeholder="Student ID" className={styles.input} value={form.studentId} onChange={handleInput} />
+              </div>
               <div className={styles.inputGroup}>
                 <Mail className={styles.inputIcon} size={20} />
                 <input type="email" name="email" placeholder="Email Address" className={styles.input} required value={form.email} onChange={handleInput} />
               </div>
-            ) : (
-              <>
-                <div className={styles.inputGroup}>
-                  <BookUser className={styles.inputIcon} size={20} />
-                  <input type="text" name="studentId" placeholder="Student ID" className={styles.input} value={form.studentId} onChange={handleInput} />
-                </div>
-                <div className={styles.inputGroup}>
-                  <Mail className={styles.inputIcon} size={20} />
-                  <input type="email" name="email" placeholder="Email Address" className={styles.input} required value={form.email} onChange={handleInput} />
-                </div>
-                <div className={styles.inputGroup}>
-                  <Calendar className={styles.inputIcon} size={20} />
-                  <input type="date" name="dob" placeholder="Date of Birth" className={styles.input} value={form.dob} onChange={handleInput} />
-                </div>
-              </>
-            )}
+              <div className={styles.inputGroup}>
+                <Calendar className={styles.inputIcon} size={20} />
+                <input type="date" name="dob" placeholder="Date of Birth" className={styles.input} value={form.dob} onChange={handleInput} />
+              </div>
+            </>
             <div className={styles.inputGroup}>
               <Lock className={styles.inputIcon} size={20} />
               <input
@@ -211,10 +204,7 @@ const AuthPage = () => {
           <h1 className={styles.title}>Join Our Community</h1>
           <p className={styles.subtitle}>First, please tell us who you are.</p>
           <div className={styles.roleSelection}>
-            <button onClick={() => handleRoleSelect('parent')} className={styles.roleButton}>
-              <Users size={40} />
-              <span>I'm a Parent or Guardian</span>
-            </button>
+            {/* Parent role removed */}
             <button onClick={() => handleRoleSelect('student')} className={styles.roleButton}>
               <UserCheck size={40} />
               <span>I'm a Student</span>

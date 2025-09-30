@@ -9,6 +9,7 @@ const assessmentSchema = new mongoose.Schema({
   type: { type: String, enum: ['Test', 'Quiz'], required: true },
   questions: { type: Number, required: true },
   status: { type: String, enum: ['Not Started', 'In Progress', 'Completed'], default: 'Not Started' },
+  startDate: { type: Date },
   dueDate: { type: Date },
   score: { type: Number },
   certificate: { type: Boolean, default: false },

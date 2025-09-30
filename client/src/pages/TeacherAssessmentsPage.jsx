@@ -11,10 +11,54 @@ const TeacherAssessmentsPage = () => {
   const [courses, setCourses] = useState([]);
   const [assessments, setAssessments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState({ title: '', course: '', type: 'Quiz' });
+  const [form, setForm] = useState({ title: '', course: '', type: 'Quiz', startDate: '', dueDate: '' });
   const [formLoading, setFormLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Quiz question form state
+  const [questionForm, setQuestionForm] = useState({ assessmentId: '', questions: [''] });
+  const [questionLoading, setQuestionLoading] = useState(false);
+  const [questionSuccess, setQuestionSuccess] = useState('');
+  const [questionError, setQuestionError] = useState('');
+
+  // Delete assessment handler
+  const handleDeleteAssessment = async (id) => {
+    if (!window.confirm('Delete this assessment?')) return;
+    try {
+      const res = await fetch(`/api/assessments/${id}`, { method: 'DELETE', credentials: 'include' });
+      if (!res.ok) throw new Error('Failed to delete assessment');
+      setAssessments(a => a.filter(asmt => asmt._id !== id));
+      alert('Assessment deleted');
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
+  };
+
+  // Quiz question form handlers
+  const handleQuestionChange = (idx, value) => {
+    setQuestionForm(qf => ({ ...qf, questions: qf.questions.map((q, i) => i === idx ? value : q) }));
+  };
+  const addQuestionField = () => {
+    setQuestionForm(qf => ({ ...qf, questions: [...qf.questions, ''] }));
+  };
+  const removeQuestionField = (idx) => {
+    setQuestionForm(qf => ({ ...qf, questions: qf.questions.filter((_, i) => i !== idx) }));
+  };
+  const handleQuestionSubmit = async (e) => {
+    e.preventDefault();
+    setQuestionLoading(true);
+    setQuestionSuccess('');
+    setQuestionError('');
+    try {
+      // Backend logic for saving questions would go here
+      setQuestionSuccess('Questions saved (demo only).');
+      setQuestionForm({ assessmentId: '', questions: [''] });
+    } catch (err) {
+      setQuestionError('Error saving questions');
+    }
+    setQuestionLoading(false);
+  };
 
   // Fetch teacher's courses and assessments
   useEffect(() => {
@@ -50,13 +94,15 @@ const TeacherAssessmentsPage = () => {
           title: form.title,
           course: form.course,
           type: form.type,
-          questions: 0
+          questions: 0,
+          startDate: form.startDate,
+          dueDate: form.dueDate
         })
       });
       if (!res.ok) throw new Error('Failed to create assessment');
       const newAssessment = await res.json();
       setAssessments([newAssessment, ...assessments]);
-      setForm({ title: '', course: '', type: 'Quiz' });
+  setForm({ title: '', course: '', type: 'Quiz', startDate: '', dueDate: '' });
       setSuccess('Assessment created!');
     } catch (err) {
       setError(err.message);
@@ -99,6 +145,14 @@ const TeacherAssessmentsPage = () => {
                     </select>
                   </div>
                   <div className={styles.inputGroup}>
+                    <label htmlFor="assessmentStartDate">Start Date</label>
+                    <input type="date" id="assessmentStartDate" name="startDate" value={form.startDate} onChange={handleFormChange} required />
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label htmlFor="assessmentDueDate">End Date</label>
+                    <input type="date" id="assessmentDueDate" name="dueDate" value={form.dueDate} onChange={handleFormChange} required />
+                  </div>
+                  <div className={styles.inputGroup}>
                     <label>Type</label>
                     <div className={styles.radioGroup}>
                       <label><input type="radio" name="type" value="Quiz" checked={form.type === 'Quiz'} onChange={handleFormChange} /> Quiz</label>
@@ -118,6 +172,7 @@ const TeacherAssessmentsPage = () => {
                 ) : assessments.length === 0 ? (
                   <div>No assessments found.</div>
                 ) : (
+                  <>
                   <ul className={styles.itemList}>
                     {assessments.map(item => (
                       <li key={item._id}>
@@ -126,10 +181,32 @@ const TeacherAssessmentsPage = () => {
                           <span className={styles.itemTitle}>{item.title}</span>
                           <span className={styles.itemMeta}>{courses.find(c => c._id === item.course)?.title || 'Unknown Course'}</span>
                         </div>
-                        <button className={styles.manageButton}><Edit size={16} /></button>
+                        <button className={styles.manageButton} onClick={() => handleDeleteAssessment(item._id)} style={{ background: '#d32f2f', color: 'white', marginRight: 8 }}>Delete</button>
+                        <button className={styles.manageButton} onClick={() => setQuestionForm({ assessmentId: item._id, questions: [''] })}><Edit size={16} /> Add/Edit Questions</button>
                       </li>
                     ))}
                   </ul>
+                  {/* Quiz Question Form */}
+                  {questionForm.assessmentId && (
+                    <Card title="Add/Edit Quiz Questions" className={styles.formCard}>
+                      <form onSubmit={handleQuestionSubmit}>
+                        {questionForm.questions.map((q, idx) => (
+                          <div key={idx} className={styles.inputGroup}>
+                            <label>Question {idx + 1}</label>
+                            <input type="text" value={q} onChange={e => handleQuestionChange(idx, e.target.value)} required />
+                            {questionForm.questions.length > 1 && (
+                              <button type="button" onClick={() => removeQuestionField(idx)} style={{ marginLeft: 8 }}>Remove</button>
+                            )}
+                          </div>
+                        ))}
+                        <button type="button" onClick={addQuestionField} style={{ marginBottom: 12 }}>Add Another Question</button>
+                        {questionError && <div className={styles.error}>{questionError}</div>}
+                        {questionSuccess && <div className={styles.success}>{questionSuccess}</div>}
+                        <button type="submit" className={styles.submitButton} disabled={questionLoading}>Save Questions</button>
+                      </form>
+                    </Card>
+                  )}
+                  </>
                 )}
               </Card>
             </div>
