@@ -1,7 +1,7 @@
 // --- Express, Models, Middleware ---
 const express = require('express');
 const cors = require('cors');
-const connectDB = require('../database/connection');
+const connectDB = require('./database/connection');
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./auth');
