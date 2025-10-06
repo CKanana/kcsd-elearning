@@ -1,8 +1,11 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import TeacherAllStudentsPage from './pages/TeacherAllStudentsPage';
 import TeacherCourseStudentsPage from './pages/TeacherCourseStudentsPage';
 import Home from './pages/Home';
 import AuthPage from './pages/Auth';
+import StudentAuth from './pages/StudentAuth';
+import TeacherAuth from './pages/TeacherAuth';
 import StudentDashboard from './components/dashboard/StudentDashboard';
 import AboutPage from './pages/AboutPage';
 import GalleryPage from './pages/GalleryPage';
@@ -27,7 +30,21 @@ function App() {
         <Route path="/auth" element={
           <div className={authStyles.authPage}> {/* This outer div provides the background */}
             <div className={authStyles.authContainer}>
-              <AuthPage />
+              <AuthPage userType="student" />
+            </div>
+          </div>
+        } />
+        <Route path="/student-auth" element={
+          <div className={authStyles.authPage}>
+            <div className={authStyles.authContainer}>
+              <StudentAuth />
+            </div>
+          </div>
+        } />
+        <Route path="/teacher-auth" element={
+          <div className={authStyles.authPage}>
+            <div className={authStyles.authContainer}>
+              <TeacherAuth />
             </div>
           </div>
         } />
@@ -42,6 +59,14 @@ function App() {
           <div className={authStyles.authPage}>
             <div className={authStyles.authContainer}>
               <ResetPassword />
+            </div>
+          </div>
+        } />
+        <Route path="/verify-account" element={
+          <div className={authStyles.authPage}>
+            <div className={authStyles.authContainer}>
+              {/* Account verification page */}
+              {React.createElement(require('./pages/VerifyAccount').default)}
             </div>
           </div>
         } />

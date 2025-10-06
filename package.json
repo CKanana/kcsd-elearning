@@ -4,12 +4,14 @@
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "dotenv": "^17.2.2",
+    "crypto": "^1.0.1",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.542.0",
-    "mongoose": "^8.18.1",
+    "mongoose": "^8.19.0",
     "multer": "^2.0.2",
+    "nodemailer": "^7.0.6",
     "react-router-dom": "^7.8.2",
     "react-scripts": "^5.0.1",
     "react-slick": "^0.31.0",
@@ -17,5 +19,27 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
-  }
+  },
+  "name": "kcsd-elearning",
+  "version": "1.0.0",
+  "description": "A comprehensive, accessible eLearning platform designed specifically for Kenya Christian School for the Deaf (KCSD), supporting both Kenyan Sign Language (KSL) and English, with emphasis on visual learning and inclusive education.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CKanana/kcsd-elearning.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CKanana/kcsd-elearning/issues"
+  },
+  "homepage": "https://github.com/CKanana/kcsd-elearning#readme"
 }

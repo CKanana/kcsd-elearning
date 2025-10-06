@@ -1,13 +1,4 @@
-// Delete an assessment by ID
-app.delete('/api/assessments/:id', async (req, res) => {
-  try {
-    const assessment = await Assessment.findByIdAndDelete(req.params.id);
-    if (!assessment) return res.status(404).json({ message: 'Assessment not found' });
-    res.json({ message: 'Assessment deleted' });
-  } catch (err) {
-    res.status(500).json({ message: 'Error deleting assessment', error: err.message });
-  }
-});
+// ...existing code...
 // --- Express, Models, Middleware ---
 const express = require('express');
 const cors = require('cors');
@@ -71,7 +62,14 @@ app.get('/api/health', (req, res) => {
 // Get all students
 app.get('/api/students', async (req, res) => {
   try {
-    const students = await Student.find();
+    // Only return users with role 'student' from User collection, fallback to Student collection if needed
+    const User = require('./User');
+    let students = await User.find({ role: 'student' }, 'name profilePhoto bio email');
+    // If no students found in User, fallback to Student collection
+    if (!students || students.length === 0) {
+      const Student = require('./Student');
+      students = await Student.find({}, 'name profilePhoto bio email');
+    }
     res.json(students);
   } catch (err) {
     res.status(500).json({ message: 'Server error' });

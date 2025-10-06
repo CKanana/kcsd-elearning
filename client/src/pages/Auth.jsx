@@ -1,31 +1,23 @@
 import React, { useState } from 'react';
-import { User, Mail, Lock, ArrowLeft, Users, UserCheck, BookUser, Calendar, Eye, EyeOff, Briefcase } from 'lucide-react';
+import { User, Mail, Lock, ArrowLeft, Users, UserCheck, BookUser, Calendar, Eye, EyeOff, Briefcase, Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Auth.module.css';
 
-const AuthPage = () => {
+
+const AuthPage = ({ userType }) => {
   const [isLoginView, setIsLoginView] = useState(true);
-  const [role, setRole] = useState(null); // null, 'student', or 'teacher'
+  // If userType is provided, role is fixed
+  const [role, setRole] = useState(userType || null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleRoleSelect = (selectedRole) => {
-    setRole(selectedRole);
-    setIsLoginView(false);
-  };
-
-  const resetToRoleSelection = () => {
-    setRole(null);
-    setIsLoginView(false);
-  };
+  // Remove role selection logic
 
   const switchToLogin = () => {
-    setRole(null);
     setIsLoginView(true);
   };
 
   const switchToSignup = () => {
-    setRole(null);
     setIsLoginView(false);
   };
 
@@ -54,14 +46,14 @@ const AuthPage = () => {
     setSuccess('');
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/signup', {
+      const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, role }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Signup failed');
-      setSuccess('Account created successfully! Please log in.');
+      setSuccess('Account created! Please check your email to verify your account before logging in.');
       switchToLogin();
     } catch (err) {
       setError(err.message);
@@ -79,7 +71,7 @@ const AuthPage = () => {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email, password: form.password }),
+        body: JSON.stringify({ email: form.email, password: form.password, role }),
         credentials: 'include',
       });
       const data = await res.json();
@@ -87,7 +79,7 @@ const AuthPage = () => {
 
       if (data.user.role === 'teacher') navigate('/teacher-dashboard');
       else if (data.user.role === 'student') navigate('/student-dashboard');
-  else navigate('/student-dashboard'); // Default to student dashboard
+      else navigate('/student-dashboard'); // Default to student dashboard
     } catch (err) {
       setError(err.message);
     } finally {
@@ -95,134 +87,106 @@ const AuthPage = () => {
     }
   };
 
+
   const renderContent = () => {
-    // View 3: Sign-up form for a specific role
-    if (role) {
-      return (
-        <>
-          <button onClick={resetToRoleSelection} className={styles.backButton}>
-            <ArrowLeft size={16} /> Back to role selection
-          </button>
-          <h1 className={styles.title}>Create {role.charAt(0).toUpperCase() + role.slice(1)} Account</h1>
-          <p className={styles.subtitle}>Let's get you started.</p>
-          <form className={styles.form} onSubmit={handleSignup}>
-            <div className={styles.inputGroup}>
-              <User className={styles.inputIcon} size={20} />
-              <input type="text" name="name" placeholder="Full Name" className={styles.input} value={form.name} onChange={handleInput} required />
-            </div>
-            {role === 'teacher' ? (
+    // Student-only signup/login
+    if (userType === 'student') {
+      if (!isLoginView) {
+        return (
+          <>
+            <h1 className={styles.title}>Create Student Account</h1>
+            <p className={styles.subtitle}>Let's get you started.</p>
+            <form className={styles.form} onSubmit={handleSignup}>
+              <div className={styles.inputGroup}>
+                <User className={styles.inputIcon} size={20} />
+                <input type="text" name="name" placeholder="Full Name" className={styles.input} value={form.name} onChange={handleInput} required />
+              </div>
+              <div className={styles.inputGroup}>
+                <BookUser className={styles.inputIcon} size={20} />
+                <input type="text" name="studentId" placeholder="Student ID" className={styles.input} value={form.studentId} onChange={handleInput} required />
+              </div>
               <div className={styles.inputGroup}>
                 <Mail className={styles.inputIcon} size={20} />
                 <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required />
               </div>
-            ) : (
-              <>
-                <div className={styles.inputGroup}>
-                  <BookUser className={styles.inputIcon} size={20} />
-                  <input type="text" placeholder="Student ID" className={styles.input} required />
+              <div className={styles.inputGroup}>
+                <Calendar className={styles.inputIcon} size={20} />
+                <input type="date" name="dob" placeholder="Date of Birth" className={styles.input} value={form.dob} onChange={handleInput} required />
+              </div>
+              <div className={styles.inputGroup}>
+                <Lock className={styles.inputIcon} size={20} />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Create Password"
+                  className={styles.input}
+                  value={form.password}
+                  onChange={handleInput}
+                  required
+                  style={{ paddingRight: '2.5rem' }}
+                />
+                <span
+                  className={styles.eyeIcon}
+                  onClick={() => setShowPassword((v) => !v)}
+                  style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                  tabIndex={0}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </span>
+              </div>
+              <div className={styles.inputGroup}>
+                <Lock className={styles.inputIcon} size={20} />
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  className={styles.input}
+                  value={form.confirmPassword}
+                  onChange={handleInput}
+                  required
+                  style={{ paddingRight: '2.5rem' }}
+                />
+                <span
+                  className={styles.eyeIcon}
+                  onClick={() => setShowConfirmPassword((v) => !v)}
+                  style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                  tabIndex={0}
+                  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </span>
+              </div>
+              {success && (
+                <div style={{ color: 'green', marginBottom: 8, textAlign: 'center' }}>
+                  {success}<br />
+                  <span>
+                    <Link to="/verify-account?token=" style={{ color: '#007bff' }}>
+                      Click here to verify your account
+                    </Link> (or check your email)
+                  </span>
                 </div>
-                <div className={styles.inputGroup}>
-                  <Mail className={styles.inputIcon} size={20} />
-                  <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required />
-                </div>
-                <div className={styles.inputGroup}>
-                  <Calendar className={styles.inputIcon} size={20} />
-                  <input type="date" name="dob" placeholder="Date of Birth" className={styles.input} value={form.dob} onChange={handleInput} required />
-                </div>
-              </>
-            )}
-            <div className={styles.inputGroup}>
-              <Lock className={styles.inputIcon} size={20} />
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                placeholder="Create Password"
-                className={styles.input}
-                value={form.password}
-                onChange={handleInput}
-                required
-                style={{ paddingRight: '2.5rem' }}
-              />
-              <span
-                className={styles.eyeIcon}
-                onClick={() => setShowPassword((v) => !v)}
-                style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
-                tabIndex={0}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </span>
-            </div>
-            <div className={styles.inputGroup}>
-              <Lock className={styles.inputIcon} size={20} />
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                name="confirmPassword"
-                placeholder="Confirm Password"
-                className={styles.input}
-                value={form.confirmPassword}
-                onChange={handleInput}
-                required
-                style={{ paddingRight: '2.5rem' }}
-              />
-              <span
-                className={styles.eyeIcon}
-                onClick={() => setShowConfirmPassword((v) => !v)}
-                style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
-                tabIndex={0}
-                aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
-              >
-                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </span>
-            </div>
-            {success && <div style={{ color: 'green', marginBottom: 8, textAlign: 'center' }}>{success}</div>}
-            {error && <div style={{ color: 'red', marginBottom: 8, textAlign: 'center' }}>{error}</div>}
-            <button type="submit" className={styles.submitButton} disabled={loading}>{loading ? 'Creating...' : 'Create Account'}</button>
-          </form>
-          <p className={styles.toggleText}>
-            Already have an account?{' '}
-            <button onClick={switchToLogin} className={styles.toggleButton}>Log In</button>
-          </p>
-        </>
-      );
-    }
-
-    // View 2: Role selection for sign-up
-    if (!isLoginView) {
+              )}
+              {error && <div style={{ color: 'red', marginBottom: 8, textAlign: 'center' }}>{error}</div>}
+              <button type="submit" className={styles.submitButton} disabled={loading}>{loading ? 'Creating...' : 'Create Account'}</button>
+            </form>
+            <p className={styles.toggleText}>
+              Already have an account?{' '}
+              <button onClick={switchToLogin} className={styles.toggleButton}>Log In</button>
+            </p>
+          </>
+        );
+      }
+      // Student login
       return (
         <>
-          <h1 className={styles.title}>Join Our Community</h1>
-          <p className={styles.subtitle}>First, please tell us who you are.</p>
-          <div className={styles.roleSelection}>
-            {/* Parent role removed */}
-            <button onClick={() => handleRoleSelect('student')} className={styles.roleButton}>
-              <UserCheck size={40} />
-              <span>I'm a Student</span>
-            </button>
-            <button onClick={() => handleRoleSelect('teacher')} className={styles.roleButton}>
-              <Briefcase size={40} />
-              <span>I'm a Teacher</span>
-            </button>
-          </div>
-          <p className={styles.toggleText}>
-            Already have an account?{' '}
-            <button onClick={switchToLogin} className={styles.toggleButton}>Log In</button>
-          </p>
-        </>
-      );
-    }
-
-    // View 1: Login form (default)
-    return (
-      <>
-        <h1 className={styles.title}>Welcome Back!</h1>
-        <p className={styles.subtitle}>Please log in to access your dashboard.</p>
-        <form className={styles.form} onSubmit={handleLogin}>
-          <div className={styles.inputGroup}>
-            <Mail className={styles.inputIcon} size={20} />
-            <input type="email" name="email" placeholder="Email or Student ID" className={styles.input} value={form.email} onChange={handleInput} required />
-          </div>
-            <Lock className={styles.inputIcon} size={20} />
+          <h1 className={styles.title}>Welcome Back!</h1>
+          <p className={styles.subtitle}>Please log in to access your dashboard.</p>
+          <form className={styles.form} onSubmit={handleLogin}>
+            <div className={styles.inputGroup}>
+              <Mail className={styles.inputIcon} size={20} />
+              <input type="email" name="email" placeholder="Email or Student ID" className={styles.input} value={form.email} onChange={handleInput} required />
+            </div>
             <div className={styles.inputGroup}>
               <Lock className={styles.inputIcon} size={20} />
               <input
@@ -244,19 +208,137 @@ const AuthPage = () => {
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </span>
             </div>
-          {success && <div style={{ color: 'green', marginBottom: 8, textAlign: 'center' }}>{success}</div>}
-          {error && <div style={{ color: 'red', marginBottom: 8, textAlign: 'center' }}>{error}</div>}
-          <Link to="/forgot-password" className={styles.forgotPassword}>Forgot Password?</Link>
-          <button type="submit" className={styles.submitButton} disabled={loading}>{loading ? 'Logging In...' : 'Log In'}</button>
-        </form>
-        <p className={styles.toggleText}>
-          Don't have an account?{' '}
-          <button onClick={switchToSignup} className={styles.toggleButton}>Sign Up</button>
-        </p>
-      </>
-    );
+            {success && <div style={{ color: 'green', marginBottom: 8, textAlign: 'center' }}>{success}</div>}
+            {error && <div style={{ color: 'red', marginBottom: 8, textAlign: 'center' }}>{error}</div>}
+            <Link to="/forgot-password" className={styles.forgotPassword}>Forgot Password?</Link>
+            <button type="submit" className={styles.submitButton} disabled={loading}>{loading ? 'Logging In...' : 'Log In'}</button>
+          </form>
+          <p className={styles.toggleText}>
+            Don't have an account?{' '}
+            <button onClick={switchToSignup} className={styles.toggleButton}>Sign Up</button>
+          </p>
+        </>
+      );
+    }
+    // Teacher-only signup/login
+    if (userType === 'teacher') {
+      if (!isLoginView) {
+        return (
+          <>
+            <h1 className={styles.title}>Create Teacher Account</h1>
+            <p className={styles.subtitle}>Let's get you started.</p>
+            <form className={styles.form} onSubmit={handleSignup}>
+              <div className={styles.inputGroup}>
+                <User className={styles.inputIcon} size={20} />
+                <input type="text" name="name" placeholder="Full Name" className={styles.input} value={form.name} onChange={handleInput} required />
+              </div>
+              <div className={styles.inputGroup}>
+                <Mail className={styles.inputIcon} size={20} />
+                <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required />
+              </div>
+              <div className={styles.inputGroup}>
+                <Lock className={styles.inputIcon} size={20} />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Create Password"
+                  className={styles.input}
+                  value={form.password}
+                  onChange={handleInput}
+                  required
+                  style={{ paddingRight: '2.5rem' }}
+                />
+                <span
+                  className={styles.eyeIcon}
+                  onClick={() => setShowPassword((v) => !v)}
+                  style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                  tabIndex={0}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </span>
+              </div>
+              <div className={styles.inputGroup}>
+                <Lock className={styles.inputIcon} size={20} />
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  className={styles.input}
+                  value={form.confirmPassword}
+                  onChange={handleInput}
+                  required
+                  style={{ paddingRight: '2.5rem' }}
+                />
+                <span
+                  className={styles.eyeIcon}
+                  onClick={() => setShowConfirmPassword((v) => !v)}
+                  style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                  tabIndex={0}
+                  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </span>
+              </div>
+              {success && <div style={{ color: 'green', marginBottom: 8, textAlign: 'center' }}>{success}</div>}
+              {error && <div style={{ color: 'red', marginBottom: 8, textAlign: 'center' }}>{error}</div>}
+              <button type="submit" className={styles.submitButton} disabled={loading}>{loading ? 'Creating...' : 'Create Account'}</button>
+            </form>
+            <p className={styles.toggleText}>
+              Already have an account?{' '}
+              <button onClick={switchToLogin} className={styles.toggleButton}>Log In</button>
+            </p>
+          </>
+        );
+      }
+      // Teacher login
+      return (
+        <>
+          <h1 className={styles.title}>Teacher Login</h1>
+          <p className={styles.subtitle}>Please log in to access your dashboard.</p>
+          <form className={styles.form} onSubmit={handleLogin}>
+            <div className={styles.inputGroup}>
+              <Mail className={styles.inputIcon} size={20} />
+              <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required />
+            </div>
+            <div className={styles.inputGroup}>
+              <Lock className={styles.inputIcon} size={20} />
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                className={styles.input}
+                name="password"
+                value={form.password} onChange={handleInput}
+                required
+                style={{ paddingRight: '2.5rem' }}
+              />
+              <span
+                className={styles.eyeIcon}
+                onClick={() => setShowPassword((v) => !v)}
+                style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                tabIndex={0}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </span>
+            </div>
+            {success && <div style={{ color: 'green', marginBottom: 8, textAlign: 'center' }}>{success}</div>}
+            {error && <div style={{ color: 'red', marginBottom: 8, textAlign: 'center' }}>{error}</div>}
+            <Link to="/forgot-password" className={styles.forgotPassword}>Forgot Password?</Link>
+            <button type="submit" className={styles.submitButton} disabled={loading}>{loading ? 'Logging In...' : 'Log In'}</button>
+          </form>
+          <p className={styles.toggleText}>
+            Don't have an account?{' '}
+            <button onClick={switchToSignup} className={styles.toggleButton}>Sign Up</button>
+          </p>
+        </>
+      );
+    }
+    // ...existing code for fallback (should not be shown)
+    return null;
   };
 
+  // Main component render
   return (
     <div className={styles.authPage}>
       <div className={styles.authContainer}>
@@ -268,6 +350,6 @@ const AuthPage = () => {
       </div>
     </div>
   );
-};
+}
 
 export default AuthPage;

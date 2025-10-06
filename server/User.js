@@ -27,7 +27,11 @@ const userSchema = new mongoose.Schema({
       announcements: { type: Boolean, default: false }
     },
     profileVisibility: { type: String, default: 'teachers' }
-  }
+  },
+  isVerified: { type: Boolean, default: false },
+  verificationToken: { type: String },
+  resetToken: { type: String },
+  resetTokenExpiry: { type: Date }
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

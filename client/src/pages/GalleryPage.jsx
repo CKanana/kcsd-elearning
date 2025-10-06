@@ -30,11 +30,6 @@ const GalleryPage = () => {
   return (
     <div className={styles.page}>
       <HomepageHeader />
-      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', padding: '1rem 2rem 0 2rem' }}>
-        <Link to="/login" style={{ color: '#ea580c', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}>Login</Link>
-        <Link to="/signup" style={{ color: '#ea580c', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}>Sign Up</Link>
-        <Link to="/admissions" style={{ color: '#ea580c', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}>Admissions</Link>
-      </div>
       <main className={styles.main}>
         <div className={styles.pageHeader}>
           <div className={styles.container}>
@@ -82,16 +77,7 @@ const GalleryPage = () => {
           </div>
         )}
       </main>
-      <footer className={styles.footer}>
-        <div className={styles.containerMd}>
-          <p className={styles.footerTitle}>
-            Kenya Christian School for the Deaf (KCSD)
-          </p>
-          <p className={styles.footerText}>
-            © 2024 KCSD. Transforming lives through inclusive education.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

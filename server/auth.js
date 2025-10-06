@@ -1,6 +1,9 @@
 
 const express = require('express');
 const router = express.Router();
+const crypto = require('crypto');
+const { sendMail } = require('./mailer');
+const { accountVerificationTemplate, passwordResetTemplate } = require('./emailTemplates');
 const User = require('./User');
 const multer = require('./uploadMiddleware');
 const bcrypt = require('bcryptjs');
@@ -89,22 +92,37 @@ router.get('/me', authenticate, async (req, res) => {
 
 // Define your routes after initializing the router
 router.post('/forgot-password', async (req, res) => {
-  // Your forgot-password logic here
-  res.status(200).json({ message: 'Forgot password endpoint hit' });
+  // Example: send password reset email
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ message: 'User not found' });
+  // Generate a reset token (for demo, use a dummy link)
+  const resetToken = 'dummy-token';
+  const resetLink = `https://kcsd-elearning.com/reset-password?token=${resetToken}`;
+  const mail = passwordResetTemplate({ name: user.name, resetLink });
+  try {
+    await sendMail({ to: email, subject: mail.subject, html: mail.html });
+    res.status(200).json({ message: 'Password reset email sent.' });
+  } catch (err) {
+    console.error('Error sending password reset email:', err);
+    res.status(500).json({ message: 'Error sending password reset email.' });
+  }
 });
 
 // Login route
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
   try {
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
-    // Email verification check temporarily disabled
-    // if (!user.isVerified) {
-    //   return res.status(403).json({ message: 'Please verify your email before logging in.' });
-    // }
+    if (!user.isVerified) {
+      return res.status(403).json({ message: 'Please verify your account before logging in.' });
+    }
+    if (role && user.role !== role) {
+      return res.status(403).json({ message: `You are not registered as a ${role}.` });
+    }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid email or password' });
@@ -134,7 +152,8 @@ router.post('/login', async (req, res) => {
 
 // Signup route
 // Support both JSON and multipart/form-data (for profile photo upload)
-router.post('/signup', multer.single('profilePhoto'), async (req, res) => {
+// Register route (signup with verification token)
+router.post('/register', multer.single('profilePhoto'), async (req, res) => {
   try {
     // If JSON, req.body is parsed; if multipart, multer parses req.body and req.file
     const { name, email, password, role } = req.body;
@@ -150,19 +169,87 @@ router.post('/signup', multer.single('profilePhoto'), async (req, res) => {
     if (req.file) {
       profilePhoto = `/uploads/${req.file.filename}`;
     }
+    const verificationToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1d' });
     const user = new User({
       name,
       email,
       password: hashedPassword,
       role: role || 'student',
-      ...(profilePhoto && { profilePhoto })
+      ...(profilePhoto && { profilePhoto }),
+      verificationToken,
+      isVerified: false
     });
     await user.save();
-    res.status(201).json({ message: 'Account created successfully.' });
+    // Send account verification email
+    const verificationLink = `https://kcsd-elearning.com/verify?token=${verificationToken}`;
+    const mail = accountVerificationTemplate({ name, verificationLink });
+    try {
+      await sendMail({ to: email, subject: mail.subject, html: mail.html });
+    } catch (err) {
+      console.error('Error sending verification email:', err);
+    }
+    res.status(201).json({ message: 'Account created successfully. Verification email sent.' });
   } catch (err) {
     console.error('Signup error:', err);
     res.status(500).json({ message: 'Server error' });
   }
+});
+
+// Verify account route
+router.get('/verify', async (req, res) => {
+  const { token } = req.query;
+  if (!token) return res.status(400).json({ message: 'Verification token required.' });
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    return res.status(400).json({ message: 'Invalid or expired verification token.' });
+  }
+  const user = await User.findOne({ email: decoded.email, verificationToken: token });
+  if (!user) return res.status(400).json({ message: 'Invalid or expired verification token.' });
+  user.isVerified = true;
+  user.verificationToken = undefined;
+  await user.save();
+  res.json({ message: 'Account verified successfully.' });
+});
+
+// Request password reset route
+router.post('/request-reset', async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ message: 'User not found' });
+  const resetToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  user.resetToken = resetToken;
+  user.resetTokenExpiry = Date.now() + 1000 * 60 * 60; // 1 hour expiry
+  await user.save();
+  const resetLink = `https://kcsd-elearning.com/reset-password?token=${resetToken}`;
+  const mail = passwordResetTemplate({ name: user.name, resetLink });
+  try {
+    await sendMail({ to: email, subject: mail.subject, html: mail.html });
+    res.status(200).json({ message: 'Password reset email sent.' });
+  } catch (err) {
+    console.error('Error sending password reset email:', err);
+    res.status(500).json({ message: 'Error sending password reset email.' });
+  }
+});
+
+// Reset password route
+router.post('/reset-password', async (req, res) => {
+  const { token, password } = req.body;
+  if (!token || !password) return res.status(400).json({ message: 'Token and new password required.' });
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    return res.status(400).json({ message: 'Invalid or expired reset token.' });
+  }
+  const user = await User.findOne({ email: decoded.email, resetToken: token, resetTokenExpiry: { $gt: Date.now() } });
+  if (!user) return res.status(400).json({ message: 'Invalid or expired reset token.' });
+  user.password = await bcrypt.hash(password, 10);
+  user.resetToken = undefined;
+  user.resetTokenExpiry = undefined;
+  await user.save();
+  res.json({ message: 'Password reset successful.' });
 });
 
 // Add other auth routes here (e.g., /login, /register)

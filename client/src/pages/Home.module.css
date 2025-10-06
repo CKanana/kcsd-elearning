@@ -5,6 +5,48 @@
   gap: 1.5rem;
   margin: 2rem 0 1rem 0;
 }
+
+/* Vocational Training Photo Row Styles */
+.vocationalPhotoRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin: 2rem 0 1rem 0;
+}
+.vocationalPhotoItem {
+  background: rgba(255,255,255,0.8);
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px 0 rgba(31,38,135,0.10);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 220px;
+  padding: 1rem;
+  transition: box-shadow 0.3s;
+}
+.vocationalPhotoItem:hover {
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18), 0 4px 32px 0 rgba(249,115,22,0.12);
+}
+.vocationalPhotoImg {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  margin-bottom: 0.75rem;
+  box-shadow: none;
+  transition: transform 0.2s;
+}
+.vocationalPhotoItem:hover .vocationalPhotoImg {
+  transform: scale(1.04);
+}
+.vocationalPhotoText {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-primary-darkest);
+  text-align: center;
+}
 .featuredItem {
   background: rgba(255,255,255,0.7);
   border-radius: 1rem;

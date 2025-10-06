@@ -105,19 +105,42 @@
   border-radius: 1rem;
   cursor: pointer;
   transition: transform 0.2s;
+
 }
-.imgWrapper:hover {
-  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18), 0 4px 32px 0 rgba(249,115,22,0.12);
+
+.pageHeader {
+  background: var(--color-primary, #ea580c);
+  color: white;
+  padding: 4rem 1rem;
+  text-align: center;
 }
-.imgWrapper:hover img {
-  transform: scale(1.04);
-}
+
 .pageTitle {
   font-size: 3rem;
   font-weight: 800;
   margin-bottom: 1rem;
+  animation: fadeInDown 1s ease-out;
 }
 
+.pageSubtitle {
+  font-size: 1.25rem;
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0.9;
+  animation: fadeInDown 1s ease-out 0.2s;
+  animation-fill-mode: backwards;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .pageSubtitle {
   font-size: 1.25rem;
   max-width: 600px;

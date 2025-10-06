@@ -29,7 +29,7 @@ export default function TeacherAuth() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({ email: form.email, password: form.password })
+          body: JSON.stringify({ email: form.email, password: form.password, role: 'teacher' })
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Invalid credentials');

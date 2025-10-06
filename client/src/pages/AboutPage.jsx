@@ -6,25 +6,20 @@ import styles from './AboutPage.module.css';
 
 const teamMembers = [
   {
-    name: 'Dr. Evelyn Wanjiku',
-    role: 'Founder & Director',
-    image: '/assets/images/founder.jpg',
-    bio: 'With over 20 years in special needs education, Dr. Wanjiku founded KCSD to create a world of opportunity for every deaf child.',
-    linkedin: 'https://linkedin.com/in/evelynwanjiku'
+    name: 'Dr Charles Ngiela',
+    role: 'Executive Director',
+  image: '/assets/images/Dr-Okello-Director.jpg',
+    bio: 'Founder and Executive Director of KCSD. Passionate about inclusive education and sign-language access, Dr Ngiela leads KCSD’s programmes to empower deaf children and women through education, rehabilitation, and community outreach. Contact: kenyachristianschoolforthedeaf@yahoo.com',
+    linkedin: '',
+    extra: 'sportanddev +1'
   },
   {
-    name: 'Samuel Kiprop',
-    role: 'Head of Curriculum',
-    image: '/assets/images/teacher-1.jpg',
-    bio: 'Samuel is a KSL specialist who designs our innovative curriculum to be engaging, accessible, and effective for all learners.',
-    linkedin: 'https://linkedin.com/in/samuelkiprop'
-  },
-  {
-    name: 'Grace Adhiambo',
-    role: 'Lead Vocational Trainer',
-    image: '/assets/images/teacher-2.jpg',
-    bio: 'Grace empowers our students with practical skills, preparing them for independent and successful futures in various trades.',
-    linkedin: 'https://linkedin.com/in/graceadhiambo'
+    name: 'Lavender A. Okello',
+    role: 'Programme Manager',
+  image: '/assets/images/Lavender-Owuor-Manager.jpg',
+    bio: 'Programme/Operations manager at KCSD. Coordinates outreach, donor reporting and the delivery of learning and rehabilitation services for deaf children and women. (Please confirm official title.)',
+    linkedin: '',
+    extra: 'GlobalGiving'
   }
 ];
 

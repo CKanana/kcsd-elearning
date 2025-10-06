@@ -94,9 +94,8 @@ const KCSDHomepage = () => {
             </h1>
             {/* CTA Buttons - Hero Section */}
             <div className={styles.ctaRow}>
-              <a href="/donate" className={styles.ctaButton}>Donate Now</a>
-              <a href="/admissions" className={styles.ctaButton}>Enroll Today</a>
               <a href="/partner" className={styles.ctaButton}>Partner With Us</a>
+              <Link to="/student-auth" className={styles.ctaButton}>Student Login / Sign Up</Link>
             </div>
             {/* About KCSD */}
             <div className={styles.aboutCardGlass}>
@@ -125,7 +124,6 @@ const KCSDHomepage = () => {
           </p>
           <div className={styles.featuredGrid}>
             {[
-              '/assets/images/Learning how to sign.png',
               '/assets/images/1.jpg',
               '/assets/images/2.jpg',
               '/assets/images/3.jpg',
@@ -249,6 +247,30 @@ const KCSDHomepage = () => {
         </div>
       </section>
 
+        {/* Vocational Training Photo Row */}
+        <section className={styles.section}>
+          <div className={styles.containerMd}>
+            <h2 className={styles.sectionTitle}>Vocational Training in Action</h2>
+            <p className={styles.sectionCaption}>
+              Our vocational training program equips students with practical skills for independent living and employment. Explore how KCSD empowers deaf youth through hands-on learning in real-world trades.
+            </p>
+            <div className={styles.vocationalPhotoRow}>
+              <div className={styles.vocationalPhotoItem}>
+                <img src="/assets/images/coding.jpg" alt="Vocational training - coding" className={styles.vocationalPhotoImg} />
+                <p className={styles.vocationalPhotoText}>Coding</p>
+              </div>
+              <div className={styles.vocationalPhotoItem}>
+                <img src="/assets/images/tailoring.jpg" alt="Vocational training - tailoring" className={styles.vocationalPhotoImg} />
+                <p className={styles.vocationalPhotoText}>Tailoring</p>
+              </div>
+              <div className={styles.vocationalPhotoItem}>
+                <img src="/assets/images/computer-literacy.jpg" alt="Vocational training - computer literacy" className={styles.vocationalPhotoImg} />
+                <p className={styles.vocationalPhotoText}>Computer Literacy</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
       {/* Future Goals */}
       <section className={styles.section}>
         <div className={styles.containerMd}>
@@ -280,6 +302,12 @@ const KCSDHomepage = () => {
                       <MapPin size={20} />
                     </span>
                     <span>P.O. Box 29793, Nairobi, Kenya</span>
+                  </div>
+                  <div className={styles.contactItem}>
+                    <span className={styles.contactIcon}>
+                      <MapPin size={20} />
+                    </span>
+                    <span>Address (as listed): Nairobi-West, Langata Rd (adjacent to Hotel Rio)</span>
                   </div>
                   <div className={styles.contactItem}>
                     <span className={styles.contactIcon}>

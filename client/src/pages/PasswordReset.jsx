@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from './Auth.module.css';
 
 export function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -12,7 +13,7 @@ export function ForgotPassword() {
     setError('');
     setMessage('');
     try {
-      const res = await fetch('/api/auth/forgot-password', {
+      const res = await fetch('/api/auth/request-reset', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -27,23 +28,27 @@ export function ForgotPassword() {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '2rem auto' }}>
-      <h2>Forgot Password</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required
-          style={{ width: '100%', marginBottom: 12, padding: 8 }}
-        />
-        <button type="submit" disabled={loading} style={{ width: '100%' }}>
-          {loading ? 'Sending...' : 'Send Reset Link'}
-        </button>
-      </form>
-      {message && <div style={{ color: 'green', marginTop: 12 }}>{message}</div>}
-      {error && <div style={{ color: 'red', marginTop: 12 }}>{error}</div>}
+    <div className={styles.authPage}>
+      <div className={styles.authContainer}>
+        <h2 className={styles.title}>Forgot Password</h2>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.inputGroup}>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+              className={styles.input}
+            />
+          </div>
+          <button type="submit" className={styles.submitButton} disabled={loading}>
+            {loading ? 'Sending...' : 'Send Reset Link'}
+          </button>
+        </form>
+        {message && <div style={{ color: 'green', marginTop: 12 }}>{message}</div>}
+        {error && <div style={{ color: 'red', marginTop: 12 }}>{error}</div>}
+      </div>
     </div>
   );
 }
@@ -84,31 +89,37 @@ export function ResetPassword() {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '2rem auto' }}>
-      <h2>Reset Password</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="password"
-          placeholder="New password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          required
-          style={{ width: '100%', marginBottom: 12, padding: 8 }}
-        />
-        <input
-          type="password"
-          placeholder="Confirm new password"
-          value={confirmPassword}
-          onChange={e => setConfirmPassword(e.target.value)}
-          required
-          style={{ width: '100%', marginBottom: 12, padding: 8 }}
-        />
-        <button type="submit" disabled={loading} style={{ width: '100%' }}>
-          {loading ? 'Resetting...' : 'Reset Password'}
-        </button>
-      </form>
-      {message && <div style={{ color: 'green', marginTop: 12 }}>{message}</div>}
-      {error && <div style={{ color: 'red', marginTop: 12 }}>{error}</div>}
+    <div className={styles.authPage}>
+      <div className={styles.authContainer}>
+        <h2 className={styles.title}>Reset Password</h2>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.inputGroup}>
+            <input
+              type="password"
+              placeholder="New password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+              className={styles.input}
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <input
+              type="password"
+              placeholder="Confirm new password"
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
+              required
+              className={styles.input}
+            />
+          </div>
+          <button type="submit" className={styles.submitButton} disabled={loading}>
+            {loading ? 'Resetting...' : 'Reset Password'}
+          </button>
+        </form>
+        {message && <div style={{ color: 'green', marginTop: 12 }}>{message}</div>}
+        {error && <div style={{ color: 'red', marginTop: 12 }}>{error}</div>}
+      </div>
     </div>
   );
 }

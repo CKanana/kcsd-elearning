@@ -3,6 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { Link } from 'react-router-dom';
 import { PlayCircle, CalendarDays, MessageSquare, Bell, FileText, Book, HelpCircle, ArrowRight, Phone, Mail, MapPin } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
 import Header from "../common/Header";
 import Footer from "../common/Footer";
 import ProgressTracker from "../progress/ProgressTracker";
@@ -58,6 +59,7 @@ export default function StudentDashboard() {
             <div className={styles.loading}>Loading your dashboard...</div>
           </div>
         </main>
+        {/* Social media icons removed as requested */}
         <Footer />
       </div>
     );
