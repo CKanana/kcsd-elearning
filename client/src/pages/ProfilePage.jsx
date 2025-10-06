@@ -40,7 +40,7 @@ const ProfilePage = () => {
   const fileInputRef = useRef();
 
   useEffect(() => {
-    fetch('/api/auth/profile', { credentials: 'include' })
+  fetch('https://kcsd-elearning.onrender.com/api/auth/profile', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         setProfileData({
@@ -93,7 +93,7 @@ const ProfilePage = () => {
     const formData = new FormData();
     formData.append('profilePhoto', file);
     try {
-      const res = await fetch('/api/auth/profile/photo', {
+  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/profile/photo', {
         method: 'POST',
         credentials: 'include',
         body: formData
@@ -112,7 +112,7 @@ const ProfilePage = () => {
     setError('');
     setSuccess('');
     try {
-      const res = await fetch('/api/auth/profile', {
+  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

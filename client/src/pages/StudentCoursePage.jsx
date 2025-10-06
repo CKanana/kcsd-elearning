@@ -11,10 +11,10 @@ const StudentCoursePage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/courses/${id}`)
+  fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}`)
       .then(res => res.json())
       .then(setCourse);
-    fetch(`/api/assessments?course=${id}`)
+  fetch(`https://kcsd-elearning.onrender.com/api/assessments?course=${id}`)
       .then(res => res.json())
       .then(setAssessments);
     setLoading(false);
@@ -29,7 +29,7 @@ const StudentCoursePage = () => {
     setUnenrollSuccess('');
     setUnenrollError('');
     try {
-      const res = await fetch(`/api/courses/${id}/unenroll`, {
+  const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/unenroll`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },

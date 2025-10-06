@@ -9,7 +9,7 @@ const MyCoursesPage = () => {
   const handleUnenroll = async (courseId) => {
     if (!window.confirm('Are you sure you want to unenroll from this course?')) return;
     try {
-      const res = await fetch(`/api/courses/${courseId}/unenroll`, { method: 'POST', credentials: 'include' });
+  const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${courseId}/unenroll`, { method: 'POST', credentials: 'include' });
       if (!res.ok) throw new Error('Failed to unenroll');
       setEnrolledCourses(courses => courses.filter(c => c._id !== courseId));
       alert('You have been unenrolled from the course.');
@@ -23,7 +23,7 @@ const MyCoursesPage = () => {
 
   React.useEffect(() => {
     setLoading(true);
-    fetch('/api/my-courses', { credentials: 'include' })
+  fetch('https://kcsd-elearning.onrender.com/api/my-courses', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setEnrolledCourses(data);

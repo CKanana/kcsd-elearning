@@ -47,7 +47,7 @@ const TeacherProfilePage = () => {
     }
     setPwChangeLoading(true);
     try {
-      const res = await fetch('/api/auth/change-password', {
+  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/change-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -68,7 +68,7 @@ const TeacherProfilePage = () => {
   const fileInputRef = useRef();
 
   useEffect(() => {
-    fetch('/api/auth/profile', { credentials: 'include' })
+  fetch('https://kcsd-elearning.onrender.com/api/auth/profile', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         setProfileData({ ...defaultProfile, ...data });
@@ -90,7 +90,7 @@ const TeacherProfilePage = () => {
     const formData = new FormData();
     formData.append('profilePhoto', file);
     try {
-      const res = await fetch('/api/auth/profile/photo', {
+  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/profile/photo', {
         method: 'POST',
         credentials: 'include',
         body: formData
@@ -109,7 +109,7 @@ const TeacherProfilePage = () => {
     setError('');
     setSuccess('');
     try {
-      const res = await fetch('/api/auth/profile', {
+  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

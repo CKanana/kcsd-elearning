@@ -20,7 +20,7 @@ const TeacherManageCoursePage = () => {
     const handleDeleteCourse = async () => {
       if (!window.confirm('Are you sure you want to delete this course? This action cannot be undone.')) return;
       try {
-        const res = await fetch(`/api/courses/${id}`, { method: 'DELETE', credentials: 'include' });
+  const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}`, { method: 'DELETE', credentials: 'include' });
         if (!res.ok) throw new Error('Failed to delete course');
         alert('Course deleted successfully');
         // Redirect to teacher's courses page (assuming /teacher/courses/:teacherId)
@@ -34,13 +34,13 @@ const TeacherManageCoursePage = () => {
       }
     };
   useEffect(() => {
-    fetch(`/api/courses/${id}`)
+  fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}`)
       .then(res => res.json())
       .then(setCourse);
-    fetch(`/api/assessments?course=${id}`)
+  fetch(`https://kcsd-elearning.onrender.com/api/assessments?course=${id}`)
       .then(res => res.json())
       .then(setAssessments);
-    fetch(`/api/courses/${id}/students`)
+  fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/students`)
       .then(res => res.json())
       .then(setStudents);
   }, [id]);
@@ -58,7 +58,7 @@ const TeacherManageCoursePage = () => {
     formData.append('label', unitLabel);
     formData.append('unitFile', unitFile);
     try {
-      const res = await fetch(`/api/courses/${id}/units`, {
+  const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/units`, {
         method: 'POST',
         credentials: 'include',
         body: formData
@@ -78,7 +78,7 @@ const TeacherManageCoursePage = () => {
   const handleDeleteUnit = async (idx) => {
     if (!window.confirm('Delete this unit?')) return;
     try {
-      const res = await fetch(`/api/courses/${id}/units/${idx}`, { method: 'DELETE', credentials: 'include' });
+  const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/units/${idx}`, { method: 'DELETE', credentials: 'include' });
       if (!res.ok) throw new Error('Failed to delete unit');
       setCourse(c => ({ ...c, units: c.units.filter((_, i) => i !== idx) }));
     } catch (err) {
@@ -89,7 +89,7 @@ const TeacherManageCoursePage = () => {
   // Edit unit label
   const handleEditUnit = async (idx, newLabel) => {
     try {
-      const res = await fetch(`/api/courses/${id}/units/${idx}`, {
+  const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/units/${idx}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

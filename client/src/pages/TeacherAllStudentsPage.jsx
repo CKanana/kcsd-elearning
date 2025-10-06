@@ -10,7 +10,7 @@ const TeacherAllStudentsPage = () => {
   useEffect(() => {
     setLoading(true);
     // Fetch aggregated student data from the new endpoint
-    fetch('/api/courses/teacher/my-students', { credentials: 'include' })
+  fetch('https://kcsd-elearning.onrender.com/api/courses/teacher/my-students', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
   setStudents(Array.isArray(data) ? data.filter(s => s.role === 'student') : []);

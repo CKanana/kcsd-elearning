@@ -13,7 +13,7 @@ export default function VerifyAccount() {
       setMessage('');
       return;
     }
-    fetch(`/api/auth/verify?token=${token}`)
+  fetch(`https://kcsd-elearning.onrender.com/api/auth/verify?token=${token}`)
       .then(res => res.json())
       .then(data => {
         if (data.message) {

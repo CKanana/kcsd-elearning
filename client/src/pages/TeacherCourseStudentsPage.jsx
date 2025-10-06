@@ -13,10 +13,10 @@ const TeacherCourseStudentsPage = () => {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const courseRes = await fetch(`/api/courses/${id}`);
+  const courseRes = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}`);
       const courseData = await courseRes.json();
       setCourse(courseData);
-      const studentsRes = await fetch(`/api/courses/${id}/students`);
+  const studentsRes = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/students`);
       const studentsData = await studentsRes.json();
       setStudents(studentsData);
       setLoading(false);

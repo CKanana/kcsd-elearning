@@ -11,7 +11,7 @@ const TeacherDashboard = () => {
 
   useEffect(() => {
     // Get teacher id from /api/auth/me
-    fetch('/api/auth/me', { credentials: 'include' })
+  fetch('https://kcsd-elearning.onrender.com/api/auth/me', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         if (data.user && (data.user._id || data.user.id)) {
@@ -22,7 +22,7 @@ const TeacherDashboard = () => {
 
   useEffect(() => {
     if (teacherId) {
-      fetch('/api/courses', { credentials: 'include' })
+  fetch('https://kcsd-elearning.onrender.com/api/courses', { credentials: 'include' })
         .then(res => res.json())
         .then(data => {
           setCourses(Array.isArray(data) ? data.filter(c => c.teacher && (c.teacher._id === teacherId || c.teacher.id === teacherId)) : []);

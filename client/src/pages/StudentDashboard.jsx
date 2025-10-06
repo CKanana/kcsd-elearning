@@ -16,7 +16,7 @@ export default function StudentDashboard() {
       setLoading(true);
       setError("");
       try {
-        const res = await fetch("/api/auth/me", { credentials: "include" });
+  const res = await fetch("https://kcsd-elearning.onrender.com/api/auth/me", { credentials: "include" });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Failed to fetch student info");
         setStudent(data.user);

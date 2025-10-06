@@ -27,7 +27,7 @@ const TeacherCoursesPage = () => {
   // Fetch teacher's courses on mount
   useEffect(() => {
     setLoading(true);
-    fetch('/api/courses', { credentials: 'include' })
+  fetch('https://kcsd-elearning.onrender.com/api/courses', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         // Only show courses where the logged-in user is the teacher
@@ -52,7 +52,7 @@ const TeacherCoursesPage = () => {
     setError('');
     try {
       // Get teacher id from /api/auth/me
-      const meRes = await fetch('/api/auth/me', { credentials: 'include' });
+  const meRes = await fetch('https://kcsd-elearning.onrender.com/api/auth/me', { credentials: 'include' });
       const meData = await meRes.json();
       if (!meRes.ok || !meData.user) throw new Error('Could not get teacher info');
       const teacherId = meData.user.id || meData.user._id;
@@ -62,7 +62,7 @@ const TeacherCoursesPage = () => {
   formData.append('teacher', teacherId);
   formData.append('category', category);
   if (image) formData.append('image', image);
-      const res = await fetch('/api/courses', {
+  const res = await fetch('https://kcsd-elearning.onrender.com/api/courses', {
         method: 'POST',
         credentials: 'include',
         body: formData

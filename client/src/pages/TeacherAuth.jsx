@@ -25,7 +25,7 @@ export default function TeacherAuth() {
     try {
       if (isLogin) {
         // Login logic
-        const res = await fetch('/api/auth/login', {
+  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -38,7 +38,7 @@ export default function TeacherAuth() {
         navigate('/teacher-dashboard');
       } else {
         // Signup logic
-        const res = await fetch('/api/auth/signup', {
+  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/signup', {
           method: 'POST',
           body: JSON.stringify({ ...form, role: 'teacher' }),
           headers: { 'Content-Type': 'application/json' },

@@ -26,7 +26,7 @@ const TeacherAssessmentsPage = () => {
   const handleDeleteAssessment = async (id) => {
     if (!window.confirm('Delete this assessment?')) return;
     try {
-      const res = await fetch(`/api/assessments/${id}`, { method: 'DELETE', credentials: 'include' });
+  const res = await fetch(`https://kcsd-elearning.onrender.com/api/assessments/${id}`, { method: 'DELETE', credentials: 'include' });
       if (!res.ok) throw new Error('Failed to delete assessment');
       setAssessments(a => a.filter(asmt => asmt._id !== id));
       alert('Assessment deleted');
@@ -64,8 +64,8 @@ const TeacherAssessmentsPage = () => {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      fetch('/api/courses', { credentials: 'include' }).then(res => res.json()),
-      fetch('/api/assessments', { credentials: 'include' }).then(res => res.json())
+  fetch('https://kcsd-elearning.onrender.com/api/courses', { credentials: 'include' }).then(res => res.json()),
+  fetch('https://kcsd-elearning.onrender.com/api/assessments', { credentials: 'include' }).then(res => res.json())
     ]).then(([coursesData, assessmentsData]) => {
       setCourses(Array.isArray(coursesData) ? coursesData.filter(c => c.teacher && c.teacher._id) : []);
       setAssessments(Array.isArray(assessmentsData) ? assessmentsData : []);
@@ -86,7 +86,7 @@ const TeacherAssessmentsPage = () => {
     try {
       if (!form.title || !form.course) throw new Error('Title and course are required');
       // For now, just set questions=0, status=Not Started
-      const res = await fetch('/api/assessments', {
+  const res = await fetch('https://kcsd-elearning.onrender.com/api/assessments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

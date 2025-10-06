@@ -11,7 +11,7 @@ const AssessmentCenterPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/assessments')
+  fetch('https://kcsd-elearning.onrender.com/api/assessments')
       .then(res => res.json())
       .then(data => {
         setAssessments(data);
