@@ -1,4 +1,3 @@
-// ...existing code...
 // --- Express, Models, Middleware ---
 const express = require('express');
 const cors = require('cors');
@@ -248,6 +247,9 @@ app.post('/api/courses/:id/enroll', authenticate, async (req, res) => {
     res.status(500).json({ message: 'Error enrolling in course', error: err.message });
   }
 });
+
+// Health check for root URL
+app.get("/", (req, res) => res.send("API running..."));
 
 // --- Server Listen ---
 app.listen(PORT, () => {
