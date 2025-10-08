@@ -87,28 +87,23 @@ const KCSDHomepage = () => {
         <div className={styles.heroGlass}>
           <div className={styles.heroContent}>
             <h1 className={styles.heroTitle}>
-              Karibu
+              Welcome to KCSD eLearning
               <span className={styles.heroIcon} aria-label="Sign Language Hand" title="Sign Language">
                 <Hand size={64} className={styles.waveHand} />
               </span>
             </h1>
             {/* CTA Buttons - Hero Section */}
             <div className={styles.ctaRow}>
-              <a href="/partner" className={styles.ctaButton}>Partner With Us</a>
-              <Link to="/student-auth" className={styles.ctaButton}>Student Login / Sign Up</Link>
             </div>
             {/* About KCSD */}
             <div className={styles.aboutCardGlass}>
               <h2 className={styles.aboutTitle}>
-                Empowering Deaf Children Through Education, Innovation & Inclusion
+                At Kenya Christian School For The Deaf, we believe every child deserves the tools to communicate and thrive—regardless of hearing ability.
               </h2>
               <p className={styles.aboutText}>
-                Kenya Christian School for the Deaf (KCSD) is a pioneering institution dedicated to empowering 
-                children with hearing impairments. We provide holistic education, comprehensive guidance, and 
-                essential life skills to ensure every deaf and hard-of-hearing child can thrive. Founded to meet 
-                the unique needs of deaf learners, KCSD fosters an inclusive environment where children excel 
-                academically and socially. We also lead innovation in assistive technology and digital content, 
-                supporting early sign language acquisition to give every child the tools they need to succeed.
+                Our mission is to empower families through innovative, AI-driven support systems that make sign language learning accessible, engaging, and effective. Our virtual tutors are designed to guide children through personalized sign language practice right from home, reinforcing what they learn in school and helping them build confidence in their communication skills.
+
+                We also recognize parents' vital role in their child's language journey. That’s why our platform includes intuitive AI tools that help parents learn sign language alongside their children. By fostering inclusive communication at home, we strengthen family bonds and create a nurturing environment where every voice spoken or signed is heard and valued.
               </p>
             </div>
           </div>
@@ -124,15 +119,14 @@ const KCSDHomepage = () => {
           </p>
           <div className={styles.featuredGrid}>
             {[
-              '/assets/images/1.jpg',
-              '/assets/images/2.jpg',
-              '/assets/images/3.jpg',
-              '/assets/images/4.jpg',
-              '/assets/images/5.jpg',
-              '/assets/images/6.jpg'
-            ].map((src, idx) => (
-              <div key={src} className={styles.featuredItem}>
-                <img src={src} alt={`KCSD featured ${idx + 1}`} className={styles.featuredImg} />
+              { src: '/assets/images/media1.png', label: 'Media 1' },
+              { src: '/assets/images/media2.png', label: 'Media 2' },
+              { src: '/assets/images/media3.webp', label: 'Media 3' },
+              { src: '/assets/images/media4.webp', label: 'Media 4' }
+            ].map((item, idx) => (
+              <div key={item.src} className={styles.featuredItem}>
+                <img src={item.src} alt={item.label} className={styles.featuredImg} />
+                <div className={styles.featuredLabel}>{item.label}</div>
               </div>
             ))}
           </div>
@@ -326,7 +320,7 @@ const KCSDHomepage = () => {
               <div>
                 <h3 className={styles.cardTitle}>Kenya Christian School for the Deaf</h3>
                 <p className={`${styles.cardText} ${styles.aboutText}`}>
-                  Empowering Deaf Children Through Education, Innovation & Inclusion
+                  At Kenya Christian School For The Deaf, we believe every child deserves the tools to communicate and thrive—regardless of hearing ability. Our mission is to empower families through innovative, AI-driven support systems that make sign language learning accessible, engaging, and effective. Our virtual tutors are designed to guide children through personalized sign language practice right from home, reinforcing what they learn in school and helping them build confidence in their communication skills. We also recognize parents' vital role in their child's language journey. That’s why our platform includes intuitive AI tools that help parents learn sign language alongside their children. By fostering inclusive communication at home, we strengthen family bonds and create a nurturing environment where every voice spoken or signed is heard and valued.
                 </p>
                 <a 
                   href="http://www.kcsd-abi.or.ke" 
