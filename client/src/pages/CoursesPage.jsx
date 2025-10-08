@@ -23,7 +23,7 @@ const CoursesPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  fetch('https://kcsd-elearning.onrender.com/api/courses')
+  fetch('http://localhost:5000/api/courses')
       .then(res => res.json())
       .then(data => {
         setCourses(data);
@@ -41,7 +41,7 @@ const CoursesPage = () => {
 
   const handleEnroll = async (courseId) => {
     try {
-  const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${courseId}/enroll`, {
+  const res = await fetch(`http://localhost:5000/api/courses/${courseId}/enroll`, {
         method: 'POST',
         credentials: 'include'
       });

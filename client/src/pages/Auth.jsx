@@ -5,6 +5,31 @@ import styles from './Auth.module.css';
 
 
 const AuthPage = ({ userType }) => {
+  // Resend verification link state
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState('');
+  const [resendError, setResendError] = useState('');
+
+  // Resend verification link handler
+  const handleResendVerification = async (email) => {
+    setResendLoading(true);
+    setResendSuccess('');
+    setResendError('');
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/resend-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Resend failed');
+      setResendSuccess('Verification email sent! Please check your inbox.');
+    } catch (err) {
+      setResendError(err.message);
+    } finally {
+      setResendLoading(false);
+    }
+  }
   const [isLoginView, setIsLoginView] = useState(true);
   // If userType is provided, role is fixed
   const [role, setRole] = useState(userType || null);
@@ -108,6 +133,18 @@ const AuthPage = ({ userType }) => {
               <div className={styles.inputGroup}>
                 <Mail className={styles.inputIcon} size={20} />
                 <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required />
+        {/* Resend Verification Button for Signup */}
+        <button
+          type="button"
+          className={styles.toggleButton}
+          disabled={resendLoading || !form.email}
+          onClick={() => handleResendVerification(form.email)}
+          style={{ marginTop: 8 }}
+        >
+          {resendLoading ? 'Resending...' : 'Resend Verification Email'}
+        </button>
+        {resendSuccess && <div style={{ color: 'green' }}>{resendSuccess}</div>}
+        {resendError && <div style={{ color: 'red' }}>{resendError}</div>}
               </div>
               <div className={styles.inputGroup}>
                 <Calendar className={styles.inputIcon} size={20} />
@@ -186,6 +223,30 @@ const AuthPage = ({ userType }) => {
             <div className={styles.inputGroup}>
               <Mail className={styles.inputIcon} size={20} />
               <input type="email" name="email" placeholder="Email or Student ID" className={styles.input} value={form.email} onChange={handleInput} required />
+        {/* Resend Verification Button for Login */}
+        <button
+          type="button"
+          className={styles.toggleButton}
+          disabled={resendLoading || !form.email}
+          onClick={() => handleResendVerification(form.email)}
+          style={{ marginTop: 8 }}
+        >
+          {resendLoading ? 'Resending...' : 'Resend Verification Email'}
+        </button>
+        {resendSuccess && <div style={{ color: 'green' }}>{resendSuccess}</div>}
+        {resendError && <div style={{ color: 'red' }}>{resendError}</div>}
+        {/* Resend Verification Button for Teacher Signup/Login */}
+        <button
+          type="button"
+          className={styles.toggleButton}
+          disabled={resendLoading || !form.email}
+          onClick={() => handleResendVerification(form.email)}
+          style={{ marginTop: 8 }}
+        >
+          {resendLoading ? 'Resending...' : 'Resend Verification Email'}
+        </button>
+        {resendSuccess && <div style={{ color: 'green' }}>{resendSuccess}</div>}
+        {resendError && <div style={{ color: 'red' }}>{resendError}</div>}
             </div>
             <div className={styles.inputGroup}>
               <Lock className={styles.inputIcon} size={20} />

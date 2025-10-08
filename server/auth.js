@@ -254,4 +254,27 @@ router.post('/reset-password', async (req, res) => {
 
 // Add other auth routes here (e.g., /login, /register)
 
+// Resend verification email route
+router.post('/resend-verification', async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ message: 'Email is required.' });
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ message: 'User not found.' });
+  if (user.isVerified) return res.status(400).json({ message: 'Account already verified.' });
+  // Generate new verification token
+  const verificationToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1d' });
+  user.verificationToken = verificationToken;
+  await user.save();
+  // Use localhost for local testing, change to production domain when deploying
+  const verificationLink = `http://localhost:5000/api/auth/verify?token=${verificationToken}`;
+  const mail = accountVerificationTemplate({ name: user.name, verificationLink });
+  try {
+    await sendMail({ to: email, subject: mail.subject, html: mail.html });
+    res.status(200).json({ message: 'Verification email resent.' });
+  } catch (err) {
+    console.error('Error resending verification email:', err);
+    res.status(500).json({ message: 'Error sending verification email.' });
+  }
+});
+
 module.exports = router;
