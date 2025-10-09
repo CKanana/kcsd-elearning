@@ -98,7 +98,7 @@ router.post('/forgot-password', async (req, res) => {
   if (!user) return res.status(404).json({ message: 'User not found' });
   // Generate a reset token (for demo, use a dummy link)
   const resetToken = 'dummy-token';
-  const resetLink = `https://kcsd-elearning.com/reset-password?token=${resetToken}`;
+  const resetLink = `https://kcsd-elearning.onrender.com/reset-password?token=${resetToken}`;
   const mail = passwordResetTemplate({ name: user.name, resetLink });
   try {
     await sendMail({ to: email, subject: mail.subject, html: mail.html });
@@ -181,7 +181,7 @@ router.post('/register', multer.single('profilePhoto'), async (req, res) => {
     });
     await user.save();
     // Send account verification email
-    const verificationLink = `https://kcsd-elearning.com/verify?token=${verificationToken}`;
+  const verificationLink = `https://kcsd-elearning.onrender.com/verify?token=${verificationToken}`;
     const mail = accountVerificationTemplate({ name, verificationLink });
     sendMail({ to: email, subject: mail.subject, html: mail.html })
       .catch(err => console.error('Error sending verification email:', err));
@@ -219,7 +219,7 @@ router.post('/request-reset', async (req, res) => {
   user.resetToken = resetToken;
   user.resetTokenExpiry = Date.now() + 1000 * 60 * 60; // 1 hour expiry
   await user.save();
-  const resetLink = `https://kcsd-elearning.com/reset-password?token=${resetToken}`;
+  const resetLink = `https://kcsd-elearning.onrender.com/reset-password?token=${resetToken}`;
   const mail = passwordResetTemplate({ name: user.name, resetLink });
   sendMail({ to: email, subject: mail.subject, html: mail.html })
     .catch(err => console.error('Error sending password reset email:', err));
@@ -259,7 +259,7 @@ router.post('/resend-verification', async (req, res) => {
   user.verificationToken = verificationToken;
   await user.save();
   // Use localhost for local testing, change to production domain when deploying
-  const verificationLink = `http://localhost:5000/api/auth/verify?token=${verificationToken}`;
+  const verificationLink = `https://kcsd-elearning.onrender.com/api/auth/verify?token=${verificationToken}`;
   const mail = accountVerificationTemplate({ name: user.name, verificationLink });
   try {
     await sendMail({ to: email, subject: mail.subject, html: mail.html });
