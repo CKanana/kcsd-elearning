@@ -11,7 +11,7 @@ export default function TeacherDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/auth/me', { credentials: 'include' })
+  fetch('https://kcsd-elearning.onrender.com/api/auth/me', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         setUser(data.user);

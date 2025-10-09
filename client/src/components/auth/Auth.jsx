@@ -70,7 +70,7 @@ const AuthPage = () => {
       if (form.profilePhoto) {
         formData.append('profilePhoto', form.profilePhoto);
       }
-      const res = await fetch('/api/auth/signup', {
+  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/signup', {
         method: 'POST',
         body: formData,
         credentials: 'include',
@@ -93,7 +93,7 @@ const AuthPage = () => {
     setError('');
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/login', {
+  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: form.email, password: form.password }),

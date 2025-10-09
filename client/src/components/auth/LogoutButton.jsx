@@ -3,7 +3,7 @@ import React from 'react';
 const LogoutButton = ({ onLogout }) => {
   const handleLogout = async () => {
     try {
-      await fetch('/api/auth/logout', {
+  await fetch('https://kcsd-elearning.onrender.com/api/auth/logout', {
         method: 'POST',
         credentials: 'include',
       });
