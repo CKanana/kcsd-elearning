@@ -183,11 +183,8 @@ router.post('/register', multer.single('profilePhoto'), async (req, res) => {
     // Send account verification email
     const verificationLink = `https://kcsd-elearning.com/verify?token=${verificationToken}`;
     const mail = accountVerificationTemplate({ name, verificationLink });
-    try {
-      await sendMail({ to: email, subject: mail.subject, html: mail.html });
-    } catch (err) {
-      console.error('Error sending verification email:', err);
-    }
+    sendMail({ to: email, subject: mail.subject, html: mail.html })
+      .catch(err => console.error('Error sending verification email:', err));
     res.status(201).json({ message: 'Account created successfully. Verification email sent.' });
   } catch (err) {
     console.error('Signup error:', err);
@@ -224,13 +221,9 @@ router.post('/request-reset', async (req, res) => {
   await user.save();
   const resetLink = `https://kcsd-elearning.com/reset-password?token=${resetToken}`;
   const mail = passwordResetTemplate({ name: user.name, resetLink });
-  try {
-    await sendMail({ to: email, subject: mail.subject, html: mail.html });
-    res.status(200).json({ message: 'Password reset email sent.' });
-  } catch (err) {
-    console.error('Error sending password reset email:', err);
-    res.status(500).json({ message: 'Error sending password reset email.' });
-  }
+  sendMail({ to: email, subject: mail.subject, html: mail.html })
+    .catch(err => console.error('Error sending password reset email:', err));
+  res.status(200).json({ message: 'Password reset email sent.' });
 });
 
 // Reset password route
