@@ -40,7 +40,7 @@ const ProfilePage = () => {
   const fileInputRef = useRef();
 
   useEffect(() => {
-  fetch('http://localhost:5000/api/auth/profile', { credentials: 'include' })
+  fetch('https://kcsd-elearning.onrender.com/api/profile', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         setProfileData({
@@ -93,7 +93,7 @@ const ProfilePage = () => {
     const formData = new FormData();
     formData.append('profilePhoto', file);
     try {
-  const res = await fetch('http://localhost:5000/api/auth/profile/photo', {
+  const res = await fetch('https://kcsd-elearning.onrender.com/api/profile/photo', {
         method: 'POST',
         credentials: 'include',
         body: formData
@@ -112,7 +112,7 @@ const ProfilePage = () => {
     setError('');
     setSuccess('');
     try {
-  const res = await fetch('http://localhost:5000/api/auth/profile', {
+  const res = await fetch('https://kcsd-elearning.onrender.com/api/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -130,7 +130,7 @@ const ProfilePage = () => {
   const photoUrl = profileData.profilePhoto
     ? profileData.profilePhoto.startsWith('http')
       ? profileData.profilePhoto
-      : `http://localhost:3001${profileData.profilePhoto}`
+  : `https://kcsd-elearning.onrender.com${profileData.profilePhoto}`
     : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(profileData.name || 'User');
 
   const renderContent = () => {

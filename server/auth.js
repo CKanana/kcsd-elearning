@@ -1,3 +1,12 @@
+// Add at the end of the file (or in your main server file, e.g., app.js)
+// const profileRoutes = require('./profile');
+// app.use('/api/profile', profileRoutes);
+
+// const courseRoutes = require('./courses');
+// app.use('/api/courses', courseRoutes);
+
+// const assignmentRoutes = require('./assignments');
+// app.use('/api/assignments', assignmentRoutes);
 
 const express = require('express');
 const router = express.Router();
@@ -84,7 +93,27 @@ router.get('/me', authenticate, async (req, res) => {
   try {
     const user = await User.findById(req.userId).select('-password');
     if (!user) return res.status(404).json({ message: 'User not found' });
-    res.json({ user });
+
+    let courses = [];
+    let assignments = [];
+    let schedule = [];
+
+    if (user.role === 'student') {
+      // Get enrolled courses
+      courses = await require('./Course').find({ students: user._id });
+      // TODO: Fetch assignments and schedule for student
+    } else if (user.role === 'teacher') {
+      // Get courses taught by teacher
+      courses = await require('./Course').find({ teacher: user._id });
+      // TODO: Fetch assignments and schedule for teacher
+    } else if (user.role === 'admin') {
+      // Admin: get all courses
+      courses = await require('./Course').find();
+      // TODO: Fetch assignments and schedule for admin
+    }
+
+    // You can expand assignments/schedule logic as needed
+    res.json({ user, courses, assignments, schedule });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -207,7 +236,15 @@ router.get('/verify', async (req, res) => {
   user.isVerified = true;
   user.verificationToken = undefined;
   await user.save();
-  res.json({ message: 'Account verified successfully.' });
+  res.send(`
+    <div style="font-family: Arial, sans-serif; background: #f8fafc; padding: 2rem; border-radius: 1rem; max-width: 480px; margin: 2rem auto; box-shadow: 0 2px 8px #ea580c22; text-align: center;">
+      <h2 style="color: #ea580c;">Account Verified!</h2>
+      <p style="font-size: 1.1rem; color: #334155;">Your KCSD eLearning account has been successfully verified.</p>
+      <a href="https://kcsd.kcsd-abi.or.ke/login" style="display: inline-block; background: #ea580c; color: #fff; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-weight: bold; margin-top: 1.5rem;">Go to Login</a>
+      <br><br>
+      <p style="font-size: 0.95rem; color: #64748b;">Thank you for joining Kenya Christian School for the Deaf eLearning platform.</p>
+    </div>
+  `);
 });
 
 // Request password reset route

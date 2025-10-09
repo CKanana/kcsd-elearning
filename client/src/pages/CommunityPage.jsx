@@ -28,7 +28,7 @@ const CommunityPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  fetch('http://localhost:5000/api/students')
+  fetch('https://kcsd-elearning.onrender.com/api/students', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         setStudents(data);

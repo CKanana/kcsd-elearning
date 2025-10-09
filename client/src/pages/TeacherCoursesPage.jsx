@@ -104,7 +104,7 @@ const TeacherCoursesPage = () => {
                   <Card key={course._id} title={course.title} className={styles.courseCard}>
                     {course.image && (
                       <img
-                        src={course.image.startsWith('http') ? course.image : `http://localhost:3001${course.image}`}
+                        src={course.image.startsWith('http') ? course.image : `https://kcsd-elearning.onrender.com${course.image}`}
                         alt={course.title}
                         className={styles.courseImage}
                         style={{ width: '100%', maxHeight: 180, objectFit: 'cover', borderRadius: 8, marginBottom: 8 }}

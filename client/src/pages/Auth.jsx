@@ -16,7 +16,7 @@ const AuthPage = ({ userType }) => {
     setResendSuccess('');
     setResendError('');
     try {
-      const res = await fetch('http://localhost:5000/api/auth/resend-verification', {
+  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/resend-verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

@@ -127,7 +127,7 @@ const TeacherProfilePage = () => {
   const photoUrl = profileData.profilePhoto
     ? profileData.profilePhoto.startsWith('http')
       ? profileData.profilePhoto
-      : `http://localhost:3001${profileData.profilePhoto}`
+  : `https://kcsd-elearning.onrender.com${profileData.profilePhoto}`
     : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(profileData.name || 'Teacher');
 
   return (

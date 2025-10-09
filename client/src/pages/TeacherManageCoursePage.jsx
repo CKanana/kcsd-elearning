@@ -121,7 +121,7 @@ const TeacherManageCoursePage = () => {
               {course ? (
                 <>
                   {course.image && (
-                    <img src={course.image.startsWith('http') ? course.image : `http://localhost:3001${course.image}`} alt={course.title} className={styles.detailsImage} />
+                    <img src={course.image.startsWith('http') ? course.image : `https://kcsd-elearning.onrender.com${course.image}`} alt={course.title} className={styles.detailsImage} />
                   )}
                   <h2 className={styles.detailsTitle}>{course.title}</h2>
                   <p className={styles.detailsDescription}>{course.description}</p>
@@ -150,7 +150,7 @@ const TeacherManageCoursePage = () => {
                   <ul className={styles.itemList}>
                     {course.units.map((unit, idx) => (
                       <li key={idx} className={styles.item}>
-                        <a href={`http://localhost:3001${unit.file}`} target="_blank" rel="noopener noreferrer">{unit.label || unit.file}</a>
+                        <a href={`https://kcsd-elearning.onrender.com${unit.file}`} target="_blank" rel="noopener noreferrer">{unit.label || unit.file}</a>
                         <div className={styles.itemActions}>
                           <button className={styles.editButton} onClick={() => {
                             const newLabel = prompt('Edit unit label:', unit.label);

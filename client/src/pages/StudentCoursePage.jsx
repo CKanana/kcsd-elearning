@@ -11,12 +11,12 @@ const StudentCoursePage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}`)
-      .then(res => res.json())
-      .then(setCourse);
-  fetch(`https://kcsd-elearning.onrender.com/api/assessments?course=${id}`)
-      .then(res => res.json())
-      .then(setAssessments);
+  fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}`, { credentials: 'include' })
+    .then(res => res.json())
+    .then(setCourse);
+  fetch(`https://kcsd-elearning.onrender.com/api/assessments?course=${id}`, { credentials: 'include' })
+    .then(res => res.json())
+    .then(setAssessments);
     setLoading(false);
   }, [id]);
 
@@ -50,7 +50,7 @@ const StudentCoursePage = () => {
         {loading ? <div>Loading...</div> : course && (
           <>
             <h1>{course.title}</h1>
-            {course.image && <img src={course.image.startsWith('http') ? course.image : `http://localhost:3001${course.image}`} alt={course.title} style={{ maxWidth: 300, borderRadius: 8, marginBottom: 8 }} />}
+            {course.image && <img src={course.image.startsWith('http') ? course.image : `https://kcsd-elearning.onrender.com${course.image}`} alt={course.title} style={{ maxWidth: 300, borderRadius: 8, marginBottom: 8 }} />}
             <p>{course.description}</p>
             <button
               style={{ background: '#ea580c', color: 'white', fontWeight: 700, padding: '0.5rem 1.5rem', borderRadius: '2rem', border: 'none', margin: '1rem 0', cursor: 'pointer', fontSize: '1rem' }}
@@ -66,7 +66,7 @@ const StudentCoursePage = () => {
               <ul>
                 {course.units.map((unit, idx) => (
                   <li key={idx} style={{ marginBottom: 8 }}>
-                    <a href={`http://localhost:3001${unit.file}`} target="_blank" rel="noopener noreferrer">{unit.label || unit.file}</a>
+                    <a href={`https://kcsd-elearning.onrender.com${unit.file}`} target="_blank" rel="noopener noreferrer">{unit.label || unit.file}</a>
                   </li>
                 ))}
               </ul>

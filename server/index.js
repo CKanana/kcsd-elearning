@@ -30,6 +30,16 @@ connectDB();
 // --- Auth Routes ---
 app.use('/api/auth', authRoutes);
 
+// --- New Feature Routes ---
+const profileRoutes = require('./profile');
+app.use('/api/profile', profileRoutes);
+
+const courseRoutes = require('./courses');
+app.use('/api/courses', courseRoutes);
+
+const assignmentRoutes = require('./assignments');
+app.use('/api/assignments', assignmentRoutes);
+
 // --- Route Handlers ---
 // --- Route Handlers ---
 

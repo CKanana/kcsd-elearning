@@ -47,7 +47,7 @@ export default function StudentDashboard() {
   const photoUrl = user && user.profilePhoto
     ? user.profilePhoto.startsWith('http')
       ? user.profilePhoto
-      : `http://localhost:3001${user.profilePhoto}`
+  : `https://kcsd-elearning.onrender.com${user.profilePhoto}`
     : '/assets/images/student-profile.jpg';
 
   if (!user) {

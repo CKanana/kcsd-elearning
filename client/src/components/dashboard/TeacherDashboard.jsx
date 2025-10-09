@@ -24,7 +24,7 @@ export default function TeacherDashboard() {
   const photoUrl = user && user.profilePhoto
     ? user.profilePhoto.startsWith('http')
       ? user.profilePhoto
-      : `http://localhost:3001${user.profilePhoto}`
+  : `https://kcsd-elearning.onrender.com${user.profilePhoto}`
     : '/assets/images/teacher-profile.jpg';
 
   return (
