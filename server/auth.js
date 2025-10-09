@@ -181,7 +181,7 @@ router.post('/register', multer.single('profilePhoto'), async (req, res) => {
     });
     await user.save();
     // Send account verification email
-  const verificationLink = `https://kcsd-elearning.onrender.com/verify?token=${verificationToken}`;
+  const verificationLink = `https://kcsd-elearning.onrender.com/api/auth/verify?token=${verificationToken}`;
     const mail = accountVerificationTemplate({ name, verificationLink });
     sendMail({ to: email, subject: mail.subject, html: mail.html })
       .catch(err => console.error('Error sending verification email:', err));
