@@ -98,12 +98,16 @@ const KCSDHomepage = () => {
             {/* About KCSD */}
             <div className={styles.aboutCardGlass}>
               <h2 className={styles.aboutTitle}>
-                At Kenya Christian School For The Deaf, we believe every child deserves the tools to communicate and thrive—regardless of hearing ability.
+          
               </h2>
               <p className={styles.aboutText}>
-                Our mission is to empower families through innovative, AI-driven support systems that make sign language learning accessible, engaging, and effective. Our virtual tutors are designed to guide children through personalized sign language practice right from home, reinforcing what they learn in school and helping them build confidence in their communication skills.
-
-                We also recognize parents' vital role in their child's language journey. That’s why our platform includes intuitive AI tools that help parents learn sign language alongside their children. By fostering inclusive communication at home, we strengthen family bonds and create a nurturing environment where every voice spoken or signed is heard and valued.
+                Kenya Christian School for the Deaf (KCSD) Virtual School is a private, inclusive educational institution registered as a social enterprise in Kenya. We offer both e-learning and physical programs that provide quality education for deaf, autistic, and IECDE teacher trainees, as well as special needs education consultation for families and educators.<br /><br />
+                Our mission is to empower children to take charge of their learning, build confidence, and develop the skills they need to achieve their full potential. Guided by compassionate teachers and a research-based Competency-Based Curriculum (CBC), we serve students across Kenya and beyond.<br /><br />
+                We specialize in supporting autistic visual learners, who benefit from visual strategies such as images, diagrams, charts, and schedules to understand and retain information. Tools like visual aids, mind maps, graphic organizers, and the Picture Exchange Communication System (PECS) are integrated to strengthen comprehension, communication, and routine-building.<br /><br />
+                Founded by Dr. Charles Okello and led by experienced educators, KCSD Virtual School offers a unique learning experience for deaf children aged 0–9 and their families. Our approach combines flexibility, accessibility, and assistive technology to support early sign language acquisition, while maintaining hands-on learning and community engagement.<br /><br />
+                Our rigorous curriculum emphasizes early sign language development, critical thinking, collaboration, cooperative play, and problem-solving. Learners actively engage through passion projects, book clubs, museum visits, and nature explorations making learning both meaningful and exciting.<br /><br />
+                Beyond academics, students receive comprehensive support in guidance, physical education, art, and music, complemented by resources from the Kenya Institute of Curriculum Development (KICD), including programs for special and gifted education.<br /><br />
+                We also offer consultation services for parents and equip each learner with essential tools, including:
               </p>
             </div>
           </div>
