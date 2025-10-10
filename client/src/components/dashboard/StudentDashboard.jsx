@@ -29,7 +29,10 @@ export default function StudentDashboard() {
 
   useEffect(() => {
     // Fetch user info and dashboard data from backend
-  fetch('https://kcsd-elearning.onrender.com/api/auth/me', { credentials: 'include' })
+    const token = localStorage.getItem('jwt');
+    fetch('https://kcsd-elearning.onrender.com/api/auth/me', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(res => res.json())
       .then(data => {
         setUser(data.user);

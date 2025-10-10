@@ -97,10 +97,11 @@ const AuthPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: form.email, password: form.password }),
-        credentials: 'include', // Send cookies
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Login failed');
+      // Save JWT token
+      localStorage.setItem('jwt', data.token);
       // Check verification and role from users table
       if (!data.user.isVerified) {
         setError('Please verify your account before logging in.');

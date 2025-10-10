@@ -11,7 +11,10 @@ const TeacherDashboard = () => {
 
   useEffect(() => {
     // Get teacher id from /api/auth/me
-  fetch('https://kcsd-elearning.onrender.com/api/auth/me', { credentials: 'include' })
+    const token = localStorage.getItem('jwt');
+    fetch('https://kcsd-elearning.onrender.com/api/auth/me', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch teacher info');
         return res.json();
@@ -28,7 +31,7 @@ const TeacherDashboard = () => {
 
   useEffect(() => {
     if (teacherId) {
-  fetch('https://kcsd-elearning.onrender.com/api/courses', { credentials: 'include' })
+      fetch('https://kcsd-elearning.onrender.com/api/courses', { credentials: 'include' })
         .then(res => res.json())
         .then(data => {
           setCourses(Array.isArray(data) ? data.filter(c => c.teacher && (c.teacher._id === teacherId || c.teacher.id === teacherId)) : []);

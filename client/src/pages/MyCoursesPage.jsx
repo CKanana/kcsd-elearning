@@ -22,14 +22,23 @@ const MyCoursesPage = () => {
   const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
-    setLoading(true);
-  fetch('https://kcsd-elearning.onrender.com/api/my-courses', { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) setEnrolledCourses(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    async function fetchCourses() {
+      setLoading(true);
+      setError("");
+      try {
+        const token = localStorage.getItem('jwt');
+        const res = await fetch("https://kcsd-elearning.onrender.com/api/auth/me", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Failed to fetch courses info");
+        setCourses(data.courses || []);
+      } catch (err) {
+        setError(err.message);
+      }
+      setLoading(false);
+    }
+    fetchCourses();
   }, []);
 
   const openVideoModal = (url) => setVideoModalUrl(url);

@@ -40,24 +40,28 @@ const ProfilePage = () => {
   const fileInputRef = useRef();
 
   useEffect(() => {
-  fetch('https://kcsd-elearning.onrender.com/api/profile', { credentials: 'include' })
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch profile info');
-        return res.json();
-      })
-      .then(data => {
+    async function fetchProfile() {
+      setLoading(true);
+      setError("");
+      try {
+        const token = localStorage.getItem('jwt');
+        const res = await fetch("https://kcsd-elearning.onrender.com/api/auth/me", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Failed to fetch profile info");
         setProfileData({
           ...defaultProfile,
-          ...data,
-          emergencyContact: { ...defaultProfile.emergencyContact, ...data.emergencyContact },
-          preferences: { ...defaultProfile.preferences, ...data.preferences }
+          ...data.user,
+          emergencyContact: { ...defaultProfile.emergencyContact, ...data.user.emergencyContact },
+          preferences: { ...defaultProfile.preferences, ...data.user.preferences }
         });
-        setLoading(false);
-      })
-      .catch(err => {
+      } catch (err) {
         setError(err.message);
-        setLoading(false);
-      });
+      }
+      setLoading(false);
+    }
+    fetchProfile();
   }, []);
 
 

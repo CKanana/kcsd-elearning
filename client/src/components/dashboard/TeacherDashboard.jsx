@@ -4,14 +4,17 @@ import TeacherHeader from '../common/TeacherHeader';
 import Footer from '../common/Footer';
 import Card from '../common/Card';
 import styles from './Dashboard.module.css';
-import { BookOpen, Users, ClipboardList, ArrowRight, Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
+import { BookOpen, Users, ClipboardList, ArrowRight } from 'lucide-react';
 
 export default function TeacherDashboard() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  fetch('https://kcsd-elearning.onrender.com/api/auth/me', { credentials: 'include' })
+    const token = localStorage.getItem('jwt');
+    fetch('https://kcsd-elearning.onrender.com/api/auth/me', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(res => res.json())
       .then(data => {
         setUser(data.user);
@@ -65,7 +68,6 @@ export default function TeacherDashboard() {
           </section>
         </div>
       </main>
-      {/* Social media icons removed as requested */}
       <Footer />
     </div>
   );
