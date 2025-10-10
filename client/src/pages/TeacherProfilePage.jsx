@@ -40,32 +40,7 @@ const TeacherProfilePage = () => {
     if (!passwordFields.currentPassword || !passwordFields.newPassword || !passwordFields.confirmNewPassword) {
       setPwChangeMsg('Please fill in all password fields.');
       return;
-          const token = localStorage.getItem('jwt');
-          fetch('https://kcsd-elearning.onrender.com/api/auth/profile', {
-            headers: { Authorization: `Bearer ${token}` }
-          })
-            .then(res => res.json())
-            .then(data => {
-              setProfileData({ ...defaultProfile, ...data });
-              setLoading(false);
-            })
-            .catch(() => setLoading(false));
-  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/change-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          currentPassword: passwordFields.currentPassword,
-          newPassword: passwordFields.newPassword
-        })
-      });
-      const data = await res.json();
-    const token = localStorage.getItem('jwt');
-    const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/profile/photo', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData
-    });
+    // ...existing code...
     }
     setPwChangeLoading(false);
   };
