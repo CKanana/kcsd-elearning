@@ -55,12 +55,7 @@ const TeacherProfilePage = () => {
       })
       .catch(() => setLoading(false));
   }, []);
-    const token = localStorage.getItem('jwt');
-    const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/profile', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify(profileData)
-    });
+    // ...existing code...
   const handlePhotoUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
