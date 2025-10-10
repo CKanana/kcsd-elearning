@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Plus, X, Users, Edit } from 'lucide-react';
+import { authFetch } from '../services/authService';
 import TeacherHeader from '../components/common/TeacherHeader';
 import Footer from '../components/common/Footer';
 import Card from '../components/common/Card';
@@ -26,22 +27,21 @@ const TeacherCoursesPage = () => {
 
   // Fetch teacher's courses on mount
   useEffect(() => {
-    setLoading(true);
-  fetch('https://kcsd-elearning.onrender.com/api/courses', { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => {
-        // Only show courses where the logged-in user is the teacher
-      const token = localStorage.getItem('jwt');
-      fetch('https://kcsd-elearning.onrender.com/api/courses', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    async function fetchCourses() {
+      setLoading(true);
+      try {
+        const res = await authFetch('https://kcsd-elearning.onrender.com/api/courses');
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Failed to fetch courses');
+        setCourses(data);
+      } catch (err) {
+        console.error(err);
+        setError('Failed to load courses');
+      }
+      setLoading(false);
+    }
+    fetchCourses();
   }, []);
-      fetch('https://kcsd-elearning.onrender.com/api/courses', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
@@ -56,27 +56,18 @@ const TeacherCoursesPage = () => {
     e.preventDefault();
     setError('');
     try {
-      // Get teacher id from /api/auth/me
-      const token = localStorage.getItem('jwt');
-      const meRes = await fetch('https://kcsd-elearning.onrender.com/api/auth/me', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const meData = await meRes.json();
-      if (!meRes.ok || !meData.user) throw new Error('Could not get teacher info');
-      const teacherId = meData.user.id || meData.user._id;
       const formData = new FormData();
       formData.append('title', title);
       formData.append('description', description);
-      formData.append('teacher', teacherId);
       formData.append('category', category);
       if (image) formData.append('image', image);
-      const res = await fetch('https://kcsd-elearning.onrender.com/api/courses', {
+      const res = await authFetch('https://kcsd-elearning.onrender.com/api/courses', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
         body: formData
       });
       if (!res.ok) throw new Error('Failed to create course');
       const newCourse = await res.json();
+      setCourses(prev => [...prev, newCourse]);
       closeModal();
     } catch (err) {
       setError(err.message);

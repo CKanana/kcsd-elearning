@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, FileText, Edit } from 'lucide-react';
+import { authFetch } from '../services/authService';
 import TeacherHeader from '../components/common/TeacherHeader';
 import Footer from '../components/common/Footer';
 import Card from '../components/common/Card';
@@ -26,7 +27,7 @@ const TeacherAssessmentsPage = () => {
   const handleDeleteAssessment = async (id) => {
     if (!window.confirm('Delete this assessment?')) return;
     try {
-  const res = await fetch(`https://kcsd-elearning.onrender.com/api/assessments/${id}`, { method: 'DELETE', credentials: 'include' });
+      const res = await authFetch(`https://kcsd-elearning.onrender.com/api/assessments/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Failed to delete assessment');
       setAssessments(a => a.filter(asmt => asmt._id !== id));
       alert('Assessment deleted');
@@ -62,15 +63,24 @@ const TeacherAssessmentsPage = () => {
 
   // Fetch teacher's courses and assessments
   useEffect(() => {
-    setLoading(true);
-    Promise.all([
-  fetch('https://kcsd-elearning.onrender.com/api/courses', { credentials: 'include' }).then(res => res.json()),
-  fetch('https://kcsd-elearning.onrender.com/api/assessments', { credentials: 'include' }).then(res => res.json())
-    ]).then(([coursesData, assessmentsData]) => {
-      setCourses(Array.isArray(coursesData) ? coursesData.filter(c => c.teacher && c.teacher._id) : []);
-      setAssessments(Array.isArray(assessmentsData) ? assessmentsData : []);
-      setLoading(false);
-    }).catch(() => setLoading(false));
+    async function fetchData() {
+      setLoading(true);
+      try {
+        const [coursesRes, assessmentsRes] = await Promise.all([
+          authFetch('https://kcsd-elearning.onrender.com/api/courses'),
+          authFetch('https://kcsd-elearning.onrender.com/api/assessments')
+        ]);
+        const coursesData = await coursesRes.json();
+        const assessmentsData = await assessmentsRes.json();
+        setCourses(Array.isArray(coursesData) ? coursesData.filter(c => c.teacher && c.teacher._id) : []);
+        setAssessments(Array.isArray(assessmentsData) ? assessmentsData : []);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
   }, []);
 
   const handleFormChange = e => {
@@ -86,10 +96,9 @@ const TeacherAssessmentsPage = () => {
     try {
       if (!form.title || !form.course) throw new Error('Title and course are required');
       // For now, just set questions=0, status=Not Started
-  const res = await fetch('https://kcsd-elearning.onrender.com/api/assessments', {
+      const res = await authFetch('https://kcsd-elearning.onrender.com/api/assessments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           title: form.title,
           course: form.course,
@@ -102,7 +111,7 @@ const TeacherAssessmentsPage = () => {
       if (!res.ok) throw new Error('Failed to create assessment');
       const newAssessment = await res.json();
       setAssessments([newAssessment, ...assessments]);
-  setForm({ title: '', course: '', type: 'Quiz', startDate: '', dueDate: '' });
+      setForm({ title: '', course: '', type: 'Quiz', startDate: '', dueDate: '' });
       setSuccess('Assessment created!');
     } catch (err) {
       setError(err.message);

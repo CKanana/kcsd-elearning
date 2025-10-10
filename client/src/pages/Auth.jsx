@@ -228,30 +228,18 @@ const AuthPage = ({ userType }) => {
             <div className={styles.inputGroup}>
               <Mail className={styles.inputIcon} size={20} />
               <input type="email" name="email" placeholder="Email or Student ID" className={styles.input} value={form.email} onChange={handleInput} required />
-        {/* Resend Verification Button for Login */}
-        <button
-          type="button"
-          className={styles.toggleButton}
-          disabled={resendLoading || !form.email}
-          onClick={() => handleResendVerification(form.email)}
-          style={{ marginTop: 8 }}
-        >
-          {resendLoading ? 'Resending...' : 'Resend Verification Email'}
-        </button>
-        {resendSuccess && <div style={{ color: 'green' }}>{resendSuccess}</div>}
-        {resendError && <div style={{ color: 'red' }}>{resendError}</div>}
-        {/* Resend Verification Button for Teacher Signup/Login */}
-        <button
-          type="button"
-          className={styles.toggleButton}
-          disabled={resendLoading || !form.email}
-          onClick={() => handleResendVerification(form.email)}
-          style={{ marginTop: 8 }}
-        >
-          {resendLoading ? 'Resending...' : 'Resend Verification Email'}
-        </button>
-        {resendSuccess && <div style={{ color: 'green' }}>{resendSuccess}</div>}
-        {resendError && <div style={{ color: 'red' }}>{resendError}</div>}
+              {/* Resend Verification Button for Student Login */}
+              <button
+                type="button"
+                className={styles.toggleButton}
+                disabled={resendLoading || !form.email}
+                onClick={() => handleResendVerification(form.email)}
+                style={{ marginTop: 8 }}
+              >
+                {resendLoading ? 'Resending...' : 'Resend Verification Email'}
+              </button>
+              {resendSuccess && <div style={{ color: 'green' }}>{resendSuccess}</div>}
+              {resendError && <div style={{ color: 'red' }}>{resendError}</div>}
             </div>
             <div className={styles.inputGroup}>
               <Lock className={styles.inputIcon} size={20} />

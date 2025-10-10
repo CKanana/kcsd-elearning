@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TeacherHeader from '../components/common/TeacherHeader';
 import Footer from '../components/common/Footer';
+import { authFetch } from '../services/authService';
 import dashboardStyles from '../components/dashboard/Dashboard.module.css';
 
 const TeacherAllStudentsPage = () => {
@@ -10,10 +11,10 @@ const TeacherAllStudentsPage = () => {
   useEffect(() => {
     setLoading(true);
     // Fetch aggregated student data from the new endpoint
-  fetch('https://kcsd-elearning.onrender.com/api/courses/teacher/my-students', { credentials: 'include' })
+    authFetch('https://kcsd-elearning.onrender.com/api/courses/teacher/my-students')
       .then(res => res.json())
       .then(data => {
-  setStudents(Array.isArray(data) ? data.filter(s => s.role === 'student') : []);
+        setStudents(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch(() => setLoading(false));

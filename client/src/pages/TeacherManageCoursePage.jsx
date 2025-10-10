@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { authFetch } from '../services/authService';
 import TeacherHeader from '../components/common/TeacherHeader';
 import Footer from '../components/common/Footer';
 import dashboardStyles from '../components/dashboard/Dashboard.module.css';
@@ -20,29 +21,33 @@ const TeacherManageCoursePage = () => {
     const handleDeleteCourse = async () => {
       if (!window.confirm('Are you sure you want to delete this course? This action cannot be undone.')) return;
       try {
-  const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}`, { method: 'DELETE', credentials: 'include' });
+        const res = await authFetch(`https://kcsd-elearning.onrender.com/api/courses/${id}`, { method: 'DELETE' });
         if (!res.ok) throw new Error('Failed to delete course');
         alert('Course deleted successfully');
-        // Redirect to teacher's courses page (assuming /teacher/courses/:teacherId)
-        if (course && course.teacher && course.teacher._id) {
-          navigate(`/teacher/courses/${course.teacher._id}`);
-        } else {
-          navigate('/teacher/courses');
-        }
+        navigate('/teacher/courses');
       } catch (err) {
         alert('Error deleting course: ' + err.message);
       }
     };
   useEffect(() => {
-  fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}`)
-      .then(res => res.json())
-      .then(setCourse);
-  fetch(`https://kcsd-elearning.onrender.com/api/assessments?course=${id}`)
-      .then(res => res.json())
-      .then(setAssessments);
-  fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/students`)
-      .then(res => res.json())
-      .then(setStudents);
+    async function fetchData() {
+      try {
+        const [courseRes, assessmentsRes, studentsRes] = await Promise.all([
+          authFetch(`https://kcsd-elearning.onrender.com/api/courses/${id}`),
+          authFetch(`https://kcsd-elearning.onrender.com/api/assessments?course=${id}`),
+          authFetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/students`)
+        ]);
+        const courseData = await courseRes.json();
+        const assessmentsData = await assessmentsRes.json();
+        const studentsData = await studentsRes.json();
+        setCourse(courseData);
+        setAssessments(assessmentsData);
+        setStudents(studentsData);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchData();
   }, [id]);
 
 
@@ -58,9 +63,8 @@ const TeacherManageCoursePage = () => {
     formData.append('label', unitLabel);
     formData.append('unitFile', unitFile);
     try {
-  const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/units`, {
+      const res = await authFetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/units`, {
         method: 'POST',
-        credentials: 'include',
         body: formData
       });
       if (!res.ok) throw new Error('Failed to upload unit');
@@ -78,7 +82,7 @@ const TeacherManageCoursePage = () => {
   const handleDeleteUnit = async (idx) => {
     if (!window.confirm('Delete this unit?')) return;
     try {
-  const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/units/${idx}`, { method: 'DELETE', credentials: 'include' });
+      const res = await authFetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/units/${idx}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Failed to delete unit');
       setCourse(c => ({ ...c, units: c.units.filter((_, i) => i !== idx) }));
     } catch (err) {
@@ -89,10 +93,9 @@ const TeacherManageCoursePage = () => {
   // Edit unit label
   const handleEditUnit = async (idx, newLabel) => {
     try {
-  const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/units/${idx}`, {
+      const res = await authFetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/units/${idx}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ label: newLabel })
       });
       if (!res.ok) throw new Error('Failed to update unit');
