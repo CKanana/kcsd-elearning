@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { authFetch } from '../services/authService';
 import { Link } from "react-router-dom";
 import authStyles from "../components/auth/Auth.module.css";
 import dashboardStyles from "./StudentDashboard.module.css";
@@ -15,10 +16,7 @@ export default function StudentDashboard() {
       setLoading(true);
       setError("");
       try {
-        const token = localStorage.getItem('jwt');
-        const res = await fetch("https://kcsd-elearning.onrender.com/api/auth/me", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const res = await authFetch("https://kcsd-elearning.onrender.com/api/auth/me");
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Failed to fetch student info");
         setStudent(data.user);

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { authFetch } from '../services/authService';
 import { Link } from 'react-router-dom';
 import { X, Star, PlayCircle } from 'lucide-react';
 import Header from '../components/common/Header';
@@ -9,7 +10,7 @@ const MyCoursesPage = () => {
   const handleUnenroll = async (courseId) => {
     if (!window.confirm('Are you sure you want to unenroll from this course?')) return;
     try {
-  const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${courseId}/unenroll`, { method: 'POST', credentials: 'include' });
+      const res = await authFetch(`https://kcsd-elearning.onrender.com/api/courses/${courseId}/unenroll`, { method: 'POST' });
       if (!res.ok) throw new Error('Failed to unenroll');
       setEnrolledCourses(courses => courses.filter(c => c._id !== courseId));
       alert('You have been unenrolled from the course.');
@@ -20,19 +21,17 @@ const MyCoursesPage = () => {
   const [videoModalUrl, setVideoModalUrl] = useState(null);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   React.useEffect(() => {
     async function fetchCourses() {
       setLoading(true);
       setError("");
       try {
-        const token = localStorage.getItem('jwt');
-        const res = await fetch("https://kcsd-elearning.onrender.com/api/auth/me", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+  const res = await authFetch("https://kcsd-elearning.onrender.com/api/my-courses");
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Failed to fetch courses info");
-        setCourses(data.courses || []);
+        setEnrolledCourses(data || []);
       } catch (err) {
         setError(err.message);
       }

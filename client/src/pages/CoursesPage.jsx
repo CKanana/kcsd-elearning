@@ -23,13 +23,17 @@ const CoursesPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  fetch('https://kcsd-elearning.onrender.com/api/courses', { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => {
-        setCourses(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+  fetch('https://kcsd-elearning.onrender.com/api/courses', {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  })
+    .then(res => res.json())
+    .then(data => {
+      setCourses(data);
+      setLoading(false);
+    })
+    .catch(() => setLoading(false));
   }, []);
 
   const filteredCourses = selectedCategory === 'all'
@@ -41,9 +45,11 @@ const CoursesPage = () => {
 
   const handleEnroll = async (courseId) => {
     try {
-  const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${courseId}/enroll`, {
+      const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${courseId}/enroll`, {
         method: 'POST',
-        credentials: 'include'
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
       });
       if (!res.ok) {
         const errData = await res.json();

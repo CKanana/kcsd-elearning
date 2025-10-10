@@ -1,4 +1,8 @@
 // useAuth hook placeholder
-export const useAuth = () => {
-  // Authentication logic here
-};
+
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+
+export default function useAuth() {
+  return useContext(AuthContext);
+}

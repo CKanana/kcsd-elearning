@@ -1,4 +1,5 @@
 import React from 'react';
+import { AuthProvider } from './context/AuthContext';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import TeacherAllStudentsPage from './pages/TeacherAllStudentsPage';
 import TeacherCourseStudentsPage from './pages/TeacherCourseStudentsPage';
@@ -25,8 +26,9 @@ import authStyles from './pages/Auth.module.css';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
         <Route path="/auth" element={
           <div className={authStyles.authPage}> {/* This outer div provides the background */}
             <div className={authStyles.authContainer}>
@@ -89,7 +91,8 @@ function App() {
         <Route path="/student-dashboard" element={<StudentDashboard />} />
         <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
       </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

@@ -3,7 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./database/connection');
 require('dotenv').config();
-const cookieParser = require('cookie-parser');
 const authRoutes = require('./auth');
 const authenticate = require('./authMiddleware');
 const upload = require('./uploadMiddleware');
@@ -32,10 +31,9 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true
+    // credentials: true // No longer needed for header-based JWT
 }));
 app.use(express.json());
-app.use(cookieParser());
 app.use('/uploads', express.static(require('path').join(__dirname, 'uploads')));
 
 // --- Global Error Handler ---

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 import { User, Mail, Lock, ArrowLeft, Users, UserCheck, BookUser, Calendar, Eye, EyeOff, Briefcase, Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Auth.module.css';
@@ -87,21 +88,25 @@ const AuthPage = ({ userType }) => {
     }
   };
 
+  const { login } = useContext(AuthContext);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
     setLoading(true);
     try {
-  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/login', {
+      const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email, password: form.password, role }),
-        credentials: 'include',
+        body: JSON.stringify({ email: form.email, password: form.password, role })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Login failed');
-
+      // Use AuthContext login to store token and user
+      if (data.token) {
+        login(data.token, data.user);
+      }
       if (data.user.role === 'teacher') navigate('/teacher-dashboard');
       else if (data.user.role === 'student') navigate('/student-dashboard');
       else navigate('/student-dashboard'); // Default to student dashboard

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { authFetch } from '../services/authService';
 import { User, Settings, Shield, Upload, Save, Eye, Contrast, Languages } from 'lucide-react';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
@@ -44,10 +45,7 @@ const ProfilePage = () => {
       setLoading(true);
       setError("");
       try {
-        const token = localStorage.getItem('jwt');
-        const res = await fetch("https://kcsd-elearning.onrender.com/api/auth/me", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const res = await authFetch("https://kcsd-elearning.onrender.com/api/auth/me");
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Failed to fetch profile info");
         setProfileData({
