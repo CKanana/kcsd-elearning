@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { authFetch } from '../../services/authService';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { Link } from 'react-router-dom';
@@ -29,21 +30,22 @@ export default function StudentDashboard() {
 
   useEffect(() => {
     // Fetch user info and dashboard data from backend
-    const token = localStorage.getItem('jwt');
-    fetch('https://kcsd-elearning.onrender.com/api/auth/me', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(res => res.json())
-      .then(data => {
+    async function fetchDashboardData() {
+      try {
+        const res = await authFetch('https://kcsd-elearning.onrender.com/api/auth/me');
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Failed to fetch dashboard data');
         setUser(data.user);
         setCourses(data.courses || []);
         setAssignments(data.assignments || []);
         setSchedule(data.schedule || []);
         setNotifications(data.notifications || []);
-      })
-      .catch(() => {
+      } catch (err) {
+        console.error('Error fetching dashboard data:', err);
         setUser(null);
-      });
+      }
+    }
+    fetchDashboardData();
   }, []);
 
   // Compute the correct photo URL for display
