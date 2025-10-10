@@ -57,23 +57,22 @@ const TeacherCoursesPage = () => {
     setError('');
     try {
       // Get teacher id from /api/auth/me
-  const meRes = await fetch('https://kcsd-elearning.onrender.com/api/auth/me', { credentials: 'include' });
+      const token = localStorage.getItem('jwt');
+      const meRes = await fetch('https://kcsd-elearning.onrender.com/api/auth/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       const meData = await meRes.json();
       if (!meRes.ok || !meData.user) throw new Error('Could not get teacher info');
       const teacherId = meData.user.id || meData.user._id;
       const formData = new FormData();
-        const meRes = await fetch('https://kcsd-elearning.onrender.com/api/auth/me', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+      formData.append('title', title);
       formData.append('description', description);
-  formData.append('teacher', teacherId);
-        const meRes = await fetch('https://kcsd-elearning.onrender.com/api/auth/me', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-  if (image) formData.append('image', image);
-  const res = await fetch('https://kcsd-elearning.onrender.com/api/courses', {
+      formData.append('teacher', teacherId);
+      formData.append('category', category);
+      if (image) formData.append('image', image);
+      const res = await fetch('https://kcsd-elearning.onrender.com/api/courses', {
         method: 'POST',
-        credentials: 'include',
+        headers: { Authorization: `Bearer ${token}` },
         body: formData
       });
       if (!res.ok) throw new Error('Failed to create course');
