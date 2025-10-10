@@ -60,12 +60,12 @@ const TeacherProfilePage = () => {
         })
       });
       const data = await res.json();
-            const token = localStorage.getItem('jwt');
-            const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/profile/photo', {
-              method: 'POST',
-              headers: { Authorization: `Bearer ${token}` },
-              body: formData
-            });
+    const token = localStorage.getItem('jwt');
+    const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/profile/photo', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData
+    });
     }
     setPwChangeLoading(false);
   };
@@ -80,12 +80,12 @@ const TeacherProfilePage = () => {
       })
       .catch(() => setLoading(false));
   }, []);
-            const token = localStorage.getItem('jwt');
-            const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/profile', {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-              body: JSON.stringify(profileData)
-            });
+    const token = localStorage.getItem('jwt');
+    const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(profileData)
+    });
   const handlePhotoUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
