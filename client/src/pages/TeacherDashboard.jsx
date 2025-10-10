@@ -12,11 +12,17 @@ const TeacherDashboard = () => {
   useEffect(() => {
     // Get teacher id from /api/auth/me
   fetch('https://kcsd-elearning.onrender.com/api/auth/me', { credentials: 'include' })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch teacher info');
+        return res.json();
+      })
       .then(data => {
         if (data.user && (data.user._id || data.user.id)) {
           setTeacherId(data.user._id || data.user.id);
         }
+      })
+      .catch(err => {
+        alert('Error: ' + err.message);
       });
   }, []);
 

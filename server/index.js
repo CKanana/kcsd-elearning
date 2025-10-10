@@ -19,16 +19,34 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // --- Middleware ---
+const allowedOrigins = [
+  'https://kcsd.kcsd-abi.or.ke',
+  'http://localhost:5173',
+  'https://kcsd-elearning.onrender.com'
+];
 app.use(cors({
-  origin: [
-    'https://kcsd.kcsd-abi.or.ke', // Netlify frontend
-    'https://kcsd-elearning.onrender.com' // Backend (for local testing)
-  ],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(require('path').join(__dirname, 'uploads')));
+
+// --- Global Error Handler ---
+app.use((err, req, res, next) => {
+  console.error('Global error:', err);
+  res.status(err.status || 500).json({
+    error: true,
+    message: err.message || 'Internal Server Error',
+    details: err.details || undefined
+  });
+});
 
 // --- DB Connection ---
 connectDB();

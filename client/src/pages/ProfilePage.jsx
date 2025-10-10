@@ -41,7 +41,10 @@ const ProfilePage = () => {
 
   useEffect(() => {
   fetch('https://kcsd-elearning.onrender.com/api/profile', { credentials: 'include' })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch profile info');
+        return res.json();
+      })
       .then(data => {
         setProfileData({
           ...defaultProfile,
@@ -51,7 +54,10 @@ const ProfilePage = () => {
         });
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
   }, []);
 
 

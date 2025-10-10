@@ -144,16 +144,20 @@ router.post('/login', async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
+      console.log('Login failed: user not found for email', email);
       return res.status(400).json({ message: 'Invalid email or password' });
     }
     if (!user.isVerified) {
+      console.log('Login failed: user not verified', email);
       return res.status(403).json({ message: 'Please verify your account before logging in.' });
     }
     if (role && user.role !== role) {
+      console.log('Login failed: role mismatch', email, 'expected', role, 'got', user.role);
       return res.status(403).json({ message: `You are not registered as a ${role}.` });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log('Login failed: password mismatch for', email);
       return res.status(400).json({ message: 'Invalid email or password' });
     }
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
@@ -165,6 +169,11 @@ router.post('/login', async (req, res) => {
     } else if (origin && origin.includes('onrender.com')) {
       cookieDomain = '.onrender.com';
     }
+    console.log('Setting cookie for login:', {
+      domain: cookieDomain,
+      origin,
+      user: user.email
+    });
     res.cookie('token', token, {
       httpOnly: true,
       secure: true,

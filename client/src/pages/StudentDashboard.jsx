@@ -34,7 +34,7 @@ export default function StudentDashboard() {
         {loading ? (
           <div>Loading...</div>
         ) : error ? (
-          <div style={{ color: 'red' }}>{error}</div>
+          <div style={{ color: 'red', fontWeight: 'bold', marginBottom: 16 }}>Error: {error}</div>
         ) : student && (
           <Card title={student.name} icon={student.profilePhoto && <img src={student.profilePhoto} alt="Profile" style={{ width: 60, height: 60, borderRadius: '50%', objectFit: 'cover' }} />}>
             <div style={{ marginBottom: 8 }}><strong>Email:</strong> {student.email}</div>
