@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { authFetch } from '../services/authService';
+import { AuthContext } from '../context/AuthContext';
 import { User, Settings, Shield, Upload, Save, Eye, Contrast, Languages } from 'lucide-react';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
-import styles from './ProfilePage.module.css';
-
 
 const defaultProfile = {
   name: '',
@@ -32,6 +31,7 @@ const defaultProfile = {
 
 
 const ProfilePage = () => {
+  const { user, updateUser } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState('profile');
   const [profileData, setProfileData] = useState(defaultProfile);
   const [loading, setLoading] = useState(true);
@@ -39,7 +39,6 @@ const ProfilePage = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const fileInputRef = useRef();
-
   useEffect(() => {
     async function fetchProfile() {
       setLoading(true);
@@ -108,6 +107,7 @@ const ProfilePage = () => {
       if (!res.ok) throw new Error('Failed to upload photo');
       const data = await res.json();
       setProfileData(prev => ({ ...prev, profilePhoto: data.profilePhoto }));
+      updateUser({ ...user, profilePhoto: data.profilePhoto });
       setSuccess('Profile photo updated!');
     } catch (err) {
       setError('Could not upload photo.');
@@ -125,6 +125,7 @@ const ProfilePage = () => {
         body: JSON.stringify(profileData)
       });
       if (!res.ok) throw new Error('Failed to save profile');
+      updateUser(profileData);
       setSuccess('Profile updated successfully!');
     } catch (err) {
       setError('Could not save profile.');

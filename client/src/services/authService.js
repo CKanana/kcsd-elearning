@@ -1,15 +1,15 @@
 // Auth service placeholder
 
 export function getToken() {
-  return localStorage.getItem('token');
+  return sessionStorage.getItem('token');
 }
 
 export function setToken(token) {
-  localStorage.setItem('token', token);
+  sessionStorage.setItem('token', token);
 }
 
 export function removeToken() {
-  localStorage.removeItem('token');
+  sessionStorage.removeItem('token');
 }
 
 export async function authFetch(url, options = {}) {
