@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { setToken } from '../services/authService';
 import styles from './Auth.module.css'; // Use the same styles as the main Auth page
 
 export default function TeacherAuth() {
@@ -25,27 +26,28 @@ export default function TeacherAuth() {
     try {
       if (isLogin) {
         // Login logic
-  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/login', {
+        const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
           body: JSON.stringify({ email: form.email, password: form.password, role: 'teacher' })
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Invalid credentials');
+        if (data.token) {
+          setToken(data.token);
+        }
         setSuccess('Login successful!');
-        // Assuming successful teacher login redirects to teacher dashboard
         navigate('/teacher-dashboard');
       } else {
         // Signup logic
-  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/signup', {
+        const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/register', {
           method: 'POST',
-          body: JSON.stringify({ ...form, role: 'teacher' }),
           headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...form, role: 'teacher' })
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Signup failed');
-        setSuccess('Account created! You can now log in.');
+        setSuccess('Account created! Please check your email to verify your account before logging in.');
         setIsLogin(true);
         setForm({ email: '', password: '', name: '' }); // Reset form
       }

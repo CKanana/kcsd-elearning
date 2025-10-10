@@ -31,7 +31,7 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-    // credentials: true // No longer needed for header-based JWT
+  credentials: true
 }));
 app.use(express.json());
 app.use('/uploads', express.static(require('path').join(__dirname, 'uploads')));

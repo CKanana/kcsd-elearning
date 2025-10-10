@@ -101,9 +101,8 @@ const ProfilePage = () => {
     const formData = new FormData();
     formData.append('profilePhoto', file);
     try {
-  const res = await fetch('https://kcsd-elearning.onrender.com/api/profile/photo', {
+      const res = await authFetch('https://kcsd-elearning.onrender.com/api/auth/profile/photo', {
         method: 'POST',
-        credentials: 'include',
         body: formData
       });
       if (!res.ok) throw new Error('Failed to upload photo');
@@ -120,10 +119,9 @@ const ProfilePage = () => {
     setError('');
     setSuccess('');
     try {
-  const res = await fetch('https://kcsd-elearning.onrender.com/api/profile', {
+      const res = await authFetch('https://kcsd-elearning.onrender.com/api/auth/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify(profileData)
       });
       if (!res.ok) throw new Error('Failed to save profile');
