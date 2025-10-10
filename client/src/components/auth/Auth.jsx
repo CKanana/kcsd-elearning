@@ -93,7 +93,7 @@ const AuthPage = () => {
     setError('');
     setLoading(true);
     try {
-  const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/login', {
+      const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: form.email, password: form.password }),
@@ -101,8 +101,19 @@ const AuthPage = () => {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Login failed');
-      // JWT is now stored in HTTP-only cookie
-      window.location.href = '/student-dashboard';
+      // Check verification and role from users table
+      if (!data.user.isVerified) {
+        setError('Please verify your account before logging in.');
+        setLoading(false);
+        return;
+      }
+      if (data.user.role === 'student') {
+        window.location.href = '/student-dashboard';
+      } else if (data.user.role === 'teacher') {
+        window.location.href = '/teacher-dashboard';
+      } else {
+        window.location.href = '/dashboard';
+      }
     } catch (err) {
       setError(err.message);
     }

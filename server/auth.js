@@ -112,8 +112,24 @@ router.get('/me', authenticate, async (req, res) => {
       // TODO: Fetch assignments and schedule for admin
     }
 
-    // You can expand assignments/schedule logic as needed
-    res.json({ user, courses, assignments, schedule });
+    // Return full user info
+    res.json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        profilePhoto: user.profilePhoto,
+        role: user.role,
+        isVerified: user.isVerified,
+        studentId: user.studentId,
+        dob: user.dob,
+        emergencyContact: user.emergencyContact,
+        preferences: user.preferences
+      },
+      courses,
+      assignments,
+      schedule
+    });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -188,7 +204,12 @@ router.post('/login', async (req, res) => {
         name: user.name,
         email: user.email,
         profilePhoto: user.profilePhoto,
-        role: user.role
+        role: user.role,
+        isVerified: user.isVerified,
+        studentId: user.studentId,
+        dob: user.dob,
+        emergencyContact: user.emergencyContact,
+        preferences: user.preferences
       }
     });
   } catch (err) {
@@ -254,11 +275,17 @@ router.get('/verify', async (req, res) => {
   user.isVerified = true;
   user.verificationToken = undefined;
   await user.save();
+  let loginUrl = 'https://kcsd.kcsd-abi.or.ke/login';
+  if (user.role === 'student') {
+    loginUrl = 'https://kcsd.kcsd-abi.or.ke/student-auth';
+  } else if (user.role === 'teacher') {
+    loginUrl = 'https://kcsd.kcsd-abi.or.ke/teacher-auth';
+  }
   res.send(`
     <div style="font-family: Arial, sans-serif; background: #f8fafc; padding: 2rem; border-radius: 1rem; max-width: 480px; margin: 2rem auto; box-shadow: 0 2px 8px #ea580c22; text-align: center;">
       <h2 style="color: #ea580c;">Account Verified!</h2>
       <p style="font-size: 1.1rem; color: #334155;">Your KCSD eLearning account has been successfully verified.</p>
-      <a href="https://kcsd.kcsd-abi.or.ke/login" style="display: inline-block; background: #ea580c; color: #fff; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-weight: bold; margin-top: 1.5rem;">Go to Login</a>
+      <a href="${loginUrl}" style="display: inline-block; background: #ea580c; color: #fff; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-weight: bold; margin-top: 1.5rem;">Go to Login</a>
       <br><br>
       <p style="font-size: 0.95rem; color: #64748b;">Thank you for joining Kenya Christian School for the Deaf eLearning platform.</p>
     </div>
