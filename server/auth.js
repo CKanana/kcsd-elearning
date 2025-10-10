@@ -20,7 +20,9 @@ const jwt = require('jsonwebtoken');
 
 // Middleware to check JWT and get user
 const authenticate = (req, res, next) => {
-  const token = req.cookies.token;
+  // Get token from Authorization header
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
   if (!token) return res.status(401).json({ message: 'Not authenticated' });
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -177,28 +179,10 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    // Dynamically set cookie domain for cross-domain and local testing
-    let cookieDomain = undefined;
-    const origin = req.headers.origin;
-    if (origin && origin.includes('kcsd.kcsd-abi.or.ke')) {
-      cookieDomain = '.kcsd-abi.or.ke';
-    } else if (origin && origin.includes('onrender.com')) {
-      cookieDomain = '.onrender.com';
-    }
-    console.log('Setting cookie for login:', {
-      domain: cookieDomain,
-      origin,
-      user: user.email
-    });
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      domain: cookieDomain,
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+    // Return token in response body, not as cookie
     res.status(200).json({
       message: 'Login successful',
+      token,
       user: {
         id: user._id,
         name: user.name,
