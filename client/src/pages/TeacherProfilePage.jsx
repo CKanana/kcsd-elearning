@@ -40,13 +40,16 @@ const TeacherProfilePage = () => {
     if (!passwordFields.currentPassword || !passwordFields.newPassword || !passwordFields.confirmNewPassword) {
       setPwChangeMsg('Please fill in all password fields.');
       return;
-    }
-    if (passwordFields.newPassword !== passwordFields.confirmNewPassword) {
-      setPwChangeMsg('New passwords do not match.');
-      return;
-    }
-    setPwChangeLoading(true);
-    try {
+          const token = localStorage.getItem('jwt');
+          fetch('https://kcsd-elearning.onrender.com/api/auth/profile', {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+            .then(res => res.json())
+            .then(data => {
+              setProfileData({ ...defaultProfile, ...data });
+              setLoading(false);
+            })
+            .catch(() => setLoading(false));
   const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/change-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -57,11 +60,12 @@ const TeacherProfilePage = () => {
         })
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Password change failed');
-      setPwChangeMsg('Password changed successfully!');
-      setPasswordFields({ currentPassword: '', newPassword: '', confirmNewPassword: '' });
-    } catch (err) {
-      setPwChangeMsg(err.message);
+            const token = localStorage.getItem('jwt');
+            const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/profile/photo', {
+              method: 'POST',
+              headers: { Authorization: `Bearer ${token}` },
+              body: formData
+            });
     }
     setPwChangeLoading(false);
   };
@@ -76,12 +80,12 @@ const TeacherProfilePage = () => {
       })
       .catch(() => setLoading(false));
   }, []);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProfileData(prev => ({ ...prev, [name]: value }));
-  };
-
+            const token = localStorage.getItem('jwt');
+            const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/profile', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+              body: JSON.stringify(profileData)
+            });
   const handlePhotoUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;

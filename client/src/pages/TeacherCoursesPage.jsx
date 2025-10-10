@@ -31,12 +31,17 @@ const TeacherCoursesPage = () => {
       .then(res => res.json())
       .then(data => {
         // Only show courses where the logged-in user is the teacher
-        setCourses(Array.isArray(data) ? data.filter(c => c.teacher && c.teacher._id) : []);
+      const token = localStorage.getItem('jwt');
+      fetch('https://kcsd-elearning.onrender.com/api/courses', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, []);
-
+      fetch('https://kcsd-elearning.onrender.com/api/courses', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
@@ -57,10 +62,14 @@ const TeacherCoursesPage = () => {
       if (!meRes.ok || !meData.user) throw new Error('Could not get teacher info');
       const teacherId = meData.user.id || meData.user._id;
       const formData = new FormData();
-      formData.append('title', title);
+        const meRes = await fetch('https://kcsd-elearning.onrender.com/api/auth/me', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
       formData.append('description', description);
   formData.append('teacher', teacherId);
-  formData.append('category', category);
+        const meRes = await fetch('https://kcsd-elearning.onrender.com/api/auth/me', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
   if (image) formData.append('image', image);
   const res = await fetch('https://kcsd-elearning.onrender.com/api/courses', {
         method: 'POST',
@@ -69,7 +78,6 @@ const TeacherCoursesPage = () => {
       });
       if (!res.ok) throw new Error('Failed to create course');
       const newCourse = await res.json();
-      setCourses([newCourse, ...courses]);
       closeModal();
     } catch (err) {
       setError(err.message);

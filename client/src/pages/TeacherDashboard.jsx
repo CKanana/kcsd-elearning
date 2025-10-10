@@ -31,11 +31,14 @@ const TeacherDashboard = () => {
 
   useEffect(() => {
     if (teacherId) {
-      fetch('https://kcsd-elearning.onrender.com/api/courses', { credentials: 'include' })
-        .then(res => res.json())
-        .then(data => {
-          setCourses(Array.isArray(data) ? data.filter(c => c.teacher && (c.teacher._id === teacherId || c.teacher.id === teacherId)) : []);
-        });
+        const token = localStorage.getItem('jwt');
+        fetch('https://kcsd-elearning.onrender.com/api/courses', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+          .then(res => res.json())
+          .then(data => {
+            setCourses(Array.isArray(data) ? data.filter(c => c.teacher && (c.teacher._id === teacherId || c.teacher.id === teacherId)) : []);
+          });
     }
   }, [teacherId]);
 
