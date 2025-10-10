@@ -157,11 +157,19 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    // Dynamically set cookie domain for cross-domain and local testing
+    let cookieDomain = undefined;
+    const origin = req.headers.origin;
+    if (origin && origin.includes('kcsd.kcsd-abi.or.ke')) {
+      cookieDomain = '.kcsd-abi.or.ke';
+    } else if (origin && origin.includes('onrender.com')) {
+      cookieDomain = '.onrender.com';
+    }
     res.cookie('token', token, {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
-      domain: '.kcsd-abi.or.ke',
+      domain: cookieDomain,
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
     res.status(200).json({
