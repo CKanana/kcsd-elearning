@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TeacherHeader from '../components/common/TeacherHeader';
 import Footer from '../components/common/Footer';
+import { getMe } from '../services/authService';
+import { getAllCourses } from '../services/courseService';
 import dashboardStyles from '../components/dashboard/Dashboard.module.css';
 
 const TeacherDashboard = () => {
@@ -11,36 +13,27 @@ const TeacherDashboard = () => {
 
   useEffect(() => {
     // Get teacher id from /api/auth/me
-    const token = localStorage.getItem('jwt');
-    fetch('https://kcsd-elearning.onrender.com/api/auth/me', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch teacher info');
-        return res.json();
-      })
-      .then(data => {
+    const fetchUserAndCourses = async () => {
+      try {
+        const data = await getMe();
         if (data.user && (data.user._id || data.user.id)) {
-          setTeacherId(data.user._id || data.user.id);
-        }
-      })
-      .catch(err => {
-        alert('Error: ' + err.message);
-      });
-  }, []);
+          const currentTeacherId = data.user._id || data.user.id;
+          setTeacherId(currentTeacherId);
 
-  useEffect(() => {
-    if (teacherId) {
-        const token = localStorage.getItem('jwt');
-        fetch('https://kcsd-elearning.onrender.com/api/courses', {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-          .then(res => res.json())
-          .then(data => {
-            setCourses(Array.isArray(data) ? data.filter(c => c.teacher && (c.teacher._id === teacherId || c.teacher.id === teacherId)) : []);
-          });
-    }
-  }, [teacherId]);
+          // Fetch courses and filter them for the current teacher
+          const allCourses = await getAllCourses();
+          setCourses(
+            Array.isArray(allCourses)
+              ? allCourses.filter(c => c.teacher && (c.teacher._id === currentTeacherId || c.teacher.id === currentTeacherId))
+              : []
+          );
+        }
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    };
+    fetchUserAndCourses();
+  }, []);
 
   return (
     <div>

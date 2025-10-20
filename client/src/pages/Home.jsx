@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Phone, Mail, MapPin, User, Hand, Facebook, Twitter, Instagram, Youtube, Users, Cpu, Handshake, Briefcase, Linkedin } from 'lucide-react';
+import HomepageHeader from '../components/common/HomepageHeader';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
-import HomepageHeader from '../components/common/HomepageHeader';
 
 
 const heroImages = [
-  '/assets/images/download.jpg',
-  '/assets/images/download (1).jpg',
-  '/assets/images/download (2).jpg',
-  '/assets/images/images.jpg',
+  '/assets/images/4.jpg',
+  '/assets/images/8.jpg',
+  '/assets/images/11.jpg',
 ];
 
 const futureGoals = [
@@ -83,32 +82,32 @@ const KCSDHomepage = () => {
       <HomepageHeader />
 
       {/* Hero Section */}
-      <section className={styles.hero} style={{backgroundImage: `url(${heroImages[heroIndex]})`}}>
-        <div className={styles.heroGlass}>
-          <div className={styles.heroContent}>
-            <h1 className={styles.heroTitle}>
-              Welcome to KCSD eLearning
-              <span className={styles.heroIcon} aria-label="Sign Language Hand" title="Sign Language">
-                <Hand size={64} className={styles.waveHand} />
-              </span>
-            </h1>
-            {/* CTA Buttons - Hero Section */}
-            <div className={styles.ctaRow}>
-            </div>
-            {/* About KCSD */}
+      <section className={styles.hero}>
+        <div className={styles.heroGrid}>
+          {/* Left Column: Image Slideshow */}
+          <div className={styles.heroImageContainer}>
+            <img src={heroImages[heroIndex]} alt="KCSD students in class" className={styles.heroImage} />
+          </div>
+
+          {/* Right Column: Text Content */}
+          <div className={styles.heroTextContainer}>
             <div className={styles.aboutCardGlass}>
-              <h2 className={styles.aboutTitle}>
-          
-              </h2>
+              <h2 className={styles.aboutTitle}>Empowering Every Learner</h2>
               <p className={styles.aboutText}>
-                Kenya Christian School for the Deaf (KCSD) Virtual School is a private, inclusive educational institution registered as a social enterprise in Kenya. We offer both e-learning and physical programs that provide quality education for deaf, autistic, and IECDE teacher trainees, as well as special needs education consultation for families and educators.<br /><br />
-                Our mission is to empower children to take charge of their learning, build confidence, and develop the skills they need to achieve their full potential. Guided by compassionate teachers and a research-based Competency-Based Curriculum (CBC), we serve students across Kenya and beyond.<br /><br />
-                We specialize in supporting autistic visual learners, who benefit from visual strategies such as images, diagrams, charts, and schedules to understand and retain information. Tools like visual aids, mind maps, graphic organizers, and the Picture Exchange Communication System (PECS) are integrated to strengthen comprehension, communication, and routine-building.<br /><br />
-                Founded by Dr. Charles Okello and led by experienced educators, KCSD Virtual School offers a unique learning experience for deaf children aged 0–9 and their families. Our approach combines flexibility, accessibility, and assistive technology to support early sign language acquisition, while maintaining hands-on learning and community engagement.<br /><br />
-                Our rigorous curriculum emphasizes early sign language development, critical thinking, collaboration, cooperative play, and problem-solving. Learners actively engage through passion projects, book clubs, museum visits, and nature explorations making learning both meaningful and exciting.<br /><br />
-                Beyond academics, students receive comprehensive support in guidance, physical education, art, and music, complemented by resources from the Kenya Institute of Curriculum Development (KICD), including programs for special and gifted education.<br /><br />
-                We also offer consultation services for parents and equip each learner with essential tools, including:
+                Kenya Christian School for the Deaf (KCSD) provides inclusive e-learning and physical programs for deaf and autistic children. Our mission is to empower every child with the confidence and skills to achieve their full potential.
               </p>
+              <h3 className={styles.subheading}>Our Approach:</h3>
+              <ul className={`${styles.supportList} ${styles.approachList}`}>
+                <li>
+                  <strong>Specialized Curriculum:</strong> We use a research-based CBC, integrating visual strategies and Kenyan Sign Language (KSL).
+                </li>
+                <li>
+                  <strong>Engaging Learning:</strong> Students thrive through passion projects, book clubs, and hands-on exploration.
+                </li>
+                <li>
+                  <strong>Holistic Support:</strong> We equip learners with assistive technology, a digital KSL library, and personalized e-learning accounts.
+                </li>
+              </ul>
             </div>
           </div>
         </div>

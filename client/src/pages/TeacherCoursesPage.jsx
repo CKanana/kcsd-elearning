@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Plus, X, Users, Edit } from 'lucide-react';
 import { authFetch } from '../services/authService';
-import TeacherHeader from '../components/common/TeacherHeader';
+import { getAllCourses, createCourse } from '../services/courseService';
 import Footer from '../components/common/Footer';
 import Card from '../components/common/Card';
 import styles from './TeacherPages.module.css';
@@ -30,10 +30,8 @@ const TeacherCoursesPage = () => {
     async function fetchCourses() {
       setLoading(true);
       try {
-        const res = await authFetch('https://kcsd-elearning.onrender.com/api/courses');
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Failed to fetch courses');
-        setCourses(data);
+        const courseData = await getAllCourses();
+        setCourses(courseData);
       } catch (err) {
         console.error(err);
         setError('Failed to load courses');
@@ -61,12 +59,7 @@ const TeacherCoursesPage = () => {
       formData.append('description', description);
       formData.append('category', category);
       if (image) formData.append('image', image);
-      const res = await authFetch('https://kcsd-elearning.onrender.com/api/courses', {
-        method: 'POST',
-        body: formData
-      });
-      if (!res.ok) throw new Error('Failed to create course');
-      const newCourse = await res.json();
+      const newCourse = await createCourse(formData);
       setCourses(prev => [...prev, newCourse]);
       closeModal();
     } catch (err) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { User, Settings, Shield, Upload, Save } from 'lucide-react';
-import { authFetch } from '../services/authService';
+import { getMe, updateProfile, updateProfilePhoto, changePassword as apiChangePassword } from '../services/authService';
 import TeacherHeader from '../components/common/TeacherHeader';
 import Footer from '../components/common/Footer';
 import styles from './ProfilePage.module.css';
@@ -53,16 +53,10 @@ const TeacherProfilePage = () => {
     }
     setPwChangeLoading(true);
     try {
-      const res = await authFetch('https://kcsd-elearning.onrender.com/api/auth/change-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          currentPassword: passwordFields.currentPassword,
-          newPassword: passwordFields.newPassword
-        })
+      await apiChangePassword({
+        currentPassword: passwordFields.currentPassword,
+        newPassword: passwordFields.newPassword
       });
-      if (!res.ok) throw new Error('Failed to change password');
-      setPwChangeMsg('Password changed successfully!');
       setPasswordFields({ currentPassword: '', newPassword: '', confirmNewPassword: '' });
     } catch (err) {
       setPwChangeMsg(err.message);
@@ -76,9 +70,7 @@ const TeacherProfilePage = () => {
     async function fetchProfile() {
       setLoading(true);
       try {
-        const res = await authFetch('https://kcsd-elearning.onrender.com/api/auth/me');
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Failed to fetch profile');
+        const data = await getMe();
         setProfileData({ ...defaultProfile, ...data.user });
       } catch (err) {
         console.error(err);
@@ -96,12 +88,7 @@ const TeacherProfilePage = () => {
     const formData = new FormData();
     formData.append('profilePhoto', file);
     try {
-      const res = await authFetch('https://kcsd-elearning.onrender.com/api/auth/profile/photo', {
-        method: 'POST',
-        body: formData
-      });
-      if (!res.ok) throw new Error('Failed to upload photo');
-      const data = await res.json();
+      const data = await updateProfilePhoto(formData);
       setProfileData(prev => ({ ...prev, profilePhoto: data.profilePhoto }));
       setSuccess('Profile photo updated!');
     } catch (err) {
@@ -114,12 +101,7 @@ const TeacherProfilePage = () => {
     setError('');
     setSuccess('');
     try {
-      const res = await authFetch('https://kcsd-elearning.onrender.com/api/auth/profile', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profileData)
-      });
-      if (!res.ok) throw new Error('Failed to save profile');
+      await updateProfile(profileData);
       setSuccess('Profile updated successfully!');
     } catch (err) {
       setError('Could not save profile.');

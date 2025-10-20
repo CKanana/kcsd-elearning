@@ -438,15 +438,10 @@
 /* Hero Section */
 
 .hero {
-  padding: 5rem 1rem;
+  padding: 3rem 1rem;
   text-align: center;
   background: cornsilk;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
   position: relative;
-  min-height: 480px;
-  transition: background-image 1s cubic-bezier(0.4,0,0.2,1);
 }
 
 .heroGlass {
@@ -464,12 +459,12 @@
 }
 
 .heroContent {
-  max-width: 64rem;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .heroTitle {
-  color: var(--color-primary); /* Orange for section titles */
+  color: var(--color-primary-dark);
   font-size: 2.25rem;
   font-weight: 800; /* Bolder */
   margin-bottom: 1.5rem;
@@ -489,26 +484,6 @@
 }
 
 /* Glassy about card for hero section */
-.aboutCardGlass {
-  background: cornsilk;
-  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.10);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 1rem;
-  padding: 2rem;
-  color: var(--color-primary-darkest);
-  margin: 2rem auto 0 auto;
-  max-width: 700px;
-  transition: box-shadow 0.4s cubic-bezier(0.4,0,0.2,1), transform 0.4s cubic-bezier(0.4,0,0.2,1);
-  cursor: pointer;
-}
-
-.aboutCardGlass:hover {
-  box-shadow: 0 16px 48px 0 var(--color-primary), 0 2px 24px 0 rgba(31,38,135,0.10);
-  transform: translateY(-24px) scale(1.07);
-  z-index: 2;
-}
-/* Orange text for Mission and Vision card content */
 .missionVisionText {
   color: var(--color-primary-darker);
 }
@@ -524,15 +499,14 @@
 
 .aboutCardGlass {
   background: rgba(255,255,255,0.55);
+  background: rgba(255, 255, 255, 0.85); /* More opaque for readability */
   box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border-radius: 1rem;
-  padding: 2rem;
+  padding: 1.5rem;
   color: var(--color-text-dark);
-  margin: 2rem auto 0 auto;
-  max-width: 700px;
+  margin: 0;
   transition: box-shadow 0.4s cubic-bezier(0.4,0,0.2,1), transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  text-align: left;
 }
 
 .aboutTitle {
@@ -546,6 +520,65 @@
   font-size: 1.125rem;
   line-height: 1.75;
   margin-bottom: 1.5rem;
+}
+
+.subheading {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.supportList {
+  text-align: left;
+  padding-left: 20px;
+  margin-top: -1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.approachList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.heroImageContainer {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.heroImage {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: auto;
+  transition: opacity 1s ease-in-out;
+  animation: fadeIn 1.5s;
+}
+
+.heroTextContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  align-self: stretch; /* Makes the container fill the grid cell height */
 }
 
 .videoCard {
@@ -931,6 +964,20 @@
   .contactGrid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .heroGrid {
+    grid-template-columns: 1.2fr 1fr; /* Make image on left larger */
+    gap: 3rem;
+  }
+
+  .heroTextContainer {
+    gap: 0; /* Remove gap since there's only one card */
+  }
+
+  .aboutCardGlass {
+    padding: 2.5rem;
+  }
+
 }
 
 @media (min-width: 1024px) {

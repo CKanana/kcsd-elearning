@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import { setToken } from '../services/authService';
+import { setToken, login as apiLogin, register as apiRegister } from '../services/authService';
 import styles from './Auth.module.css'; // Use the same styles as the main Auth page
 
 export default function TeacherAuth() {
@@ -26,13 +26,7 @@ export default function TeacherAuth() {
     try {
       if (isLogin) {
         // Login logic
-        const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: form.email, password: form.password, role: 'teacher' })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Invalid credentials');
+        const data = await apiLogin(form.email, form.password, 'teacher');
         if (data.token) {
           setToken(data.token);
         }
@@ -40,13 +34,7 @@ export default function TeacherAuth() {
         navigate('/teacher-dashboard');
       } else {
         // Signup logic
-        const res = await fetch('https://kcsd-elearning.onrender.com/api/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...form, role: 'teacher' })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Signup failed');
+        await apiRegister({ ...form, role: 'teacher' });
         setSuccess('Account created! Please check your email to verify your account before logging in.');
         setIsLogin(true);
         setForm({ email: '', password: '', name: '' }); // Reset form

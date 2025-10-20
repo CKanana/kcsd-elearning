@@ -4,6 +4,7 @@ import { X, Star, BarChart, Hand, Sigma, Code, PlayCircle, List } from 'lucide-r
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import styles from './CoursesPage.module.css';
+import { getAllCourses, enrollInCourse } from '../services/courseService';
 
 // No more dummy data. Courses will be fetched from backend.
 
@@ -23,17 +24,17 @@ const CoursesPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  fetch('https://kcsd-elearning.onrender.com/api/courses', {
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    const fetchCourses = async () => {
+      try {
+        const data = await getAllCourses();
+        setCourses(data);
+      } catch (error) {
+        console.error("Failed to fetch courses", error);
+      } finally {
+        setLoading(false);
+      }
     }
-  })
-    .then(res => res.json())
-    .then(data => {
-      setCourses(data);
-      setLoading(false);
-    })
-    .catch(() => setLoading(false));
+    fetchCourses();
   }, []);
 
   const filteredCourses = selectedCategory === 'all'
@@ -45,16 +46,7 @@ const CoursesPage = () => {
 
   const handleEnroll = async (courseId) => {
     try {
-      const res = await fetch(`https://kcsd-elearning.onrender.com/api/courses/${courseId}/enroll`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.message || 'Failed to enroll');
-      }
+      await enrollInCourse(courseId);
       alert('Successfully enrolled!');
     } catch (err) {
       alert(`Error: ${err.message}`);

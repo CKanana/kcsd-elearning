@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { authFetch } from '../services/authService';
+import { getMe, updateProfile, updateProfilePhoto } from '../services/authService';
 import { AuthContext } from '../context/AuthContext';
 import { User, Settings, Shield, Upload, Save, Eye, Contrast, Languages } from 'lucide-react';
 import Header from '../components/common/Header';
@@ -44,9 +44,7 @@ const ProfilePage = () => {
       setLoading(true);
       setError("");
       try {
-        const res = await authFetch("https://kcsd-elearning.onrender.com/api/auth/me");
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || "Failed to fetch profile info");
+        const data = await getMe();
         setProfileData({
           ...defaultProfile,
           ...data.user,
@@ -100,12 +98,7 @@ const ProfilePage = () => {
     const formData = new FormData();
     formData.append('profilePhoto', file);
     try {
-      const res = await authFetch('https://kcsd-elearning.onrender.com/api/auth/profile/photo', {
-        method: 'POST',
-        body: formData
-      });
-      if (!res.ok) throw new Error('Failed to upload photo');
-      const data = await res.json();
+      const data = await updateProfilePhoto(formData);
       setProfileData(prev => ({ ...prev, profilePhoto: data.profilePhoto }));
       updateUser({ ...user, profilePhoto: data.profilePhoto });
       setSuccess('Profile photo updated!');
@@ -119,12 +112,7 @@ const ProfilePage = () => {
     setError('');
     setSuccess('');
     try {
-      const res = await authFetch('https://kcsd-elearning.onrender.com/api/auth/profile', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profileData)
-      });
-      if (!res.ok) throw new Error('Failed to save profile');
+      await updateProfile(profileData);
       updateUser(profileData);
       setSuccess('Profile updated successfully!');
     } catch (err) {

@@ -1,4 +1,4 @@
-te// AuthContext placeholder
+// AuthContext placeholder
 
 import React, { createContext, useState, useEffect } from 'react';
 

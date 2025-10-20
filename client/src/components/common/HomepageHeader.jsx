@@ -21,7 +21,7 @@ const HomepageHeader = () => {
               <Link to="/" className={styles.navLink}>Home</Link>
               <Link to="/about" className={styles.navLink}>About</Link>
               <a href="/#programs" className={styles.navLink}>Programs</a>
-              <Link to="/gallery" className={styles.navLink}>Gallery</Link>
+              <Link to="/resources" className={styles.navLink}>Resources</Link>
               <a href="/#contact" className={styles.navLink}>Contact</a>
             </div>
             <div className={styles.navActionButtons}>
@@ -46,7 +46,7 @@ const HomepageHeader = () => {
             <Link to="/" className={styles.mobileNavLink} onClick={toggleMenu}>Home</Link>
             <Link to="/about" className={styles.mobileNavLink} onClick={toggleMenu}>About</Link>
             <a href="/#programs" className={styles.mobileNavLink} onClick={toggleMenu}>Programs</a>
-            <Link to="/gallery" className={styles.mobileNavLink} onClick={toggleMenu}>Gallery</Link>
+            <Link to="/resources" className={styles.mobileNavLink} onClick={toggleMenu}>Resources</Link>
             <a href="/#contact" className={styles.mobileNavLink} onClick={toggleMenu}>Contact</a>
             <Link to="/auth" className={styles.mobileLoginButton} onClick={toggleMenu}>
               <User size={16} />

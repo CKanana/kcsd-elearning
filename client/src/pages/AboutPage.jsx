@@ -114,8 +114,22 @@ const AboutPage = () => {
           <div className={styles.container}>
             <h2 className={styles.sectionTitle}>Our Journey</h2>
             <div className={styles.storyContent}>
-              <p>Founded to meet the unique needs of deaf learners, KCSD fosters an inclusive environment where children excel academically and socially. We also lead innovation in assistive technology and digital content, supporting early sign language acquisition to give every child the tools they need to succeed.</p>
-              <p>Since its establishment, KCSD has transformed the lives of countless deaf children, breaking barriers to education and opportunity. By creating a culture of inclusion and innovation, the school has become a beacon of hope for families across Kenya.</p>
+              <h3>🌟 Empowering Every Child to Thrive</h3>
+              <p>
+                Kenya Christian School for the Deaf (KCSD) is a trailblazing e-learning institution dedicated to transforming the lives of children with hearing impairments and autism. Our mission is to provide a nurturing, faith-based educational experience that equips every deaf, hard-of-hearing, and autistic learner with the academic foundation, life skills, and confidence to flourish.
+              </p>
+              <h3>💡 Inclusive Learning for Unique Minds</h3>
+              <p>
+                KCSD was founded to meet the diverse needs of children who learn differently. We embrace each child's individuality, creating a safe and inclusive environment where they can grow intellectually, socially, and emotionally. Our curriculum is tailored to support both deaf and autistic learners, integrating visual learning, structured routines, and sensory-friendly approaches.
+              </p>
+              <h3>Innovating Through Technology and Communication</h3>
+              <p>
+                We are leaders in assistive technology and accessible digital content, ensuring that every child has the tools they need to succeed. From early sign language acquisition to interactive learning platforms, our programs are designed to foster communication, independence, and self-expression.
+              </p>
+              <h3> Building a Community of Support</h3>
+              <p>
+                At KCSD, education goes beyond the classroom. We work closely with families, caregivers, and specialists to provide holistic guidance and support. Together, we champion the potential of every child. celebrating their strengths and helping them overcome challenges with compassion and care.
+              </p>
             </div>
           </div>
         </section>

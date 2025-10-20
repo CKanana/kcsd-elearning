@@ -9,7 +9,7 @@ import StudentAuth from './pages/StudentAuth';
 import TeacherAuth from './pages/TeacherAuth';
 import StudentDashboard from './components/dashboard/StudentDashboard';
 import AboutPage from './pages/AboutPage';
-import GalleryPage from './pages/GalleryPage';
+import ResourcesPage from './pages/ResourcesPage';
 import CoursesPage from './pages/CoursesPage';
 import ProfilePage from './pages/ProfilePage';
 import AssessmentCenterPage from './pages/AssessmentCenterPage';
@@ -20,8 +20,8 @@ import TeacherProfilePage from './pages/TeacherProfilePage';
 import TeacherCoursesPage from './pages/TeacherCoursesPage';
 import TeacherAssessmentsPage from './pages/TeacherAssessmentsPage';
 import TeacherManageCoursePage from './pages/TeacherManageCoursePage';
-import StudentCoursePage from './pages/StudentCoursePage';
-import { ForgotPassword, ResetPassword } from './pages/PasswordReset';
+import StudentCoursePage from './pages/StudentCoursePage'; // This was already correct
+import PasswordRecoveryPage from './pages/PasswordRecoveryPage';
 import authStyles from './pages/Auth.module.css';
 
 function App() {
@@ -50,20 +50,8 @@ function App() {
             </div>
           </div>
         } />
-        <Route path="/forgot-password" element={
-          <div className={authStyles.authPage}>
-            <div className={authStyles.authContainer}>
-              <ForgotPassword />
-            </div>
-          </div>
-        } />
-        <Route path="/reset-password" element={
-          <div className={authStyles.authPage}>
-            <div className={authStyles.authContainer}>
-              <ResetPassword />
-            </div>
-          </div>
-        } />
+        <Route path="/forgot-password" element={<PasswordRecoveryPage />} />
+        <Route path="/reset-password" element={<PasswordRecoveryPage />} />
         <Route path="/verify-account" element={
           <div className={authStyles.authPage}>
             <div className={authStyles.authContainer}>
@@ -74,7 +62,7 @@ function App() {
         } />
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/gallery" element={<GalleryPage />} />
+        <Route path="/resources" element={<ResourcesPage />} />
         <Route path="/courses" element={<CoursesPage />} />
         <Route path="/assessments" element={<AssessmentCenterPage />} />
         <Route path="/my-courses" element={<MyCoursesPage />} />

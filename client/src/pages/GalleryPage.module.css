@@ -112,6 +112,7 @@
   background: var(--color-primary, #ea580c);
   color: white;
   padding: 4rem 1rem;
+  transition: background-image 1s cubic-bezier(.4,0,.2,1);
   text-align: center;
 }
 
@@ -242,4 +243,109 @@
 .closeButton:hover {
   opacity: 1;
   transform: scale(1.1);
+}
+
+/* Slideshow styles */
+.slideshowContainer {
+  position: relative;
+  max-width: 900px;
+  margin: auto;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  aspect-ratio: 16 / 9;
+}
+
+.slideshowImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: fadeIn 1.5s;
+}
+
+/* Resource Hub Styles */
+.lightBackground {
+  background-color: #fff;
+}
+
+.sectionTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--color-primary-dark);
+  margin-bottom: 3rem;
+}
+
+.resourceCategoryTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary-darker);
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #ffedd5;
+}
+
+.resourceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.resourceCard {
+  background-color: #fff7ed;
+  border: 1px solid #ffe6c7;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.resourceCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+.resourceIcon {
+  color: var(--color-primary);
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 1rem auto;
+}
+
+.resourceTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.resourceDescription {
+  color: #6b7280;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  flex-grow: 1;
+  margin-bottom: 1.5rem;
+}
+
+.resourceButton {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: auto; /* Pushes button to the bottom */
+}
+
+.resourceButton:hover {
+  background-color: var(--color-primary-dark);
 }
