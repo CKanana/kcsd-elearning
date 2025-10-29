@@ -75,8 +75,6 @@ const AuthPage = ({ userType }) => {
       // This makes the transition feel smoother, especially if the destination page is heavy.
       setTimeout(() => {
         if (data.user.role === 'teacher') navigate('/teacher-dashboard');
-        else if (data.user.role === 'student') navigate('/student-auth');
-        else navigate('/student-auth'); // Default to student auth
         else if (data.user.role === 'student') navigate('/student-dashboard'); // Corrected route
         else navigate('/student-dashboard'); // Default to student dashboard
       }, 100);
