@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Award, Clock, FileCheck, Percent } from 'lucide-react';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
@@ -12,19 +12,20 @@ const AssessmentCenterPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    async function fetchAssessments() {
-      setLoading(true);
-      setError("");
-      try {
-        // Use the centralized getMe service
-        const data = await getMe();
-        setAssessments(data.assignments || []);
-      } catch (err) {
-        setError(err.message);
-      }
-      setLoading(false);
+  const fetchAssessments = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      // Use the centralized getMe service
+      const data = await getMe();
+      setAssessments(data.assignments || []);
+    } catch (err) {
+      setError(err.message);
     }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
     fetchAssessments();
   }, []);
 
@@ -60,7 +61,12 @@ const AssessmentCenterPage = () => {
               <h2 className={styles.sectionTitle}>Pending Assessments</h2>
               <div className={styles.assessmentGrid}>
                 {loading ? (
-                  <div>Loading assessments...</div>
+                  <p>Loading assessments...</p>
+                ) : error ? (
+                  <div>
+                    <p style={{ color: 'red' }}>Error: {error}</p>
+                    <button onClick={fetchAssessments} className={styles.startButton}>Retry</button>
+                  </div>
                 ) : pendingAssessments.length === 0 ? (
                   <div>No pending assessments found.</div>
                 ) : pendingAssessments.map(assessment => (
@@ -83,7 +89,12 @@ const AssessmentCenterPage = () => {
               <h2 className={styles.sectionTitle}>Completed Assessments</h2>
               <div className={styles.assessmentGrid}>
                 {loading ? (
-                  <div>Loading assessments...</div>
+                  <p>Loading assessments...</p>
+                ) : error ? (
+                  <div>
+                    <p style={{ color: 'red' }}>Error: {error}</p>
+                    <button onClick={fetchAssessments} className={styles.startButton}>Retry</button>
+                  </div>
                 ) : completedAssessments.length === 0 ? (
                   <div>No completed assessments found.</div>
                 ) : completedAssessments.map(assessment => (
