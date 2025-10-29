@@ -129,7 +129,7 @@ const ProfilePage = () => {
     : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(profileData.name || 'User');
 
   const renderContent = () => {
-    switch (activeTab) {
+    if (profileData) { switch (activeTab) {
       case 'profile':
         return (
           <div className={styles.formSection}>
@@ -247,7 +247,8 @@ const ProfilePage = () => {
         );
       default:
         return null;
-    }
+    }}
+    return null;
   };
 
   return (
