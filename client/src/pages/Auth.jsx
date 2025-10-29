@@ -17,10 +17,14 @@ const AuthPage = ({ userType }) => {
 
   const switchToLogin = () => {
     setIsLoginView(true);
+    setError('');
+    setLoading(false);
   };
 
   const switchToSignup = () => {
     setIsLoginView(false);
+    setError('');
+    setLoading(false);
   };
 
   // State for form fields, errors, and navigation
@@ -97,22 +101,18 @@ const AuthPage = ({ userType }) => {
             <form className={styles.form} onSubmit={handleSignup}>
               <div className={styles.inputGroup}>
                 <User className={styles.inputIcon} size={20} />
-                <input type="text" name="name" placeholder="Full Name" className={styles.input} value={form.name} onChange={handleInput} required autoComplete="name" />
                 <input type="text" name="name" placeholder="Full Name" className={styles.input} value={form.name} onChange={handleInput} required />
               </div>
               <div className={styles.inputGroup}>
                 <BookUser className={styles.inputIcon} size={20} />
-                <input type="text" name="studentId" placeholder="Student ID" className={styles.input} value={form.studentId} onChange={handleInput} required autoComplete="username" />
                 <input type="text" name="studentId" placeholder="Student ID" className={styles.input} value={form.studentId} onChange={handleInput} required />
               </div>
               <div className={styles.inputGroup}>
                 <Mail className={styles.inputIcon} size={20} />
-                <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required autoComplete="email" />
                 <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required />
               </div>
               <div className={styles.inputGroup}>
                 <Calendar className={styles.inputIcon} size={20} />
-                <input type="date" name="dob" placeholder="Date of Birth" className={styles.input} value={form.dob} onChange={handleInput} required autoComplete="bday" />
                 <input type="date" name="dob" placeholder="Date of Birth" className={styles.input} value={form.dob} onChange={handleInput} required />
               </div>
               <div className={styles.inputGroup}>
@@ -163,12 +163,7 @@ const AuthPage = ({ userType }) => {
               </div>
               {success && (
                 <div style={{ color: 'green', marginBottom: 8, textAlign: 'center' }}>
-                  {success}<br />
-                  <span>
-                    <Link to="/verify-account?token=" style={{ color: '#007bff' }}>
-                      Click here to verify your account
-                    </Link> (or check your email)
-                  </span>
+                  {success}
                 </div>
               )}
               {error && <div style={{ color: 'red', marginBottom: 8, textAlign: 'center' }}>{error}</div>}
@@ -189,7 +184,6 @@ const AuthPage = ({ userType }) => {
           <form className={styles.form} onSubmit={handleLogin}>
             <div className={styles.inputGroup}>
               <Mail className={styles.inputIcon} size={20} />
-              <input type="email" name="email" placeholder="Email or Student ID" className={styles.input} value={form.email} onChange={handleInput} required autoComplete="email username" />
               <input type="email" name="email" placeholder="Email or Student ID" className={styles.input} value={form.email} onChange={handleInput} required />
             </div>
             <div className={styles.inputGroup}>
@@ -236,12 +230,10 @@ const AuthPage = ({ userType }) => {
             <form className={styles.form} onSubmit={handleSignup}>
               <div className={styles.inputGroup}>
                 <User className={styles.inputIcon} size={20} />
-                <input type="text" name="name" placeholder="Full Name" className={styles.input} value={form.name} onChange={handleInput} required autoComplete="name" />
                 <input type="text" name="name" placeholder="Full Name" className={styles.input} value={form.name} onChange={handleInput} required />
               </div>
               <div className={styles.inputGroup}>
                 <Mail className={styles.inputIcon} size={20} />
-                <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required autoComplete="email" />
                 <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required />
               </div>
               <div className={styles.inputGroup}>
@@ -309,7 +301,6 @@ const AuthPage = ({ userType }) => {
           <form className={styles.form} onSubmit={handleLogin}>
             <div className={styles.inputGroup}>
               <Mail className={styles.inputIcon} size={20} />
-              <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required autoComplete="email" />
               <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required />
             </div>
             <div className={styles.inputGroup}>

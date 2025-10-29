@@ -5,30 +5,30 @@ import React, { createContext, useState, useEffect } from 'react';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-	const [token, setToken] = useState(sessionStorage.getItem('token'));
-	const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')));
+	const [token, setToken] = useState(localStorage.getItem('token'));
+	const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
 	useEffect(() => {
-		setToken(sessionStorage.getItem('token'));
-		setUser(JSON.parse(sessionStorage.getItem('user')));
+		setToken(localStorage.getItem('token'));
+		setUser(JSON.parse(localStorage.getItem('user')));
 	}, []);
 
 	const login = (token, userData) => {
-		sessionStorage.setItem('token', token);
-		sessionStorage.setItem('user', JSON.stringify(userData));
+		localStorage.setItem('token', token);
+		localStorage.setItem('user', JSON.stringify(userData));
 		setToken(token);
 		setUser(userData);
 	};
 
 	const logout = () => {
-		sessionStorage.removeItem('token');
-		sessionStorage.removeItem('user');
+		localStorage.removeItem('token');
+		localStorage.removeItem('user');
 		setToken(null);
 		setUser(null);
 	};
 
 	const updateUser = (newUser) => {
-		sessionStorage.setItem('user', JSON.stringify(newUser));
+		localStorage.setItem('user', JSON.stringify(newUser));
 		setUser(newUser);
 	};
 

@@ -3,6 +3,7 @@ import { Award, Clock, FileCheck, Percent } from 'lucide-react';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import Card from '../components/common/Card';
+import { getMe } from '../services/authService';
 import styles from './AssessmentCenterPage.module.css';
 
 
@@ -16,12 +17,8 @@ const AssessmentCenterPage = () => {
       setLoading(true);
       setError("");
       try {
-        const token = localStorage.getItem('jwt');
-        const res = await fetch("https://kcsd-elearning.onrender.com/api/auth/me", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || "Failed to fetch assessment info");
+        // Use the centralized getMe service
+        const data = await getMe();
         setAssessments(data.assignments || []);
       } catch (err) {
         setError(err.message);

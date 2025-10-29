@@ -336,4 +336,18 @@ router.post('/resend-verification', async (req, res) => {
   }
 });
 
+// Contact form submission route
+router.post('/contact', async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ message: 'Email is required.' });
+  }
+
+  // For now, we'll just log it. In a real application, you would
+  // save this to a database or send a notification.
+  console.log(`New contact form submission from: ${email}`);
+
+  res.status(200).json({ message: 'Submission successful!' });
+});
+
 module.exports = router;
