@@ -10,6 +10,7 @@ import TeacherAuth from './pages/TeacherAuth';
 import StudentDashboard from './components/dashboard/StudentDashboard';
 import AboutPage from './pages/AboutPage';
 import ResourcesPage from './pages/ResourcesPage';
+import ProgramsPage from './pages/ProgramsPage';
 import CoursesPage from './pages/CoursesPage';
 import ProfilePage from './pages/ProfilePage';
 import AssessmentCenterPage from './pages/AssessmentCenterPage';
@@ -62,7 +63,8 @@ function App() {
         } />
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/resources" element={<ResourcesPage />} />
+  <Route path="/resources" element={<ResourcesPage />} />
+  <Route path="/programs" element={<ProgramsPage />} />
         <Route path="/courses" element={<CoursesPage />} />
         <Route path="/assessments" element={<AssessmentCenterPage />} />
         <Route path="/my-courses" element={<MyCoursesPage />} />

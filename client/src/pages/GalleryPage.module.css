@@ -304,8 +304,9 @@
 }
 
 .resourceCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+  transform: translateY(-16px) scale(1.05);
+  box-shadow: 0 20px 48px 0 var(--color-primary), 0 4px 32px 0 rgba(31,38,135,0.12);
+  z-index: 2;
 }
 
 .resourceIcon {

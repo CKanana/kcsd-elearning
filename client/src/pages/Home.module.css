@@ -7,45 +7,60 @@
 }
 
 /* Vocational Training Photo Row Styles */
-.vocationalPhotoRow {
-  display: flex;
-  flex-wrap: wrap;
+.vocationalGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  justify-content: center;
-  margin: 2rem 0 1rem 0;
+  margin-top: 3rem;
 }
-.vocationalPhotoItem {
-  background: rgba(255,255,255,0.8);
+
+.vocationalCard {
+  background: cornsilk;
   border-radius: 1rem;
-  box-shadow: 0 2px 12px 0 rgba(31,38,135,0.10);
   overflow: hidden;
+  box-shadow: 0 4px 16px rgba(234, 88, 12, 0.1);
+  border: 1px solid #f3f4f6;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 220px;
-  padding: 1rem;
-  transition: box-shadow 0.3s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.vocationalPhotoItem:hover {
-  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18), 0 4px 32px 0 rgba(249,115,22,0.12);
+
+.vocationalCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 24px rgba(234, 88, 12, 0.2);
 }
-.vocationalPhotoImg {
+
+.vocationalCardImg {
   width: 100%;
-  height: 140px;
+  height: 200px;
   object-fit: cover;
-  border-radius: 0.75rem;
-  margin-bottom: 0.75rem;
-  box-shadow: none;
-  transition: transform 0.2s;
+  transition: transform 0.3s ease;
 }
-.vocationalPhotoItem:hover .vocationalPhotoImg {
-  transform: scale(1.04);
+
+.vocationalCard:hover .vocationalCardImg {
+  transform: scale(1.05);
 }
-.vocationalPhotoText {
-  font-size: 1.1rem;
+
+.vocationalCardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin: 1.25rem 1.5rem 0.5rem;
+}
+
+.vocationalCardDesc {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #4b5563;
+  margin: 0 1.5rem;
+  flex-grow: 1;
+}
+
+.vocationalCardLink {
+  margin: 1rem 1.5rem 1.5rem;
+  color: var(--color-primary);
   font-weight: 600;
-  color: var(--color-primary-darkest);
-  text-align: center;
+  text-decoration: none;
 }
 
 .featuredItem {
@@ -153,6 +168,7 @@
   border-radius: 1rem;
   padding: 2rem;
   color: var(--color-text-dark);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
   display: flex;
@@ -161,8 +177,8 @@
 }
 
 .programCard:hover {
-  transform: translateY(-10px) scale(1.03);
-  box-shadow: 0 15px 30px rgba(249, 115, 22, 0.3); /* More prominent orange shadow */
+  transform: translateY(-16px) scale(1.05);
+  box-shadow: 0 20px 48px 0 var(--color-primary), 0 4px 32px 0 rgba(31,38,135,0.12);
   z-index: 2;
 }
 
@@ -907,12 +923,12 @@
 }
 
 .teamCard {
-  background: #fff;
+  background: cornsilk;
   color: var(--color-text-dark);
   border-radius: 1rem;
   padding: 2rem 1.5rem;
   text-align: center;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 10px 15px -3px rgba(234, 88, 12, 0.1), 0 4px 6px -4px rgba(234, 88, 12, 0.1);
   border: 1px solid rgba(0,0,0,0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
@@ -922,7 +938,7 @@
 
 .teamCard:hover {
   transform: translateY(-10px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 25px -5px rgba(234, 88, 12, 0.2), 0 8px 10px -6px rgba(234, 88, 12, 0.2);
 }
 
 .teamImage {

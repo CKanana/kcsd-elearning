@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, Mail, MapPin, User, Hand, Facebook, Twitter, Instagram, Youtube, Users, Cpu, Handshake, Briefcase, Linkedin, BookOpen, Laptop, HeartHandshake, Wrench, Sparkles, Megaphone } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, Instagram, Youtube, Users, Cpu, Handshake, Briefcase, Linkedin, BookOpen, Laptop, HeartHandshake, Wrench, Sparkles, Megaphone } from 'lucide-react';
 import HomepageHeader from '../components/common/HomepageHeader';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
@@ -183,44 +183,6 @@ const KCSDHomepage = () => {
         </div>
       </section>
 
-      {/* Core Values */}
-      <section className={styles.section}>
-        <div className={`${styles.containerMd} ${styles.textCenter}`}>
-          <h2 className={styles.sectionTitle}>Core Values</h2>
-          <div className={styles.grid4}>
-            {[
-              {
-                value: 'Inclusion',
-                desc: 'We embrace diversity and ensure every child feels welcome and valued.'
-              },
-              {
-                value: 'Empowerment',
-                desc: 'We equip students with skills and confidence to reach their full potential.'
-              },
-              {
-                value: 'Excellence',
-                desc: 'We strive for the highest standards in education and personal growth.'
-              },
-              {
-                value: 'Community',
-                desc: 'We foster a supportive environment where everyone collaborates and thrives.'
-              }
-            ].map((item, index) => (
-              <div key={index} className={styles.valueCardFlip}>
-                <div className={styles.valueCardInner}>
-                  <div className={styles.valueCardFront}>
-                    <h3>{item.value}</h3>
-                  </div>
-                  <div className={styles.valueCardBack}>
-                    <p>{item.desc}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Programs & Services */}
       <section id="programs" className={`${styles.section} ${styles.sectionOrange}`}>
         <div className={styles.container}>
@@ -248,39 +210,37 @@ const KCSDHomepage = () => {
             <p className={styles.sectionCaption}>
               Our vocational training program equips students with practical skills for independent living and employment. Explore how KCSD empowers deaf youth through hands-on learning in real-world trades.
             </p>
-            <div className={styles.vocationalPhotoRow}>
-              <div className={styles.vocationalPhotoItem}>
-                <img src="/assets/images/coding.jpg" alt="Vocational training - coding" className={styles.vocationalPhotoImg} />
-                <p className={styles.vocationalPhotoText}>Coding</p>
-              </div>
-              <div className={styles.vocationalPhotoItem}>
-                <img src="/assets/images/tailoring.jpg" alt="Vocational training - tailoring" className={styles.vocationalPhotoImg} />
-                <p className={styles.vocationalPhotoText}>Tailoring</p>
-              </div>
-              <div className={styles.vocationalPhotoItem}>
-                <img src="/assets/images/computer-literacy.jpg" alt="Vocational training - computer literacy" className={styles.vocationalPhotoImg} />
-                <p className={styles.vocationalPhotoText}>Computer Literacy</p>
-              </div>
+            <div className={styles.vocationalGrid}>
+              {[
+                {
+                  img: "/assets/images/coding.jpg",
+                  title: "Coding & Web Development",
+                  desc: "Students learn to build websites and applications, opening doors to careers in the tech industry.",
+                  link: "/programs#vocational"
+                },
+                {
+                  img: "/assets/images/tailoring.jpg",
+                  title: "Tailoring & Fashion Design",
+                  desc: "From design to finished garment, students master the art of tailoring, fostering creativity and entrepreneurship.",
+                  link: "/programs#vocational"
+                },
+                {
+                  img: "/assets/images/computer-literacy.jpg",
+                  title: "ICT & Computer Literacy",
+                  desc: "We provide essential digital skills, ensuring every student is confident and capable in today's digital world.",
+                  link: "/programs#vocational"
+                }
+              ].map((item, index) => (
+                <div key={index} className={styles.vocationalCard}>
+                  <img src={item.img} alt={item.title} className={styles.vocationalCardImg} />
+                  <h3 className={styles.vocationalCardTitle}>{item.title}</h3>
+                  <p className={styles.vocationalCardDesc}>{item.desc}</p>
+                  <a href={item.link} className={styles.vocationalCardLink}>Learn More →</a>
+                </div>
+              ))}
             </div>
           </div>
         </section>
-
-      {/* Future Goals */}
-      <section className={styles.section}>
-        <div className={styles.containerMd}>
-          <h2 className={styles.sectionTitle}>Our Vision for the Future</h2>
-          <div className={styles.grid2}>
-            {futureGoals.map((goal, index) => (
-              <div key={index} className={styles.goalCard}>
-                <div className={styles.goalIconWrapper}>
-                  <goal.icon size={24} />
-                </div>
-                <p>{goal.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Contact Us */}
       <section id="contact" className={`${styles.section} ${styles.sectionOrange}`}>

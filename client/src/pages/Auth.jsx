@@ -71,9 +71,15 @@ const AuthPage = ({ userType }) => {
       if (data.token) {
         login(data.token, data.user);
       }
-      if (data.user.role === 'teacher') navigate('/teacher-dashboard');
-      else if (data.user.role === 'student') navigate('/student-dashboard');
-      else navigate('/student-dashboard'); // Default to student dashboard
+      // Use a small timeout to allow the UI to update before navigating.
+      // This makes the transition feel smoother, especially if the destination page is heavy.
+      setTimeout(() => {
+        if (data.user.role === 'teacher') navigate('/teacher-dashboard');
+        else if (data.user.role === 'student') navigate('/student-auth');
+        else navigate('/student-auth'); // Default to student auth
+        else if (data.user.role === 'student') navigate('/student-dashboard'); // Corrected route
+        else navigate('/student-dashboard'); // Default to student dashboard
+      }, 100);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -93,18 +99,22 @@ const AuthPage = ({ userType }) => {
             <form className={styles.form} onSubmit={handleSignup}>
               <div className={styles.inputGroup}>
                 <User className={styles.inputIcon} size={20} />
+                <input type="text" name="name" placeholder="Full Name" className={styles.input} value={form.name} onChange={handleInput} required autoComplete="name" />
                 <input type="text" name="name" placeholder="Full Name" className={styles.input} value={form.name} onChange={handleInput} required />
               </div>
               <div className={styles.inputGroup}>
                 <BookUser className={styles.inputIcon} size={20} />
+                <input type="text" name="studentId" placeholder="Student ID" className={styles.input} value={form.studentId} onChange={handleInput} required autoComplete="username" />
                 <input type="text" name="studentId" placeholder="Student ID" className={styles.input} value={form.studentId} onChange={handleInput} required />
               </div>
               <div className={styles.inputGroup}>
                 <Mail className={styles.inputIcon} size={20} />
+                <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required autoComplete="email" />
                 <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required />
               </div>
               <div className={styles.inputGroup}>
                 <Calendar className={styles.inputIcon} size={20} />
+                <input type="date" name="dob" placeholder="Date of Birth" className={styles.input} value={form.dob} onChange={handleInput} required autoComplete="bday" />
                 <input type="date" name="dob" placeholder="Date of Birth" className={styles.input} value={form.dob} onChange={handleInput} required />
               </div>
               <div className={styles.inputGroup}>
@@ -118,6 +128,7 @@ const AuthPage = ({ userType }) => {
                   onChange={handleInput}
                   required
                   style={{ paddingRight: '2.5rem' }}
+                  autoComplete="new-password"
                 />
                 <span
                   className={styles.eyeIcon}
@@ -140,6 +151,7 @@ const AuthPage = ({ userType }) => {
                   onChange={handleInput}
                   required
                   style={{ paddingRight: '2.5rem' }}
+                  autoComplete="new-password"
                 />
                 <span
                   className={styles.eyeIcon}
@@ -179,6 +191,7 @@ const AuthPage = ({ userType }) => {
           <form className={styles.form} onSubmit={handleLogin}>
             <div className={styles.inputGroup}>
               <Mail className={styles.inputIcon} size={20} />
+              <input type="email" name="email" placeholder="Email or Student ID" className={styles.input} value={form.email} onChange={handleInput} required autoComplete="email username" />
               <input type="email" name="email" placeholder="Email or Student ID" className={styles.input} value={form.email} onChange={handleInput} required />
             </div>
             <div className={styles.inputGroup}>
@@ -191,6 +204,7 @@ const AuthPage = ({ userType }) => {
                 value={form.password} onChange={handleInput}
                 required
                 style={{ paddingRight: '2.5rem' }}
+                autoComplete="current-password"
               />
               <span
                 className={styles.eyeIcon}
@@ -224,10 +238,12 @@ const AuthPage = ({ userType }) => {
             <form className={styles.form} onSubmit={handleSignup}>
               <div className={styles.inputGroup}>
                 <User className={styles.inputIcon} size={20} />
+                <input type="text" name="name" placeholder="Full Name" className={styles.input} value={form.name} onChange={handleInput} required autoComplete="name" />
                 <input type="text" name="name" placeholder="Full Name" className={styles.input} value={form.name} onChange={handleInput} required />
               </div>
               <div className={styles.inputGroup}>
                 <Mail className={styles.inputIcon} size={20} />
+                <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required autoComplete="email" />
                 <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required />
               </div>
               <div className={styles.inputGroup}>
@@ -241,6 +257,7 @@ const AuthPage = ({ userType }) => {
                   onChange={handleInput}
                   required
                   style={{ paddingRight: '2.5rem' }}
+                  autoComplete="new-password"
                 />
                 <span
                   className={styles.eyeIcon}
@@ -263,6 +280,7 @@ const AuthPage = ({ userType }) => {
                   onChange={handleInput}
                   required
                   style={{ paddingRight: '2.5rem' }}
+                  autoComplete="new-password"
                 />
                 <span
                   className={styles.eyeIcon}
@@ -293,6 +311,7 @@ const AuthPage = ({ userType }) => {
           <form className={styles.form} onSubmit={handleLogin}>
             <div className={styles.inputGroup}>
               <Mail className={styles.inputIcon} size={20} />
+              <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required autoComplete="email" />
               <input type="email" name="email" placeholder="Email Address" className={styles.input} value={form.email} onChange={handleInput} required />
             </div>
             <div className={styles.inputGroup}>
@@ -305,6 +324,7 @@ const AuthPage = ({ userType }) => {
                 value={form.password} onChange={handleInput}
                 required
                 style={{ paddingRight: '2.5rem' }}
+                autoComplete="current-password"
               />
               <span
                 className={styles.eyeIcon}

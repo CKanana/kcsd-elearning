@@ -59,6 +59,10 @@ app.use('/api/profile', profileRoutes);
 const courseRoutes = require('./courses');
 app.use('/api/courses', courseRoutes);
 
+// Contact form route
+const contactRoutes = require('./contact');
+app.use('/api/contact', contactRoutes);
+
 const assignmentRoutes = require('./assignments');
 app.use('/api/assignments', assignmentRoutes);
 
