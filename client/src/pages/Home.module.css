@@ -47,31 +47,45 @@
   color: var(--color-primary-darkest);
   text-align: center;
 }
+
 .featuredItem {
-  background: rgba(255,255,255,0.7);
+  position: relative;
+  aspect-ratio: 1 / 1;
   border-radius: 1rem;
-  box-shadow: 0 2px 12px 0 rgba(31,38,135,0.10);
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  transition: box-shadow 0.3s;
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .featuredItem:hover {
-  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18), 0 4px 32px 0 rgba(249,115,22,0.12);
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(234, 88, 12, 0.2);
 }
-.featuredImg {
+
+.featuredItem img {
   width: 100%;
-  height: 160px;
+  height: 100%;
   object-fit: cover;
-  border-radius: 0.75rem;
-  box-shadow: none;
-  transition: transform 0.2s;
+  transition: transform 0.4s ease;
 }
-.featuredItem:hover .featuredImg {
-  transform: scale(1.04);
+
+.featuredItem:hover img {
+  transform: scale(1.1);
 }
+
+.itemOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 1rem;
+  color: white;
+  font-weight: 600;
+}
+
 .sectionCaption {
   font-size: 1.15rem;
   color: var(--color-primary-darkest);
@@ -134,21 +148,21 @@
 }
 
 .programCard {
-  background: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: cornsilk;
+  border: 1px solid #ffe6c7;
   border-radius: 1rem;
   padding: 2rem;
   color: var(--color-text-dark);
-  border: 1px solid rgba(255, 255, 255, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .programCard:hover {
-  transform: translateY(-16px) scale(1.05);
-  box-shadow: 0 20px 48px 0 var(--color-primary), 0 4px 32px 0 rgba(31,38,135,0.12);
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 15px 30px rgba(249, 115, 22, 0.3); /* More prominent orange shadow */
   z-index: 2;
 }
 
@@ -438,36 +452,52 @@
 /* Hero Section */
 
 .hero {
-  padding: 3rem 1rem;
-  text-align: center;
-  background: cornsilk;
-  position: relative;
-}
-
-.heroGlass {
-  background: none;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border-radius: 0;
   padding: 0;
-  min-height: unset;
-  display: block;
-  flex-direction: unset;
-  align-items: unset;
-  justify-content: unset;
+  text-align: center;
+  position: relative; /* Needed for overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  color: white;
+  overflow: hidden;
 }
 
-.heroContent {
-  max-width: 1200px;
+.heroBackgroundImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  animation: fadeIn 1.5s;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); /* Lighter overlay */
+  z-index: 2;
+}
+
+.heroTextWrapper {
+  position: relative;
+  z-index: 3;
+  max-width: 800px;
   margin: 0 auto;
+  padding: 2rem;
+  text-align: left;
 }
 
 .heroTitle {
-  color: var(--color-primary-dark);
-  font-size: 2.25rem;
-  font-weight: 800; /* Bolder */
-  margin-bottom: 1.5rem;
+  color: white;
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
   line-height: 1.2;
   animation: fadeInDown 1s ease-out;
 }
@@ -482,6 +512,26 @@
     transform: translateY(0);
   }
 }
+
+.heroTitleSmall {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: white;
+  opacity: 0.95;
+  margin-bottom: 1.5rem;
+  border-left: 3px solid var(--color-primary-light);
+  padding-left: 1rem;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
 
 /* Glassy about card for hero section */
 .missionVisionText {
@@ -498,87 +548,58 @@
 }
 
 .aboutCardGlass {
-  background: rgba(255,255,255,0.55);
-  background: rgba(255, 255, 255, 0.85); /* More opaque for readability */
-  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+  /* This class is no longer used in the hero section, styles moved to heroContent */
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 1rem;
-  padding: 1.5rem;
-  color: var(--color-text-dark);
-  margin: 0;
-  transition: box-shadow 0.4s cubic-bezier(0.4,0,0.2,1), transform 0.4s cubic-bezier(0.4,0,0.2,1);
-  text-align: left;
 }
 
 .aboutTitle {
   font-size: 1.875rem;
-  font-weight: bold;
+  font-weight: 800;
   margin-bottom: 1rem;
-  color: var(--color-primary-dark);
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
-.aboutText {
+.heroDescription {
   font-size: 1.125rem;
   line-height: 1.75;
   margin-bottom: 1.5rem;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 
-.subheading {
+.heroApproachList {
   font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--color-primary-dark);
+  font-weight: 700; /* Bolder */
+  color: white;
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
 }
 
-.supportList {
+.heroApproachList {
   text-align: left;
-  padding-left: 20px;
-  margin-top: -1rem;
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-.approachList {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   padding-left: 0;
   list-style-type: none;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 .heroGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
+  /* No longer used for hero section */
 }
 
 .heroImageContainer {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.heroImage {
-  width: 100%;
-  max-width: 100%;
-  height: 100%;
-  object-fit: cover;
-  image-rendering: auto;
-  transition: opacity 1s ease-in-out;
-  animation: fadeIn 1.5s;
+  /* No longer used for hero section */
 }
 
 .heroTextContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  align-self: stretch; /* Makes the container fill the grid cell height */
+  /* No longer used for hero section */
 }
 
 .videoCard {
@@ -603,12 +624,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.videoPlaceholder iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* Section Styles */
 .section {
-  padding: 2rem 0.5rem;
+  padding: 1.5rem 0.5rem;
   background: cornsilk;
+  margin-top: 2rem; /* Reduced space between sections */
 }
 
 .sectionOrange {
@@ -648,7 +680,7 @@
   font-weight: bold;
   text-align: center;
   color: var(--color-primary-dark);
-  margin-bottom: 3rem;
+  margin-bottom: 2rem; /* Reduced space below section titles */
 }
 
 .card {
@@ -945,15 +977,7 @@
     display: none !important;
   }
   
-  .heroTitle {
-    font-size: 4.5rem; /* Even larger for more impact */
-  }
-  
   .grid2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .grid3 {
     grid-template-columns: repeat(2, 1fr);
   }
   
@@ -965,17 +989,8 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .heroGrid {
-    grid-template-columns: 1.2fr 1fr; /* Make image on left larger */
-    gap: 3rem;
-  }
-
-  .heroTextContainer {
-    gap: 0; /* Remove gap since there's only one card */
-  }
-
-  .aboutCardGlass {
-    padding: 2.5rem;
+  .grid3 {
+    grid-template-columns: repeat(2, 1fr);
   }
 
 }

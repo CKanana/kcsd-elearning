@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, Mail, MapPin, User, Hand, Facebook, Twitter, Instagram, Youtube, Users, Cpu, Handshake, Briefcase, Linkedin } from 'lucide-react';
+import { Phone, Mail, MapPin, User, Hand, Facebook, Twitter, Instagram, Youtube, Users, Cpu, Handshake, Briefcase, Linkedin, BookOpen, Laptop, HeartHandshake, Wrench, Sparkles, Megaphone } from 'lucide-react';
 import HomepageHeader from '../components/common/HomepageHeader';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
@@ -54,6 +54,39 @@ const teamMembers = [
   }
 ];
 
+const programs = [
+  {
+    icon: BookOpen,
+    title: 'Academic Education',
+    description: 'Robust curriculum tailored for deaf learners with specialized KSL instruction.'
+  },
+  {
+    icon: Laptop,
+    title: 'E-Learning & ICT',
+    description: 'Online sign language training programs for adults and children.'
+  },
+  {
+    icon: HeartHandshake,
+    title: 'Assistive Technology',
+    description: 'Development of devices and digital content for early sign language acquisition.'
+  },
+  {
+    icon: Wrench,
+    title: 'Vocational Training',
+    description: 'Hands-on training to prepare students for careers and self-reliance.'
+  },
+  {
+    icon: Sparkles,
+    title: 'Spiritual Development',
+    description: 'Christian-based teaching to nurture moral and ethical values.'
+  },
+  {
+    icon: Megaphone,
+    title: 'Advocacy & Awareness',
+    description: 'Promoting inclusion and understanding through community outreach.'
+  }
+];
+
 const KCSDHomepage = () => {
   const [heroIndex, setHeroIndex] = useState(0);
 
@@ -61,7 +94,7 @@ const KCSDHomepage = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setHeroIndex((prev) => (prev + 1) % heroImages.length);
-    }, 3500);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -83,33 +116,22 @@ const KCSDHomepage = () => {
 
       {/* Hero Section */}
       <section className={styles.hero}>
-        <div className={styles.heroGrid}>
-          {/* Left Column: Image Slideshow */}
-          <div className={styles.heroImageContainer}>
-            <img src={heroImages[heroIndex]} alt="KCSD students in class" className={styles.heroImage} />
-          </div>
-
-          {/* Right Column: Text Content */}
-          <div className={styles.heroTextContainer}>
-            <div className={styles.aboutCardGlass}>
-              <h2 className={styles.aboutTitle}>Empowering Every Learner</h2>
-              <p className={styles.aboutText}>
-                Kenya Christian School for the Deaf (KCSD) provides inclusive e-learning and physical programs for deaf and autistic children. Our mission is to empower every child with the confidence and skills to achieve their full potential.
-              </p>
-              <h3 className={styles.subheading}>Our Approach:</h3>
-              <ul className={`${styles.supportList} ${styles.approachList}`}>
-                <li>
-                  <strong>Specialized Curriculum:</strong> We use a research-based CBC, integrating visual strategies and Kenyan Sign Language (KSL).
-                </li>
-                <li>
-                  <strong>Engaging Learning:</strong> Students thrive through passion projects, book clubs, and hands-on exploration.
-                </li>
-                <li>
-                  <strong>Holistic Support:</strong> We equip learners with assistive technology, a digital KSL library, and personalized e-learning accounts.
-                </li>
-              </ul>
-            </div>
-          </div>
+        <img src={heroImages[heroIndex]} alt="KCSD students in class" className={styles.heroBackgroundImage} />
+        <div className={styles.heroOverlay}></div>
+        <div className={styles.heroTextWrapper}>
+          <h1 className={styles.heroTitle}>
+            <span className={styles.heroTitleSmall}>Welcome to</span>
+            KCSD E-Learning
+          </h1>
+          <h2 className={styles.heroSubtitle}>Empowering Every Learner</h2>
+          <p className={styles.heroDescription}>
+            At Kenya Christian School for the Deaf, we provide inclusive e-learning and physical programs for deaf and autistic children. Our mission is to unlock each child's potential, building the confidence and skills they need to thrive through:
+          </p>
+          <ul className={styles.heroApproachList}>
+            <li>Specialized, visual-first curriculum (CBC & KSL)</li>
+            <li>Engaging, hands-on passion projects</li>
+            <li>Personalized holistic support with assistive technology</li>
+          </ul>
         </div>
       </section>
 
@@ -128,8 +150,10 @@ const KCSDHomepage = () => {
               { src: '/assets/images/media4.webp', label: 'Media 4' }
             ].map((item, idx) => (
               <div key={item.src} className={styles.featuredItem}>
-                <img src={item.src} alt={item.label} className={styles.featuredImg} />
-                <div className={styles.featuredLabel}>{item.label}</div>
+                <img src={item.src} alt={item.label} />
+                <div className={styles.itemOverlay}>
+                  <span>{item.label}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -147,8 +171,6 @@ const KCSDHomepage = () => {
             <div className={styles.videoPlaceholder}>
               {/* YouTube Embed (user provided) */}
               <iframe
-                width="360"
-                height="215"
                 src="https://www.youtube.com/embed/PJoo3gh03KI?si=LnU9nOwLl_0xQE3n"
                 title="YouTube video player"
                 frameBorder="0"
@@ -204,42 +226,17 @@ const KCSDHomepage = () => {
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>Programs & Services</h2>
           <div className={styles.grid3}>
-            <div className={styles.aboutCardGlass}>
-              <h3 className={styles.programCardTitle}>Academic Education</h3>
-              <p className={styles.missionVisionText}>
-                Robust curriculum tailored for deaf learners with specialized KSL instruction.
-              </p>
-            </div>
-            <div className={styles.aboutCardGlass}>
-              <h3 className={styles.programCardTitle}>E-Learning & ICT</h3>
-              <p className={styles.missionVisionText}>
-                Online sign language training programs for adults and children.
-              </p>
-            </div>
-            <div className={styles.aboutCardGlass}>
-              <h3 className={styles.programCardTitle}>Assistive Technology</h3>
-              <p className={styles.missionVisionText}>
-                Development of devices and digital content for early sign language acquisition.
-              </p>
-            </div>
-            <div className={styles.aboutCardGlass}>
-              <h3 className={styles.programCardTitle}>Vocational Training</h3>
-              <p className={styles.missionVisionText}>
-                Hands-on training to prepare students for careers and self-reliance.
-              </p>
-            </div>
-            <div className={styles.aboutCardGlass}>
-              <h3 className={styles.programCardTitle}>Spiritual Development</h3>
-              <p className={styles.missionVisionText}>
-                Christian-based teaching to nurture moral and ethical values.
-              </p>
-            </div>
-            <div className={styles.aboutCardGlass}>
-              <h3 className={styles.programCardTitle}>Advocacy & Awareness</h3>
-              <p className={styles.missionVisionText}>
-                Promoting inclusion and understanding through community outreach.
-              </p>
-            </div>
+            {programs.map((program, index) => (
+              <div key={index} className={styles.programCard}>
+                <div className={styles.programIconWrapper}>
+                  <program.icon size={32} />
+                </div>
+                <h3 className={styles.programCardTitle}>{program.title}</h3>
+                <p className={styles.programCardText}>
+                  {program.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
