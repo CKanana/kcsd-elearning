@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import { getMe, updateProfile, updateProfilePhoto } from '../services/authService';
 import { AuthContext } from '../context/AuthContext';
 import { User, Settings, Shield, Upload, Save, Eye, Contrast, Languages } from 'lucide-react';
@@ -256,23 +256,32 @@ const ProfilePage = () => {
       <main className={styles.main}>
         <div className={styles.container}>
           <h1 className={styles.pageTitle}>Profile & Settings</h1>
-          <div className={styles.settingsLayout}>
-            <aside className={styles.sidebar}>
-              <button className={activeTab === 'profile' ? styles.active : ''} onClick={() => setActiveTab('profile')}><User /> Profile</button>
-              <button className={activeTab === 'preferences' ? styles.active : ''} onClick={() => setActiveTab('preferences')}><Settings /> Preferences</button>
-              <button className={activeTab === 'security' ? styles.active : ''} onClick={() => setActiveTab('security')}><Shield /> Security</button>
-            </aside>
-            <div className={styles.content}>
-              {renderContent()}
-              <div className={styles.formActions}>
-                {error && <div className={styles.error}>{error}</div>}
-                {success && <div className={styles.success}>{success}</div>}
-                <button className={styles.saveButton} onClick={handleSave} disabled={saving}>
-                  <Save size={16} /> {saving ? 'Saving...' : 'Save Changes'}
-                </button>
+          {loading ? (
+            <p>Loading profile...</p>
+          ) : error ? (
+            <div>
+              <p style={{ color: 'red' }}>Error: {error}</p>
+              <button onClick={fetchProfile} className={styles.saveButton}>Retry</button>
+            </div>
+          ) : (
+            <div className={styles.settingsLayout}>
+              <aside className={styles.sidebar}>
+                <button className={activeTab === 'profile' ? styles.active : ''} onClick={() => setActiveTab('profile')}><User /> Profile</button>
+                <button className={activeTab === 'preferences' ? styles.active : ''} onClick={() => setActiveTab('preferences')}><Settings /> Preferences</button>
+                <button className={activeTab === 'security' ? styles.active : ''} onClick={() => setActiveTab('security')}><Shield /> Security</button>
+              </aside>
+              <div className={styles.content}>
+                {renderContent()}
+                <div className={styles.formActions}>
+                  {error && <div className={styles.error}>{error}</div>}
+                  {success && <div className={styles.success}>{success}</div>}
+                  <button className={styles.saveButton} onClick={handleSave} disabled={saving}>
+                    <Save size={16} /> {saving ? 'Saving...' : 'Save Changes'}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </main>
       <Footer />
