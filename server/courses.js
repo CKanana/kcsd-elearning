@@ -1,3 +1,13 @@
+// server/courses.js
+// Course routes for KCSD eLearning
+
+const express = require('express');
+const router = express.Router();
+const authenticate = require('./authMiddleware');
+const Course = require('./Course');
+const User = require('./User');
+const upload = require('./uploadMiddleware');
+
 // Upload a unit to a course (teacher only)
 router.post('/:id/units', authenticate, upload.single('unitFile'), async (req, res) => {
   try {
@@ -17,6 +27,7 @@ router.post('/:id/units', authenticate, upload.single('unitFile'), async (req, r
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 // Public route: get all courses (no authentication required)
 router.get('/public', async (req, res) => {
   try {
@@ -26,19 +37,8 @@ router.get('/public', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-// server/courses.js
-// Course routes for KCSD eLearning
-
-const express = require('express');
-const router = express.Router();
-const authenticate = require('./authMiddleware');
-const Course = require('./Course');
-const User = require('./User');
-
 // Create a new course (teacher only, with image upload)
-const upload = require('./uploadMiddleware');
 router.post('/', authenticate, (req, res, next) => {
-  // If multipart/form-data, use upload middleware
   if (req.headers['content-type'] && req.headers['content-type'].includes('multipart/form-data')) {
     upload.single('image')(req, res, next);
   } else {
