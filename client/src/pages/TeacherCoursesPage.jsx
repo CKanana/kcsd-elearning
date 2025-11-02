@@ -7,6 +7,7 @@ import Footer from '../components/common/Footer';
 import Card from '../components/common/Card';
 import styles from './TeacherPages.module.css';
 import dashboardStyles from '../components/dashboard/Dashboard.module.css';
+import TeacherHeader from '../components/common/TeacherHeader';
 
 
 const TeacherCoursesPage = () => {
