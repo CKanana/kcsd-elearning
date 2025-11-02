@@ -20,9 +20,12 @@ export async function authFetch(url, options = {}) {
     ...(options.headers || {}),
     'Authorization': token ? `Bearer ${token}` : '',
   };
-  // Ensure Content-Type is set for POST/PUT if not already present
-  if (options.body && !options.headers['Content-Type']) {
+  // Only set Content-Type to application/json if body is not FormData
+  if (options.body && !(options.body instanceof FormData) && !options.headers['Content-Type']) {
     options.headers['Content-Type'] = 'application/json';
+  } else if (options.body instanceof FormData) {
+    // Let the browser set the Content-Type (with boundary) for FormData
+    delete options.headers['Content-Type'];
   }
   return fetch(url, options);
 }

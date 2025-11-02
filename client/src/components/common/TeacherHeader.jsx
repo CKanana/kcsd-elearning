@@ -11,7 +11,7 @@ export default function TeacherHeader() {
 
   const handleLogout = () => {
     logout();
-    // Optionally navigate to home or login page
+    window.location.href = '/login';
   };
 
   return (
