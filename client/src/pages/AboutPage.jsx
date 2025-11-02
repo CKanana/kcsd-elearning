@@ -82,14 +82,6 @@ const AboutPage = () => {
     <div className={styles.page}>
       <HomepageHeader />
       <main className={styles.main}>
-        <div className={styles.pageHeader}>
-          <div className={styles.container}>
-            <h1 className={styles.pageTitle}>About KCSD</h1>
-            <p className={styles.pageSubtitle}>
-              Empowering Deaf Children Through Education, Innovation & Inclusion
-            </p>
-          </div>
-        </div>
 
         <section className={styles.section}>
           <div className={styles.container}>

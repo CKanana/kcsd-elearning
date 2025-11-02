@@ -41,14 +41,6 @@ const ProgramsPage = () => (
   <div className={styles.page}>
     <HomepageHeader />
     <main className={styles.main}>
-      <div className={styles.pageHeader}>
-        <div className={styles.container}>
-          <h1 className={styles.pageTitle}>Our Programs</h1>
-          <p className={styles.pageSubtitle}>
-            KCSD offers a range of programs designed to empower deaf and autistic learners, support families, and advance inclusive education in Kenya.
-          </p>
-        </div>
-      </div>
 
       <section className={styles.section}>
         <div className={styles.container}>

@@ -36,28 +36,65 @@ const ResourcesPage = () => {
 
   return (
     <div className={styles.page}>
-  <HomepageHeader />
+      <HomepageHeader />
       <main className={styles.main}>
-        <div className={styles.pageHeader}>
-          <div className={styles.container}>
-            <h1 className={styles.pageTitle}>Resources</h1>
-            <p className={styles.pageSubtitle}>
-              Explore our resources, see our students in action, and get a glimpse into life at KCSD.
-            </p>
-          </div>
-        </div>
-
+        {/* KCSD in Action section moved from Home */}
         <section className={styles.section}>
-          <div className={styles.container}>
-            <h2 style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--color-primary-dark)' }}>Image Gallery</h2>
-            <div className={styles.slideshowContainer}>
-              <img 
-                src={imageSources[currentSlide]} 
-                alt={resourceImages[currentSlide].alt} 
-                className={styles.slideshowImage} />
+          <div className={styles.containerMd}>
+            <h2 className={styles.sectionTitle}>KCSD in Action</h2>
+            <p className={styles.sectionCaption}>
+              KCSD transforms lives by empowering deaf children through education, sign language, and community support. See our students and programs in action below.
+            </p>
+            <div className={styles.featuredGrid}>
+              {[
+                { src: '/assets/images/media1.png', label: 'Media 1' },
+                { src: '/assets/images/media2.png', label: 'Media 2' },
+                { src: '/assets/images/media3.webp', label: 'Media 3' },
+                { src: '/assets/images/media4.webp', label: 'Media 4' }
+              ].map((item, idx) => (
+                <div key={item.src} className={styles.featuredItem}>
+                  <img src={item.src} alt={item.label} />
+                  <div className={styles.itemOverlay}>
+                    <span>{item.label}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
+
+        {/* Resource Download Section */}
+        <section className={styles.section}>
+          <div className={styles.container}>
+            <h2 style={{ textAlign: 'center', color: 'var(--color-primary-dark)', marginBottom: '1rem' }}>
+              Download: "Wonder World" Interactive eBook (Chapters 1-4)
+            </h2>
+            <p style={{ textAlign: 'center', maxWidth: 700, margin: '0 auto 1.5rem', color: '#444' }}>
+              This resource is designed for Deaf and Autistic learners, families, and educators. Each chapter includes sign language, interactive activities, and accessible design. Download the full eBook or individual chapters below.
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
+              <a href="/assets/resources/wonder-world-full.pdf" download className={styles.ctaButton} style={{ minWidth: 200, fontWeight: 600, fontSize: '1.1rem' }}>
+                <Download size={20} style={{ marginRight: 8 }} /> Download Full eBook (PDF)
+              </a>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+              <a href="/assets/resources/wonder-world-ch1.pdf" download className={styles.ctaButton} style={{ minWidth: 180 }}>
+                <Download size={18} style={{ marginRight: 6 }} /> Chapter 1 PDF
+              </a>
+              <a href="/assets/resources/wonder-world-ch2.pdf" download className={styles.ctaButton} style={{ minWidth: 180 }}>
+                <Download size={18} style={{ marginRight: 6 }} /> Chapter 2 PDF
+              </a>
+              <a href="/assets/resources/wonder-world-ch3.pdf" download className={styles.ctaButton} style={{ minWidth: 180 }}>
+                <Download size={18} style={{ marginRight: 6 }} /> Chapter 3 PDF
+              </a>
+              <a href="/assets/resources/wonder-world-ch4.pdf" download className={styles.ctaButton} style={{ minWidth: 180 }}>
+                <Download size={18} style={{ marginRight: 6 }} /> Chapter 4 PDF
+              </a>
+            </div>
+          </div>
+        </section>
+
+
 
         {/* New Resource Hub Section */}
         <section className={`${styles.section} ${styles.lightBackground}`}>

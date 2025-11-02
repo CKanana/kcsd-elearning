@@ -110,7 +110,7 @@ const KCSDHomepage = () => {
   }, []);
 
   return (
-    <div className={styles.body}>
+  <div className={styles.body}>
       {/* Navigation */}
       <HomepageHeader />
 
@@ -135,30 +135,7 @@ const KCSDHomepage = () => {
         </div>
       </section>
 
-      {/* Featured Images Section */}
-      <section className={styles.section}>
-        <div className={styles.containerMd}>
-          <h2 className={styles.sectionTitle}>KCSD in Action</h2>
-          <p className={styles.sectionCaption}>
-            KCSD transforms lives by empowering deaf children through education, sign language, and community support. See our students and programs in action below.
-          </p>
-          <div className={styles.featuredGrid}>
-            {[
-              { src: '/assets/images/media1.png', label: 'Media 1' },
-              { src: '/assets/images/media2.png', label: 'Media 2' },
-              { src: '/assets/images/media3.webp', label: 'Media 3' },
-              { src: '/assets/images/media4.webp', label: 'Media 4' }
-            ].map((item, idx) => (
-              <div key={item.src} className={styles.featuredItem}>
-                <img src={item.src} alt={item.label} />
-                <div className={styles.itemOverlay}>
-                  <span>{item.label}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
 
 
@@ -167,7 +144,9 @@ const KCSDHomepage = () => {
       <section className={styles.section}>
         <div className={styles.containerMd}>
           <div className={styles.videoCard}>
-            <h2 className={styles.videoTitle}>Sign Language Video</h2>
+            <div className={styles.videoTitle} style={{fontWeight:600, fontSize:'1.2rem', color:'#ea580c', marginBottom:'0.5rem'}}>
+              Let's learn about shapes together! Watch and sign along with us.
+            </div>
             <div className={styles.videoPlaceholder}>
               {/* YouTube Embed (user provided) */}
               <iframe
