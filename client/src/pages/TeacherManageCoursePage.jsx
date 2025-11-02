@@ -13,6 +13,7 @@ const TeacherManageCoursePage = () => {
   const [assessments, setAssessments] = useState([]);
   const [students, setStudents] = useState([]);
   const [unitError, setUnitError] = useState('');
+  const [unitSuccess, setUnitSuccess] = useState('');
   const [unitLabel, setUnitLabel] = useState('');
   const [unitFile, setUnitFile] = useState(null);
   const unitFileInputRef = useRef();
@@ -55,6 +56,7 @@ const TeacherManageCoursePage = () => {
   const handleUnitUpload = async (e) => {
     e.preventDefault();
     setUnitError('');
+    setUnitSuccess('');
     if (!unitFile) {
       setUnitError('Please select a file');
       return;
@@ -72,6 +74,8 @@ const TeacherManageCoursePage = () => {
       setCourse(c => ({ ...c, units: [...(c.units || []), data.unit] }));
       setUnitLabel('');
       setUnitFile(null);
+      setUnitSuccess('Unit uploaded successfully!');
+      setTimeout(() => setUnitSuccess(''), 3000);
       if (unitFileInputRef.current) unitFileInputRef.current.value = '';
     } catch (err) {
       setUnitError(err.message);
@@ -148,6 +152,7 @@ const TeacherManageCoursePage = () => {
                   <input type="file" ref={unitFileInputRef} onChange={e => setUnitFile(e.target.files[0])} className={styles.formInput} required />
                   <button type="submit" className={styles.submitButton}>Upload Unit</button>
                   {unitError && <span className={styles.errorText}>{unitError}</span>}
+                  {unitSuccess && <span className={styles.successText}>{unitSuccess}</span>}
                 </form>
                 {course && Array.isArray(course.units) && course.units.length > 0 ? (
                   <ul className={styles.itemList}>

@@ -1,3 +1,31 @@
+// Upload a unit to a course (teacher only)
+router.post('/:id/units', authenticate, upload.single('unitFile'), async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (user.role !== 'teacher') return res.status(403).json({ message: 'Only teachers can upload units' });
+    const course = await Course.findById(req.params.id);
+    if (!course) return res.status(404).json({ message: 'Course not found' });
+    if (String(course.teacher) !== String(user._id)) return res.status(403).json({ message: 'Not your course' });
+    if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
+    const label = req.body.label || req.file.originalname;
+    const filePath = '/uploads/' + req.file.filename;
+    const unit = { label, file: filePath, uploadedAt: new Date() };
+    course.units.push(unit);
+    await course.save();
+    res.status(201).json({ message: 'Unit uploaded', unit });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+// Public route: get all courses (no authentication required)
+router.get('/public', async (req, res) => {
+  try {
+    const courses = await Course.find().populate('teacher', 'name profilePhoto');
+    res.json(courses);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 // server/courses.js
 // Course routes for KCSD eLearning
 

@@ -22,6 +22,7 @@ const CoursesPage = () => {
   const [videoModalUrl, setVideoModalUrl] = useState(null);
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [enrollSuccess, setEnrollSuccess] = useState('');
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -47,9 +48,11 @@ const CoursesPage = () => {
   const handleEnroll = async (courseId) => {
     try {
       await enrollInCourse(courseId);
-      alert('Successfully enrolled!');
+      setEnrollSuccess('Successfully enrolled!');
+      setTimeout(() => setEnrollSuccess(''), 3000);
     } catch (err) {
-      alert(`Error: ${err.message}`);
+      setEnrollSuccess(`Error: ${err.message}`);
+      setTimeout(() => setEnrollSuccess(''), 3000);
     }
   };
 
@@ -85,6 +88,9 @@ const CoursesPage = () => {
         {/* Course Grid */}
         <section className={styles.section}>
           <div className={styles.container}>
+            {enrollSuccess && (
+              <div className={styles.enrollSuccess}>{enrollSuccess}</div>
+            )}
             <div className={styles.courseGrid}>
               {loading ? (
                 <div>Loading courses...</div>

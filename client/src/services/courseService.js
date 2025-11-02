@@ -17,8 +17,13 @@ export const createCourse = async (formData) => {
 };
 
 export const getAllCourses = async () => {
-  const res = await authFetch(`${API_URL}/courses`);
-  return handleResponse(res);
+  // Use public endpoint so all students can see all courses
+  const res = await fetch(`${API_URL}/courses/public`);
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.message || 'An API error occurred');
+  }
+  return res.json();
 };
 
 export const getMyCourses = async () => {
