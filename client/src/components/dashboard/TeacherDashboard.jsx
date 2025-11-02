@@ -86,21 +86,21 @@ export default function TeacherDashboard() {
           <section className={styles.section}>
             <div className={styles.grid}>
               <Link to="/teacher-courses" className={styles.cardLink}>
-                <Card title="My Courses" icon={<BookOpen size={32} />}>
+                <Card title="My Courses" icon={<BookOpen color="#2563eb" size={32} />}>
                   <p>Manage your course content, view enrollment, and create new courses.</p>
-                  <span className={styles.viewAllLink}>Go to Courses <ArrowRight size={16} /></span>
+                  <span className={styles.viewAllLink}>Go to Courses <ArrowRight color="#2563eb" size={16} /></span>
                 </Card>
               </Link>
               <Link to="/teacher/all-students" className={styles.cardLink}>
-                <Card title="My Students" icon={<Users size={32} />}>
+                <Card title="My Students" icon={<Users color="#2563eb" size={32} />}>
                   <p>View student profiles, track their progress, and communicate with them.</p>
-                  <span className={styles.viewAllLink}>Go to Students <ArrowRight size={16} /></span>
+                  <span className={styles.viewAllLink}>Go to Students <ArrowRight color="#2563eb" size={16} /></span>
                 </Card>
               </Link>
               <Link to="/teacher-assessments" className={styles.cardLink}>
-                <Card title="Assessments" icon={<ClipboardList size={32} />}>
+                <Card title="Assessments" icon={<ClipboardList color="#2563eb" size={32} />}>
                   <p>Create new quizzes and assignments, and grade student submissions.</p>
-                  <span className={styles.viewAllLink}>Go to Assessments <ArrowRight size={16} /></span>
+                  <span className={styles.viewAllLink}>Go to Assessments <ArrowRight color="#2563eb" size={16} /></span>
                 </Card>
               </Link>
             </div>

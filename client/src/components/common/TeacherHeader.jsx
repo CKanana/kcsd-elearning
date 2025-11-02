@@ -48,7 +48,7 @@ export default function TeacherHeader() {
             <Link to="/teacher-dashboard" className={styles.mobileNavLink} onClick={toggleMenu}>Dashboard</Link>
             <Link to="/teacher-courses" className={styles.mobileNavLink} onClick={toggleMenu}>Courses</Link>
             <Link to="/teacher-profile" className={styles.mobileNavLink} onClick={toggleMenu}>Profile</Link>
-            <button onClick={handleLogout} className={styles.mobileLoginButton} onClick={toggleMenu}>
+            <button onClick={() => { handleLogout(); toggleMenu(); }} className={styles.mobileLoginButton}>
               <User size={16} />
               Logout
             </button>
