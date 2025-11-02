@@ -4,7 +4,7 @@ import { X, Star, BarChart, Hand, Sigma, Code, PlayCircle, List } from 'lucide-r
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import styles from './CoursesPage.module.css';
-import { getAllCourses, enrollInCourse } from '../services/courseService';
+import { getAllCourses, enrollInCourse, unenrollFromCourse } from '../services/courseService';
 
 // No more dummy data. Courses will be fetched from backend.
 
@@ -23,12 +23,25 @@ const CoursesPage = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [enrollSuccess, setEnrollSuccess] = useState('');
+  const [enrolledCourseIds, setEnrolledCourseIds] = useState([]);
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
         const data = await getAllCourses();
         setCourses(data);
+        // Try to get enrolled courses for the current user (if logged in)
+        const token = localStorage.getItem('token');
+        if (token) {
+          const res = await fetch('https://kcsd-elearning.onrender.com/api/my-courses', {
+            headers: { 'Authorization': `Bearer ${token}` },
+            credentials: 'include',
+          });
+          if (res.ok) {
+            const myCourses = await res.json();
+            setEnrolledCourseIds(myCourses.map(c => c._id));
+          }
+        }
       } catch (error) {
         console.error("Failed to fetch courses", error);
       } finally {
@@ -49,6 +62,19 @@ const CoursesPage = () => {
     try {
       await enrollInCourse(courseId);
       setEnrollSuccess('Successfully enrolled!');
+      setEnrolledCourseIds(ids => [...ids, courseId]);
+      setTimeout(() => setEnrollSuccess(''), 3000);
+    } catch (err) {
+      setEnrollSuccess(`Error: ${err.message}`);
+      setTimeout(() => setEnrollSuccess(''), 3000);
+    }
+  };
+
+  const handleUnenroll = async (courseId) => {
+    try {
+      await unenrollFromCourse(courseId);
+      setEnrollSuccess('You have been unenrolled from this course.');
+      setEnrolledCourseIds(ids => ids.filter(id => id !== courseId));
       setTimeout(() => setEnrollSuccess(''), 3000);
     } catch (err) {
       setEnrollSuccess(`Error: ${err.message}`);
@@ -111,7 +137,14 @@ const CoursesPage = () => {
                     </div>
                     <p className={styles.courseDescription}>{course.description}</p>
                     <p className={styles.category}><strong>Category:</strong> {course.category || 'General'}</p>
-                    <button onClick={() => handleEnroll(course._id)} className={styles.enrollButton}>Enroll Now</button>
+                    {enrolledCourseIds.includes(course._id) ? (
+                      <>
+                        <Link to={`/student/courses/${course._id}`} className={styles.viewButton}>View Course</Link>
+                        <button onClick={() => handleUnenroll(course._id)} className={styles.unenrollButton}>Unenroll</button>
+                      </>
+                    ) : (
+                      <button onClick={() => handleEnroll(course._id)} className={styles.enrollButton}>Enroll Now</button>
+                    )}
                   </div>
                 </div>
               ))}
