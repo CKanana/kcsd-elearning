@@ -2,11 +2,11 @@
 // Course routes for KCSD eLearning
 
 const express = require('express');
-const router = express.Router();
 const authenticate = require('./authMiddleware');
 const Course = require('./Course');
 const User = require('./User');
 const upload = require('./uploadMiddleware');
+const router = express.Router();
 
 // Upload a unit to a course (teacher only)
 router.post('/:id/units', authenticate, upload.single('unitFile'), async (req, res) => {
