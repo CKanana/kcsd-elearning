@@ -9,14 +9,18 @@ const StudentCoursePage = () => {
   const [course, setCourse] = useState(null);
   const [assessments, setAssessments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [enrolledStudents, setEnrolledStudents] = useState([]);
 
   useEffect(() => {
-  fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}`, { credentials: 'include' })
-    .then(res => res.json())
-    .then(setCourse);
-  fetch(`https://kcsd-elearning.onrender.com/api/assessments?course=${id}`, { credentials: 'include' })
-    .then(res => res.json())
-    .then(setAssessments);
+    fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}`, { credentials: 'include' })
+      .then(res => res.json())
+      .then(setCourse);
+    fetch(`https://kcsd-elearning.onrender.com/api/assessments?course=${id}`, { credentials: 'include' })
+      .then(res => res.json())
+      .then(setAssessments);
+    fetch(`https://kcsd-elearning.onrender.com/api/courses/${id}/students`, { credentials: 'include' })
+      .then(res => res.json())
+      .then(setEnrolledStudents);
     setLoading(false);
   }, [id]);
 
@@ -61,6 +65,15 @@ const StudentCoursePage = () => {
             </button>
             {unenrollSuccess && <div style={{ color: 'green', marginBottom: 8 }}>{unenrollSuccess}</div>}
             {unenrollError && <div style={{ color: 'red', marginBottom: 8 }}>{unenrollError}</div>}
+            <h2>Enrolled Students</h2>
+            {enrolledStudents && enrolledStudents.length > 0 ? (
+              <ul>
+                {enrolledStudents.map(s => (
+                  <li key={s._id}>{s.name} ({s.email})</li>
+                ))}
+              </ul>
+            ) : <div>No students enrolled yet.</div>}
+
             <h2>Units</h2>
             {Array.isArray(course.units) && course.units.length > 0 ? (
               <ul>
