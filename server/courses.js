@@ -7,18 +7,28 @@ const authenticate = require('./authMiddleware');
 const Course = require('./Course');
 const User = require('./User');
 
-// Create a new course (teacher only)
-router.post('/', authenticate, async (req, res) => {
+// Create a new course (teacher only, with image upload)
+const upload = require('./uploadMiddleware');
+router.post('/', authenticate, (req, res, next) => {
+  // If multipart/form-data, use upload middleware
+  if (req.headers['content-type'] && req.headers['content-type'].includes('multipart/form-data')) {
+    upload.single('image')(req, res, next);
+  } else {
+    next();
+  }
+}, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
     if (user.role !== 'teacher') return res.status(403).json({ message: 'Only teachers can create courses' });
     const { title, description, category, image } = req.body;
+    // If file uploaded, use its path; else use image from body (for JSON requests)
+    const imagePath = req.file ? '/uploads/' + req.file.filename : image;
     const course = new Course({
       title,
       description,
       category,
       teacher: user._id,
-      image
+      image: imagePath
     });
     await course.save();
     res.status(201).json(course);
