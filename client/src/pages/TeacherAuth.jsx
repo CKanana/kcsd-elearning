@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+ import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import { setToken, login as apiLogin, register as apiRegister } from '../services/authService';
+import { login as apiLogin, register as apiRegister } from '../services/authService';
+import { AuthContext } from '../context/AuthContext';
 import styles from './Auth.module.css'; // Use the same styles as the main Auth page
 
 export default function TeacherAuth() {
@@ -17,6 +18,8 @@ export default function TeacherAuth() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const { login } = useContext(AuthContext);
+
   const handleSubmit = async e => {
     e.preventDefault();
     setError('');
@@ -27,11 +30,15 @@ export default function TeacherAuth() {
       if (isLogin) {
         // Login logic
         const data = await apiLogin(form.email, form.password, 'teacher');
+        // Use AuthContext login to store token and user
         if (data.token) {
-          setToken(data.token);
+          login(data.token, data.user);
         }
-        setSuccess('Login successful!');
-        navigate('/teacher-dashboard');
+        // Use a small timeout to allow the UI to update before navigating.
+        // This makes the transition feel smoother, especially if the destination page is heavy.
+        setTimeout(() => {
+          navigate('/teacher-dashboard');
+        }, 100);
       } else {
         // Signup logic
         await apiRegister({ ...form, role: 'teacher' });

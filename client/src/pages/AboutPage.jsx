@@ -10,14 +10,14 @@ const teamMembers = [
     role: 'Executive Director',
   image: '/assets/images/Dr-Okello-Director.jpg',
     bio: 'Founder and Executive Director of KCSD. Passionate about inclusive education and sign-language access, Dr Ngiela leads KCSD’s programmes to empower deaf children and women through education, rehabilitation, and community outreach. Contact: kenyachristianschoolforthedeaf@yahoo.com',
-    linkedin: '',
+  linkedin: 'https://www.linkedin.com/in/dr-charles-ngiela-50651576/?original_referer=https%3A%2F%2Fwww%2Egoogle%2Ecom%2F&originalSubdomain=ke',
     extra: 'sportanddev +1'
   },
   {
     name: 'Lavender A. Okello',
     role: 'Programme Manager',
   image: '/assets/images/Lavender-Owuor-Manager.jpg',
-    bio: 'Programme/Operations manager at KCSD. Coordinates outreach, donor reporting and the delivery of learning and rehabilitation services for deaf children and women. (Please confirm official title.)',
+  bio: 'Programme/Operations manager at KCSD. Coordinates outreach, donor reporting and the delivery of learning and rehabilitation services for deaf children and women.',
     linkedin: '',
     extra: 'GlobalGiving'
   }

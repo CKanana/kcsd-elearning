@@ -4,18 +4,21 @@ const { sendMail } = require('./mailer');
 
 // POST /api/contact
 router.post('/', async (req, res) => {
-  const { email } = req.body;
-  if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+  const { name, email, question } = req.body;
+  if (!name || !email || !question) {
+    return res.status(400).json({ message: 'Name, email, and message are required.' });
+  }
+  if (!/^\S+@\S+\.\S+$/.test(email)) {
     return res.status(400).json({ message: 'A valid email is required.' });
   }
   try {
     await sendMail({
-      to: [process.env.EMAIL_FROM || 'info@kcsd-abi.or.ke', 'kenyachristianschoolforthedeaf@yahoo.com'],
-      subject: 'New KCSD Program Inquiry',
-      text: `A new user is interested in KCSD programs. Email: ${email}`,
-      html: `<p>A new user is interested in KCSD programs.</p><p><strong>Email:</strong> ${email}</p>`
+  to: ['info@kcsd.or.ke'],
+      subject: 'New KCSD Contact Form Submission',
+      text: `New contact form submission:\nName: ${name}\nEmail: ${email}\nMessage: ${question}`,
+      html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong> ${question}</p>`
     });
-    res.json({ message: 'Thank you! We will contact you soon.' });
+    res.json({ message: 'Thank you for contacting us! We will get back to you soon.' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to send email. Please try again later.' });
   }

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import HomepageHeader from '../components/common/HomepageHeader';
 import Footer from '../components/common/Footer';
-import { EBOOK_CHAPTERS } from './constants.ts';
+import { EBOOK_CHAPTERS } from './constants';
+import { EbookChapter, EbookPage } from './types';
 
-
-const PageCard = ({ page }) => {
+const PageCard: React.FC<{ page: EbookPage }> = ({ page }) => {
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 mb-6 border-l-4 border-brand-yellow">
       <h4 className="text-xl font-bold text-brand-dark mb-3">
@@ -45,7 +45,7 @@ const PageCard = ({ page }) => {
   );
 };
 
-const ChapterView = ({ chapter }) => {
+const ChapterView: React.FC<{ chapter: EbookChapter }> = ({ chapter }) => {
   return (
     <div className="bg-slate-50 p-6 sm:p-8 rounded-xl shadow-inner">
       <div className="mb-8">
@@ -58,7 +58,7 @@ const ChapterView = ({ chapter }) => {
         {chapter.pages.map(page => <PageCard key={page.id} page={page} />)}
       </div>
 
-  <div className="mt-10 text-center bg-white text-black p-6 rounded-lg shadow-lg border border-gray-200">
+      <div className="mt-10 text-center bg-brand-teal text-white p-6 rounded-lg shadow-lg">
         <h4 className="text-2xl font-bold">End-of-Chapter Summary</h4>
         <ul className="mt-4 space-y-1">
           {chapter.summary.map((item, index) => <li key={index}>✅ {item}</li>)}
@@ -73,14 +73,14 @@ const ChapterView = ({ chapter }) => {
 };
 
 const ResourcesPage = () => {
-  const [selectedChapter, setSelectedChapter] = useState(EBOOK_CHAPTERS[0]);
+  const [selectedChapter, setSelectedChapter] = useState<EbookChapter>(EBOOK_CHAPTERS[0]);
 
   return (
     <>
       <HomepageHeader />
-    <div className="container mx-auto px-6 py-16 text-black">
+      <div className="container mx-auto px-6 py-16">
         <div className="text-center mb-12">
-      <h1 className="text-4xl md:text-5xl font-extrabold text-black">eBook Resources</h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold text-brand-dark">eBook Resources</h1>
           <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
             An interactive, child-friendly eBook designed for learning and engagement.
           </p>

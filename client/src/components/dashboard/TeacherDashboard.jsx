@@ -1,47 +1,86 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import TeacherHeader from '../common/TeacherHeader';
 import Footer from '../common/Footer';
 import Card from '../common/Card';
 import styles from './Dashboard.module.css';
 import { BookOpen, Users, ClipboardList, ArrowRight } from 'lucide-react';
+import { authFetch } from '../../services/authService';
 
 export default function TeacherDashboard() {
   const [user, setUser] = useState(null);
+  const [courses, setCourses] = useState([]);
+  const [assignments, setAssignments] = useState([]);
+  const [schedule, setSchedule] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    fetch('https://kcsd-elearning.onrender.com/api/auth/me', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(res => res.json())
-      .then(data => {
+    async function fetchDashboardData() {
+      try {
+        const res = await authFetch('https://kcsd-elearning.onrender.com/api/auth/me');
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Failed to fetch dashboard data');
         setUser(data.user);
+        setCourses(data.courses || []);
+        setAssignments(data.assignments || []);
+        setSchedule(data.schedule || []);
+      } catch (err) {
+        console.error('Error fetching dashboard data:', err);
+        setUser(null);
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    }
+    fetchDashboardData();
   }, []);
 
   // Compute the correct photo URL for display
   const photoUrl = user && user.profilePhoto
     ? user.profilePhoto.startsWith('http')
       ? user.profilePhoto
-  : `https://kcsd-elearning.onrender.com${user.profilePhoto}`
+      : `https://kcsd-elearning.onrender.com${user.profilePhoto}`
     : '/assets/images/teacher-profile.jpg';
+
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <TeacherHeader />
+        <main className={styles.main}>
+          <div className={styles.container}>
+            <div className={styles.loading}>Loading your dashboard...</div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className={styles.page}>
+        <TeacherHeader />
+        <main className={styles.main}>
+          <div className={styles.container}>
+            <div className={styles.loading}>Unable to load your dashboard. Please log in again.</div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
       <TeacherHeader />
       <main className={styles.main}>
         <div className={styles.container}>
-          <section className={styles.section}>
-            <div className={styles.welcomeHeader}>
-              <img src={photoUrl} alt="Profile" className={styles.profileImage} />
-              <div>
-                <h1 className={styles.welcomeTitle}>Welcome, {user ? user.name : 'Teacher'}!</h1>
-                <div className={styles.welcomeSubtitle}>Manage your courses, students, and assignments.</div>
-              </div>
+          {/* Welcome and Profile */}
+          <section className={`${styles.welcomeHeader} ${styles.section}`}>
+            <img src={photoUrl} alt="Profile" className={styles.profileImage} />
+            <div>
+              <h1 className={styles.welcomeTitle}>Welcome, {user.name || 'Teacher'}!</h1>
+              <div className={styles.welcomeSubtitle}>Manage your courses, students, and assignments.</div>
             </div>
           </section>
           <section className={styles.section}>

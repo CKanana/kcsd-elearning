@@ -1,3 +1,18 @@
+      {/* Coding Section - full-width, above Vocational & Life Skills, after Our Programs */}
+      <section className={styles.section}>
+        <div className={styles.container}>
+          <div className={styles.contentLayout}>
+            <div className={styles.contentImage}>
+              <img src="/assets/images/cd.jpg" alt="STEM Coding" />
+            </div>
+            <div className={styles.contentText}>
+              <h2 className={styles.sectionTitle}>STEM Education: Coding</h2>
+              <p><b>The New Literacy.</b> Coding is becoming the new literacy in our technology-driven world. KCSD offers a comprehensive STEM curriculum to empower students with the skills needed to excel in science, technology, engineering, and mathematics.</p>
+              <p><b>STEM-1: Introduction to Coding</b><br />Students learn fundamental principles of coding using Bot, a code-teaching robot. They control it with block coding, quickly acquiring advanced skills and tackling complex functions.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 import React from 'react';
 import HomepageHeader from '../components/common/HomepageHeader';
 import Footer from '../components/common/Footer';
@@ -58,37 +73,63 @@ const ProgramsPage = () => (
         </div>
       </section>
 
-      <section className={`${styles.section} ${styles.lightBackground}`}>
+      <section className={styles.section}>
         <div className={styles.container}>
-          <div className={styles.contentLayout}>
+          <h2 className={styles.sectionTitle} style={{ textAlign: 'center', marginBottom: '2rem' }}>Our Programs</h2>
+          <h3 className={styles.sectionSubtitle} style={{ textAlign: 'center', marginBottom: '2.5rem', fontWeight: 500 }}>
+            Fostering Communication, Independence, and Self-Expression
+          </h3>
+          {/* Our Educational Approach - restored section, now under Programs title */}
+          <div className={styles.contentLayout_reverse} style={{ marginBottom: '3rem' }}>
             <div className={styles.contentImage}>
-              <img src="/assets/images/7.jpg" alt="Students learning in a classroom" />
+              <img src="/assets/images/kids.jpg" alt="Our Educational Approach - Kids" />
             </div>
             <div className={styles.contentText}>
               <h2 className={styles.sectionTitle}>Our Educational Approach</h2>
               <p>
-                Our curriculum is built on a foundation of inclusivity and innovation. We adapt the Kenyan Competency-Based Curriculum (CBC) to meet the unique needs of deaf and autistic learners, with a strong emphasis on Kenyan Sign Language (KSL). Through our e-learning platform, we provide interactive lessons, personalized feedback, and access to a rich library of digital content. We integrate assistive technologies to ensure every student can fully participate and excel.
+                At KCSD, we believe every child deserves a tailored, inclusive education. Our approach blends visual learning, sign language, and hands-on activities to empower deaf and autistic students. We foster a supportive environment where children build confidence, communication skills, and independence.
               </p>
+            </div>
+          </div>
+
+          {/* STEM Education: Coding - Alternating style */}
+          <div className={styles.contentLayout} style={{ marginBottom: '3rem' }}>
+            <div className={styles.contentImage}>
+              <img src="/assets/images/cd.jpg" alt="STEM Coding" />
+            </div>
+            <div className={styles.contentText}>
+              <h2 className={styles.sectionTitle}>STEM Education: Coding</h2>
+              <p><b>The New Literacy.</b> Coding is becoming the new literacy in our technology-driven world. KCSD offers a comprehensive STEM curriculum to empower students with the skills needed to excel in science, technology, engineering, and mathematics.</p>
+              <p><b>STEM-1: Introduction to Coding</b><br />Students learn fundamental principles of coding using Bot, a code-teaching robot. They control it with block coding, quickly acquiring advanced skills and tackling complex functions.</p>
+            </div>
+          </div>
+
+          {/* Home Schooling Programme - Alternating style (reverse) */}
+          <div className={styles.contentLayout_reverse} style={{ marginBottom: '3rem' }}>
+            <div className={styles.contentImage}>
+              <img src="/assets/images/pd.png" alt="Home Schooling" />
+            </div>
+            <div className={styles.contentText}>
+              <h2 className={styles.sectionTitle}>Home Schooling Programme</h2>
+              <p>KCSD Homeschooling and Tuition Centers provide comprehensive programs for families who choose to educate their children at home, tailored to the individual needs and learning styles of each student.</p>
+              <p><b>Personalized Learning</b><br />Our experienced instructors guide students through the curriculum, ensuring they develop a strong foundation in core subjects in a comfortable home environment.</p>
+            </div>
+          </div>
+
+          {/* Holiday Tuition Learning Support - Alternating style */}
+          <div className={styles.contentLayout}>
+            <div className={styles.contentImage}>
+              <img src="/assets/images/hd.jpg" alt="Holiday Tuition" />
+            </div>
+            <div className={styles.contentText}>
+              <h2 className={styles.sectionTitle}>Holiday Tuition Learning Support</h2>
+              <p>We offer a variety of tutoring services to support students in a wide range of subjects. Whether a student needs help with math, science, English, Sign Language or French.</p>
+              <p><b>Expert Guidance</b><br />Our team of tutors is here to provide expert guidance and support to supplement the students’ schoolwork during holidays.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className={styles.section}>
-        <div className={styles.container}>
-          <div className={styles.contentLayout_reverse}>
-            <div className={styles.contentImage}>
-              <img src="/assets/images/tailoring.jpg" alt="Student learning tailoring in a vocational training class" />
-            </div>
-            <div className={styles.contentText}>
-              <h2 className={styles.sectionTitle}>Vocational & Life Skills</h2>
-              <p>
-                Beyond academics, we are committed to preparing our students for independent and fulfilling lives. Our vocational training programs offer hands-on experience in valuable trades such as tailoring, carpentry, and ICT. We focus on developing practical skills, financial literacy, and entrepreneurship, empowering our graduates to build sustainable careers and contribute to their communities.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section className={`${styles.section} ${styles.ctaSection}`}>
         <div className={styles.container}>
@@ -110,15 +151,19 @@ const ProgramsPage = () => (
 import { useState } from 'react';
 
 function ContactForm() {
-  const [email, setEmail] = useState('');
+  const [form, setForm] = useState({ name: '', email: '', question: '' });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    if (!email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) {
+    if (!form.email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) {
       setError('Please enter a valid email address.');
       return;
     }
@@ -127,7 +172,7 @@ function ContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+        body: JSON.stringify(form)
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to submit.');
@@ -146,10 +191,11 @@ function ContactForm() {
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginTop: '1.5rem' }}>
       <input
-        type="email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        placeholder="Your email address"
+        type="text"
+        name="name"
+        placeholder="Your Name"
+        value={form.name}
+        onChange={handleChange}
         required
         style={{
           padding: '0.75rem 1.25rem',
@@ -157,6 +203,38 @@ function ContactForm() {
           border: 'none',
           fontSize: '1.1rem',
           width: 'min(350px, 90vw)'
+        }}
+        disabled={loading}
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="Your Email"
+        value={form.email}
+        onChange={handleChange}
+        required
+        style={{
+          padding: '0.75rem 1.25rem',
+          borderRadius: '9999px',
+          border: 'none',
+          fontSize: '1.1rem',
+          width: 'min(350px, 90vw)'
+        }}
+        disabled={loading}
+      />
+      <textarea
+        name="question"
+        placeholder="Your Message"
+        value={form.question}
+        onChange={handleChange}
+        required
+        style={{
+          padding: '0.75rem 1.25rem',
+          borderRadius: '1rem',
+          border: 'none',
+          fontSize: '1.1rem',
+          width: 'min(350px, 90vw)',
+          minHeight: 80
         }}
         disabled={loading}
       />

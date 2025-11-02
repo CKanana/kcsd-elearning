@@ -4,12 +4,77 @@ import HomepageHeader from '../components/common/HomepageHeader';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
 
+// Contact form component for Home page
+function ContactForm() {
+  const [form, setForm] = useState({ name: '', email: '', question: '' });
+  const [status, setStatus] = useState('');
+  const [loading, setLoading] = useState(false);
 
-const heroImages = [
-  '/assets/images/4.jpg',
-  '/assets/images/8.jpg',
-  '/assets/images/11.jpg',
-];
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('');
+    setLoading(true);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (response.ok) {
+        setStatus('Thank you for contacting us! We\'ll get back to you soon.');
+        setForm({ name: '', email: '', question: '' });
+      } else {
+        setStatus('Failed to send message. Please try again later.');
+      }
+    } catch (err) {
+      setStatus('An error occurred. Please try again later.');
+    }
+    setLoading(false);
+  };
+
+  return (
+    <form className={styles.footerContactForm} onSubmit={handleSubmit}>
+      <h2>Contact Us</h2>
+      {status && (
+        <div className={status.startsWith('Thank') ? styles.contactSuccess : styles.contactError}>
+          {status}
+        </div>
+      )}
+      <input
+        type="text"
+        name="name"
+        placeholder="Your Name"
+        value={form.name}
+        onChange={handleChange}
+        required
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="Your Email"
+        value={form.email}
+        onChange={handleChange}
+        required
+      />
+      <textarea
+        name="question"
+        placeholder="Your Message"
+        value={form.question}
+        onChange={handleChange}
+        required
+      />
+      <button type="submit" disabled={loading}>{loading ? 'Sending...' : 'Send Message'}</button>
+    </form>
+  );
+}
+
+
+// Use a single hero image
+const heroImage = '/assets/images/xoxo.png';
 
 const futureGoals = [
   {
@@ -88,65 +153,37 @@ const programs = [
 ];
 
 const KCSDHomepage = () => {
-  const [heroIndex, setHeroIndex] = useState(0);
-
-  // Hero slideshow
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setHeroIndex((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  // No slideshow needed for single image
 
   // TikTok embed script loader
   useEffect(() => {
-    if (typeof window !== 'undefined' && !document.getElementById('tiktok-embed-script')) {
-      const script = document.createElement('script');
-      script.id = 'tiktok-embed-script';
-      script.src = 'https://www.tiktok.com/embed.js';
-      script.async = true;
-      document.body.appendChild(script);
-    }
+    // This can be kept or removed based on whether you use the TikTok embed.
+    // For a full revert, we can assume it was part of the original state.
   }, []);
 
   return (
-  <div className={styles.body}>
+    <div className={styles.page}>
       {/* Navigation */}
       <HomepageHeader />
 
-      {/* Hero Section */}
-      <section className={styles.hero}>
-        <img src={heroImages[heroIndex]} alt="KCSD students in class" className={styles.heroBackgroundImage} />
-        <div className={styles.heroOverlay}></div>
-        <div className={styles.heroTextWrapper}>
-          <h1 className={styles.heroTitle}>
-            <span className={styles.heroTitleSmall}>Welcome to</span>
-            KCSD E-Learning
+      {/* Hero Section - blue background, overlay, and yellow accent */}
+      <section className={styles.sectionBlue} style={{ position: 'relative', overflow: 'hidden', padding: '5rem 0 6rem 0' }}>
+        <img src={heroImage} alt="KCSD students in class" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.18, zIndex: 0 }} />
+        <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+          <h1 style={{ fontWeight: 800, fontSize: '2.7rem', marginBottom: '1.2rem', color: '#fff', textShadow: '0 2px 12px rgba(0,0,0,0.12)' }}>
+            Kenya Christian School For The Deaf
           </h1>
-          <h2 className={styles.heroSubtitle}>Empowering Every Learner</h2>
-          <p className={styles.heroDescription}>
-            At Kenya Christian School for the Deaf, we provide inclusive e-learning and physical programs for deaf and autistic children. Our mission is to unlock each child's potential, building the confidence and skills they need to thrive through:
+          <p style={{ fontSize: '1.35rem', color: 'var(--color-brand-yellow)', fontWeight: 600, maxWidth: 600, margin: '0 auto' }}>
+            We believe every child deserves the tools to communicate and thrive—regardless of hearing ability.
           </p>
-          <ul className={styles.heroApproachList}>
-            <li>Specialized, visual-first curriculum (CBC & KSL)</li>
-            <li>Engaging, hands-on passion projects</li>
-            <li>Personalized holistic support with assistive technology</li>
-          </ul>
         </div>
       </section>
 
-
-
-
-
-      
       {/* Video Section - now below all main sections */}
       <section className={styles.section}>
         <div className={styles.containerMd}>
           <div className={styles.videoCard}>
-            <div className={styles.videoTitle} style={{fontWeight:600, fontSize:'1.2rem', color:'#ea580c', marginBottom:'0.5rem'}}>
-              Let's learn about shapes together! Watch and sign along with us.
-            </div>
+            <div className={styles.videoTitle}>Let's learn about shapes together! Watch and sign along with us.</div>
             <div className={styles.videoPlaceholder}>
               {/* YouTube Embed (user provided) */}
               <iframe
@@ -162,64 +199,53 @@ const KCSDHomepage = () => {
         </div>
       </section>
 
-      {/* Programs & Services */}
-      <section id="programs" className={`${styles.section} ${styles.sectionOrange}`}>
+
+      {/* Who We Are Section - grid of info cards */}
+      <section className={styles.sectionWhite}>
         <div className={styles.container}>
-          <h2 className={styles.sectionTitle}>Programs & Services</h2>
-          <div className={styles.grid3}>
-            {programs.map((program, index) => (
-              <div key={index} className={styles.programCard}>
-                <div className={styles.programIconWrapper}>
-                  <program.icon size={32} />
-                </div>
-                <h3 className={styles.programCardTitle}>{program.title}</h3>
-                <p className={styles.programCardText}>
-                  {program.description}
-                </p>
+          <h2 className={styles.sectionTitle} style={{ color: 'var(--color-primary-darkest)', textAlign: 'center', marginBottom: '2.5rem' }}>Who We Are</h2>
+          <div className={styles.infoCardGrid}>
+            <div className={styles.infoCard}>
+              <div className={styles.infoCardTitle} style={{ color: 'var(--color-accent)' }}><span className={styles.infoCardIcon} style={{ color: 'var(--color-accent)' }}>🌟</span>Empowering Every Child</div>
+              <div className={styles.infoCardText}>
+                KCSD is a trailblazing e-learning institution dedicated to transforming the lives of children with hearing impairments and autism. We provide a nurturing, faith-based educational experience that equips every learner with the skills and confidence to flourish.
               </div>
-            ))}
+            </div>
+            <div className={styles.infoCard}>
+              <div className={styles.infoCardTitle} style={{ color: 'var(--color-accent)' }}><span className={styles.infoCardIcon} style={{ color: 'var(--color-accent)' }}>💡</span>Inclusive Learning</div>
+              <div className={styles.infoCardText}>
+                Founded to meet diverse needs, we embrace each child's individuality. Our curriculum is tailored for both deaf and autistic learners, integrating visual learning, structured routines, and sensory-friendly approaches.
+              </div>
+            </div>
+            <div className={styles.infoCard}>
+              <div className={styles.infoCardTitle} style={{ color: 'var(--color-accent)' }}><span className={styles.infoCardIcon} style={{ color: 'var(--color-accent)' }}>💻</span>Innovating Through Technology</div>
+              <div className={styles.infoCardText}>
+                We are leaders in assistive technology and accessible digital content. From early sign language acquisition to interactive platforms, our programs foster communication, independence, and self-expression.
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-        {/* Vocational Training Photo Row */}
-        <section className={styles.section}>
-          <div className={styles.containerMd}>
-            <h2 className={styles.sectionTitle}>Vocational Training in Action</h2>
-            <p className={styles.sectionCaption}>
-              Our vocational training program equips students with practical skills for independent living and employment. Explore how KCSD empowers deaf youth through hands-on learning in real-world trades.
-            </p>
-            <div className={styles.vocationalGrid}>
-              {[
-                {
-                  img: "/assets/images/coding.jpg",
-                  title: "Coding & Web Development",
-                  desc: "Students learn to build websites and applications, opening doors to careers in the tech industry.",
-                  link: "/programs#vocational"
-                },
-                {
-                  img: "/assets/images/tailoring.jpg",
-                  title: "Tailoring & Fashion Design",
-                  desc: "From design to finished garment, students master the art of tailoring, fostering creativity and entrepreneurship.",
-                  link: "/programs#vocational"
-                },
-                {
-                  img: "/assets/images/computer-literacy.jpg",
-                  title: "ICT & Computer Literacy",
-                  desc: "We provide essential digital skills, ensuring every student is confident and capable in today's digital world.",
-                  link: "/programs#vocational"
-                }
-              ].map((item, index) => (
-                <div key={index} className={styles.vocationalCard}>
-                  <img src={item.img} alt={item.title} className={styles.vocationalCardImg} />
-                  <h3 className={styles.vocationalCardTitle}>{item.title}</h3>
-                  <p className={styles.vocationalCardDesc}>{item.desc}</p>
-                  <a href={item.link} className={styles.vocationalCardLink}>Learn More →</a>
-                </div>
-              ))}
-            </div>
+      {/* Handstart Initiative Section */}
+      <section className={styles.sectionTeal} style={{ padding: '4rem 0' }}>
+        <div className={styles.container} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '3rem', justifyContent: 'center' }}>
+          <div style={{ flex: '1 1 340px', maxWidth: 480 }}>
+            <img src="/assets/images/11.jpg" alt="Children learning" style={{ borderRadius: '1rem', boxShadow: '0 8px 32px 0 rgba(37,99,235,0.12)', width: '100%', height: 'auto', objectFit: 'cover' }} />
           </div>
-        </section>
+          <div style={{ flex: '1 1 340px', maxWidth: 600 }}>
+            <h2 className={styles.sectionTitle} style={{ color: '#fff', marginBottom: '1.2rem' }}>Handstart by Interact-ALL</h2>
+            <p style={{ fontSize: '1.15rem', marginBottom: '1.1rem', color: '#e0f2fe', fontWeight: 500 }}>
+              Handstart tackles the gap in early sign language acquisition for deaf children aged 1-7. We created a low-cost assistive device and mobile app with culturally relevant Kenyan Sign Language content that works offline.
+            </p>
+            <p style={{ fontSize: '1.15rem', marginBottom: '1.1rem', color: '#e0f2fe' }}>
+              What makes us different is our commitment to co-creation. Deaf educators, families, and communities shape everything we build. Handstart is not just a tech product; it’s a movement to ensure that every deaf child starts life with language, love, and dignity.
+            </p>
+          </div>
+        </div>
+      </section>
+
+
 
       {/* Contact Us */}
       <section id="contact" className={`${styles.section} ${styles.sectionOrange}`}>
@@ -234,13 +260,7 @@ const KCSDHomepage = () => {
                     <span className={styles.contactIcon}>
                       <MapPin size={20} />
                     </span>
-                    <span>P.O. Box 29793, Nairobi, Kenya</span>
-                  </div>
-                  <div className={styles.contactItem}>
-                    <span className={styles.contactIcon}>
-                      <MapPin size={20} />
-                    </span>
-                    <span>Address (as listed): Nairobi-West, Langata Rd (adjacent to Hotel Rio)</span>
+                    <span>Hunters junction Off Hunters Road adjacent to clay city secondary school.</span>
                   </div>
                   <div className={styles.contactItem}>
                     <span className={styles.contactIcon}>
@@ -250,35 +270,28 @@ const KCSDHomepage = () => {
                   </div>
                   <div className={styles.contactItem}>
                     <span className={styles.contactIcon}>
+                      <Phone size={20} style={{ color: '#25D366' }} />
+                    </span>
+                    <span>WhatsApp: +254733544246</span>
+                  </div>
+                  <div className={styles.contactItem}>
+                    <span className={styles.contactIcon}>
                       <Mail size={20} />
                     </span>
-                    <span>kenyachristianschoolforthedeaf@yahoo.com</span>
+                    <span>info@kcsd.or.ke</span>
                   </div>
+                </div>
+                <div className={styles.socialIcons}>
+                  <a href="https://www.facebook.com/profile.php?id=100064637564630" target="_blank" rel="noopener noreferrer" title="Facebook" className={styles.socialIcon}><Facebook size={28} /></a>
+                  <a href="https://instagram.com/kenyachristianschoolforthedeaf/" target="_blank" rel="noopener noreferrer" title="Instagram" className={styles.socialIcon}><Instagram size={28} /></a>
+                  <a href="https://www.linkedin.com/in/charles-ngiela-4b0894295/" target="_blank" rel="noopener noreferrer" title="LinkedIn" className={styles.socialIcon}><Linkedin size={28} /></a>
+                  <a href="https://www.youtube.com/@kenyachristianschoolforthe7341" target="_blank" rel="noopener noreferrer" title="YouTube" className={styles.socialIcon}><Youtube size={28} /></a>
                 </div>
               </div>
               <div>
-                <h3 className={styles.cardTitle}>Kenya Christian School for the Deaf</h3>
-                <p className={`${styles.cardText} ${styles.aboutText}`}>
-                  At Kenya Christian School For The Deaf, we believe every child deserves the tools to communicate and thrive—regardless of hearing ability. Our mission is to empower families through innovative, AI-driven support systems that make sign language learning accessible, engaging, and effective. Our virtual tutors are designed to guide children through personalized sign language practice right from home, reinforcing what they learn in school and helping them build confidence in their communication skills. We also recognize parents' vital role in their child's language journey. That’s why our platform includes intuitive AI tools that help parents learn sign language alongside their children. By fostering inclusive communication at home, we strengthen family bonds and create a nurturing environment where every voice spoken or signed is heard and valued.
-                </p>
-                <a 
-                  href="http://www.kcsd-abi.or.ke" 
-                  className={styles.websiteLink}
-                >
-                  Visit our website →
-                </a>
-                <div className={styles.contactLinks}>
-                  <a href="/donate" className={styles.ctaButton} target="_blank" rel="noopener noreferrer">Donate / Support Us</a>
-                  <a href="/admissions" className={styles.ctaButton} target="_blank" rel="noopener noreferrer">Admissions Information</a>
-                  <a href="/news" className={styles.ctaButton} target="_blank" rel="noopener noreferrer">News & Events</a>
-                </div>
+                <h3 className={styles.cardTitle}>Contact Form</h3>
+                <ContactForm />
               </div>
-            </div>
-            <div className={styles.socialIcons}>
-              <a href="https://www.facebook.com/profile.php?id=100064637564630" target="_blank" rel="noopener noreferrer" title="Facebook" className={styles.socialIcon}><Facebook size={28} /></a>
-              <a href="https://instagram.com/kenyachristianschoolforthedeaf/" target="_blank" rel="noopener noreferrer" title="Instagram" className={styles.socialIcon}><Instagram size={28} /></a>
-              <a href="https://www.linkedin.com/in/charles-ngiela-4b0894295/" target="_blank" rel="noopener noreferrer" title="LinkedIn" className={styles.socialIcon}><Linkedin size={28} /></a>
-              <a href="https://www.youtube.com/@kenyachristianschoolforthe7341" target="_blank" rel="noopener noreferrer" title="YouTube" className={styles.socialIcon}><Youtube size={28} /></a>
             </div>
           </div>
         </div>
