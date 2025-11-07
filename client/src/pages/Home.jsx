@@ -166,6 +166,7 @@ const KCSDHomepage = () => {
       {/* Navigation */}
       <HomepageHeader />
 
+
       {/* Hero Section - blue background, overlay, and yellow accent */}
       <section className={styles.sectionBlue} style={{ position: 'relative', overflow: 'hidden', padding: '5rem 0 6rem 0' }}>
         <img src={heroImage} alt="KCSD students in class" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.18, zIndex: 0 }} />
@@ -214,17 +215,74 @@ const KCSDHomepage = () => {
             <div className={styles.infoCard}>
               <div className={styles.infoCardTitle} style={{ color: 'var(--color-accent)' }}><span className={styles.infoCardIcon} style={{ color: 'var(--color-accent)' }}>💡</span>Inclusive Learning</div>
               <div className={styles.infoCardText}>
-                Founded to meet diverse needs, we embrace each child's individuality. Our curriculum is tailored for both deaf and autistic learners, integrating visual learning, structured routines, and sensory-friendly approaches.
+                Founded to meet diverse needs, we embrace each child's individuality, creating a safe and inclusive environment where they can grow intellectually, socially, and emotionally. Our curriculum is tailored for both deaf and autistic learners, integrating visual learning, structured routines, and sensory-friendly approaches.
               </div>
             </div>
             <div className={styles.infoCard}>
               <div className={styles.infoCardTitle} style={{ color: 'var(--color-accent)' }}><span className={styles.infoCardIcon} style={{ color: 'var(--color-accent)' }}>💻</span>Innovating Through Technology</div>
               <div className={styles.infoCardText}>
-                We are leaders in assistive technology and accessible digital content. From early sign language acquisition to interactive platforms, our programs foster communication, independence, and self-expression.
+                We are leaders in assistive technology and accessible digital content, ensuring that every child has the tools they need to succeed. From early sign language acquisition to interactive learning platforms, our programs are designed to foster communication, independence, and self-expression.
               </div>
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Learning Objectives Section (added below Hero) */}
+      <section style={{ fontFamily: "'Poppins',sans-serif", color: '#222', background: '#f9fafc', padding: '3rem 1rem', maxWidth: 1100, margin: '2rem auto', lineHeight: 1.8, borderRadius: '1.5rem', boxShadow: '0 2px 12px rgba(44,82,130,0.04)' }}>
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <h1 style={{ color: '#2c5282', fontSize: '2.2rem', marginBottom: '0.5rem' }}>Learning Objectives</h1>
+          <p style={{ fontSize: '1.1rem', maxWidth: 900, margin: 'auto' }}>
+            The <strong>HandStart by Interact-ALL</strong> program builds communication, creativity, and confidence in <strong>Deaf and Autistic learners</strong> through sign language, rhythm, and sensory-based learning.  <br />
+            Each objective supports language development, emotional growth, and cognitive readiness for lifelong learning.
+          </p>
+        </div>
+        {/* Early Literacy */}
+        <div style={{ background: '#edf2f7', padding: '1.5rem', borderRadius: '1rem', marginBottom: '2rem', boxShadow: '0 4px 6px rgba(0,0,0,0.08)' }}>
+          <h2 style={{ color: '#2b6cb0' }}>1️⃣ Early Literacy Development</h2> 
+          <p>
+            Learners will develop foundational <strong>pre-literacy skills</strong> through finger-spelling and signing routine English songs.  <br />
+            These activities enhance <strong>vocabulary, comprehension, and cognitive awareness</strong> while integrating early math and science concepts.  <br />
+            Finger-spelling supports recognition of alphabet letters and sound-symbol relationships in both <strong>English and Kiswahili</strong>, laying a strong foundation for reading and writing readiness.
+          </p>
+        </div>
+        {/* KSL Integration */}
+        <div style={{ background: '#e6fffa', padding: '1.5rem', borderRadius: '1rem', marginBottom: '2rem', boxShadow: '0 4px 6px rgba(0,0,0,0.08)' }}>
+          <h2 style={{ color: '#319795' }}>2️⃣ Kenyan Sign Language (KSL) Integration</h2>
+          <p>
+            Through <strong>KSL instruction</strong>, learners strengthen <strong>fine and gross motor skills, writing readiness, cognitive development,</strong> and <strong>social-emotional growth</strong>.  <br />
+            <strong>Dr. Charles Okello’s multimodal approach</strong> ensures that language is taught through natural gestures, play, and visual storytelling, helping children express ideas with clarity and confidence.
+          </p>
+        </div>
+        {/* Interaction: Signing with Music */}
+        <div style={{ background: '#fefcbf', padding: '1.5rem', borderRadius: '1rem', marginBottom: '2rem', boxShadow: '0 4px 6px rgba(0,0,0,0.08)' }}>
+          <h2 style={{ color: '#b7791f' }}>3️⃣ Interaction: Signing with Music</h2>
+          <p>
+            The program combines <strong>sign language, music, and rhythm</strong> to make learning fun, dynamic, and memorable.  <br />
+            By engaging the <strong>auditory, visual, and kinesthetic senses</strong>, children improve coordination, focus, and communication while expressing emotions through joyful movement and rhythm.
+          </p>
+        </div>
+        {/* Autistic Learner Focus */}
+        <div style={{ background: '#faf5ff', padding: '1.5rem', borderRadius: '1rem', marginBottom: '2rem', boxShadow: '0 4px 6px rgba(0,0,0,0.08)' }}>
+          <h2 style={{ color: '#6b46c1' }}>🧩 Autistic Learner Focus</h2>
+          <p>
+            <strong>HandStart</strong> provides a <strong>sensory-friendly environment</strong> tailored to the needs of Autistic learners.  <br />
+            It emphasizes <strong>predictable routines, calm visual design,</strong> and <strong>emotionally supportive activities</strong>.  <br />
+            Music, rhythm, and signing are used to strengthen <strong>social communication, emotional regulation,</strong> and <strong>sensory integration</strong>.  <br />
+            Learners engage with <strong>visuals, tactile materials, and assistive technology</strong> to build comprehension and expressive skills at their own pace.
+          </p>
+        </div>
+        {/* Rationale & Research Foundation */}
+        <div style={{ background: '#ebf8ff', padding: '1.5rem', borderRadius: '1rem', boxShadow: '0 4px 6px rgba(0,0,0,0.08)' }}>
+          <h2 style={{ color: '#2b6cb0' }}>📖 Rationale & Research Foundation</h2>
+          <p>
+            The <strong>HandStart by Interact-ALL</strong> approach is grounded in <strong>multimodal learning theory</strong>, combining sign, sound, and movement to enhance comprehension and engagement.  <br />
+            This method is supported by research such as  <br />
+            <em>“Language Acquisition for Deaf Children: Reducing the Harms of Zero Tolerance to the Use of Alternative Approaches”</em>,  <br />
+            which emphasizes the importance of accessible, multi-sensory language exposure for Deaf learners.  <br />
+            By integrating these evidence-based practices, KCSD ensures that every learner receives the tools to communicate, connect, and thrive.
+          </p>
+          </div>
       </section>
 
       {/* Handstart Initiative Section */}

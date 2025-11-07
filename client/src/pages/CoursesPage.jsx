@@ -138,10 +138,10 @@ const CoursesPage = () => {
                     <p className={styles.courseDescription}>{course.description}</p>
                     <p className={styles.category}><strong>Category:</strong> {course.category || 'General'}</p>
                     {enrolledCourseIds.includes(course._id) ? (
-                      <>
-                        <Link to={`/student/courses/${course._id}`} className={styles.viewButton}>View Course</Link>
-                        <button onClick={() => handleUnenroll(course._id)} className={styles.unenrollButton}>Unenroll</button>
-                      </>
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <Link to={`/student/courses/${course._id}`} className={styles.blueButton}>View Course</Link>
+                        <button onClick={() => handleUnenroll(course._id)} className={styles.blueButton}>Unenroll</button>
+                      </div>
                     ) : (
                       <button onClick={() => handleEnroll(course._id)} className={styles.enrollButton}>Enroll Now</button>
                     )}

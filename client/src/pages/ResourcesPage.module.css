@@ -1,0 +1,117 @@
+/* ResourcesPage.module.css */
+
+.pageContainer {
+  background-color: #f8fafc; /* A light, neutral background */
+}
+
+.mainContent {
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1.7;
+  color: #334155; /* Dark slate for readability */
+}
+
+.staticSection {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem 2.5rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.staticSection:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07);
+}
+
+.sectionTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--color-brand-yellow);
+  padding-bottom: 0.5rem;
+}
+
+.sectionSubtitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-bottom: 1rem;
+}
+
+.sectionText {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.sectionText a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.sectionText a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+.sectionList {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.sectionList li {
+  margin-bottom: 0.75rem;
+}
+
+.videoWrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  background: #000;
+  border-radius: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.videoWrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.mediaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.mediaCard {
+  text-align: center;
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.mediaCard:hover {
+  transform: scale(1.05);
+}
+
+.mediaImage {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+}

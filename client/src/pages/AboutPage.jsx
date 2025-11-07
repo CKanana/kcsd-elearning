@@ -21,6 +21,22 @@ const teamMembers = [
     linkedin: '',
     extra: 'GlobalGiving'
   }
+  ,
+  {
+    name: 'Gloria Catolico',
+    role: 'Economist Strategist',
+    image: '/assets/images/Gloria.jpg', // Placeholder image path
+    bio: 'Ensures strategic direction and financial planning for the organization.',
+    linkedin: '' // No LinkedIn provided
+  }
+  ,
+  {
+    name: 'Rachael Ulira',
+    role: 'Marketing Manager',
+    image: '/assets/images/Racheal.jpg', // Placeholder image path
+    bio: 'Manages marketing strategies and outreach to promote KCSD\'s mission and programs.',
+    linkedin: '' // No LinkedIn provided
+  }
 ];
 
 const testimonials = [

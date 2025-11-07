@@ -1,3 +1,19 @@
+.blueButton {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+.blueButton:hover {
+  background: #1251a3;
+}
 /* Card.module.css */
 .card {
   background: rgba(255, 255, 255, 0.4);
