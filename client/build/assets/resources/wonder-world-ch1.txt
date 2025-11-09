@@ -1,0 +1,96 @@
+Chapter 1 – Hello, My World
+Theme: Self-Identity | Learning Goal: “I can tell who I am and what makes me special.”
+
+Page 1 – Welcome to Wonder World
+Child-friendly Text (for narration or captions)
+👋 Hello friend!
+This is Wonder World.
+Here, our hands can talk, our eyes can listen, and our hearts can shine.
+Illustration Guide
+• Background: soft pastel sky with gentle sun glow.
+• Foreground: African teacher waving, surrounded by diverse Deaf and Autistic children signing hello.
+• Color palette: warm yellows and teal accents to create a welcoming feel.
+Accessibility Notes
+• KSL clip: sign for HELLO / Jambo.
+• Audio: soft instrumental music (60 bpm).
+• Captions are always on.
+
+Page 2 – My Name
+Child-friendly Text
+My name is ___________.
+I can say my name with my hands! 🤲
+Watch me sign it now.
+Activity Prompt
+• “Tap to record your sign name video.”
+• “Draw or upload your photo next to your name.”
+Illustration Guide
+• Split screen: left panel shows a boy signing his name; right panel has blank space for the learner’s photo or drawing.
+• Soft orange and cream background with subtle hand-shape icons floating lightly.
+Sign Language Notes
+• Video/GIF for Kenyan Sign Language phrase “My name is [name].”
+• Slow loop animation for letter fingerspelling A-Z (visual keyboard under the text).
+Accessibility Design
+• Tap icon = 👋 play sign; 🎤 record name; ✏️ draw portrait.
+• Avoid motion flashes > 3 Hz.
+
+Page 3 – This Is Me
+Child-friendly Text
+I am smart. I am kind. I am me! 💚
+My hands and eyes help me learn every day.
+Illustration Guide
+• Collage of children with different skin tones, hearing aids, and calming tools (e.g., sensory ball, fidget, tablet).
+• Sub-title banner: “I am unique and loved.”
+Interactive Element
+• Tap each child to see their sign for “I am kind,” “I am smart,” “I am brave.”
+• At end of page, “Add your own word” button with an on-screen keyboard and sign generator.
+Sign Language Notes
+• KSL phrases: “I am,” “smart,” “kind,” “brave.”
+• Provide ASL toggle option for international learners.
+
+Page 4 – My Favorite Things
+Child-friendly Text
+I like bright colors and soft sounds.
+What do you like?
+Activity Prompt
+• Tap to pick your favorites: 🎨 Color 🎵 Sound 🐶 Animal 🍎 Food 🚲 Activity.
+• Each choice reveals the sign and word.
+Illustration Guide
+• Grid layout of vivid icons representing choices; gentle sparkle animation when selected.
+• Top banner: “My favorites make me happy!”
+Accessibility Design
+• Clear visual labels + KSL sign pop-up for each icon.
+• Captions and alt text describing visuals for screen readers.
+
+Page 5 – My Wonder World Song (Sign & Sing Along)
+Lyrics (Text + KSL Integration)
+👏 I am me, I am strong, I belong!
+👐 My hands can talk, my heart can sing along!
+🌈 Colors, friends, and dreams I see—
+💫 This is my world, the wonder in me!
+Illustration Guide
+• Classroom circle time; children signing the chorus with the teacher leading.
+• Use rainbow streamers and soft motion lines to express rhythm.
+Accessibility Design
+• Button controls: ▶️ Play song | 🔁 Replay signs | 💬 Show lyrics.
+• Provide captions and an audio volume slider.
+
+End-of-Chapter Summary (for learners)
+• I can sign my name.
+• I can say how I feel.
+• I am unique and special.
+🎖️ Earn “Hello, My World Star Badge.”
+
+Production & Web Implementation Guide
+Component	eBook Version (EPUB3)	Website Version (HTML5/WordPress)
+Text blocks	Flowing, re-sizable fonts (22–28 pt)	Responsive divs with large text CSS styles
+Images / Illustrations	SVG or high-res PNG (600–900 px)	Lazy-load optimized images with alt text
+KSL Videos	Embedded MP4 or WebM	Hosted on KCSD YouTube playlist + iframe embed
+Audio	MP3 with caption track	HTML <audio> player with toggle buttons
+Navigation	Swipe or arrow buttons	Next / Back / Home buttons + progress bar
+Accessibility	EPUB ARIA roles + caption tracks	WCAG 2.1 AA compliance (tags, contrast, keyboard nav)
+
+Illustration Checklist for Designers
+1. African teacher and 4–6 diverse learners (signing, smiling).
+2. Children using tablets, drawing self-portraits, and signing names.
+3. Colorful “favorites” icons (foods, animals, colors).
+4. Circle-time scene with the teacher leading the sign song.
