@@ -201,31 +201,62 @@ const KCSDHomepage = () => {
       </section>
 
 
-      {/* Who We Are Section - grid of info cards */}
-      <section className={styles.sectionWhite}>
-        <div className={styles.container}>
-          <h2 className={styles.sectionTitle} style={{ color: 'var(--color-primary-darkest)', textAlign: 'center', marginBottom: '2.5rem' }}>Who We Are</h2>
-          <div className={styles.infoCardGrid}>
-            <div className={styles.infoCard}>
-              <div className={styles.infoCardTitle} style={{ color: 'var(--color-accent)' }}><span className={styles.infoCardIcon} style={{ color: 'var(--color-accent)' }}>🌟</span>Empowering Every Child</div>
-              <div className={styles.infoCardText}>
-                KCSD is a trailblazing e-learning institution dedicated to transforming the lives of children with hearing impairments and autism. We provide a nurturing, faith-based educational experience that equips every learner with the skills and confidence to flourish.
-              </div>
-            </div>
-            <div className={styles.infoCard}>
-              <div className={styles.infoCardTitle} style={{ color: 'var(--color-accent)' }}><span className={styles.infoCardIcon} style={{ color: 'var(--color-accent)' }}>💡</span>Inclusive Learning</div>
-              <div className={styles.infoCardText}>
-                Founded to meet diverse needs, we embrace each child's individuality, creating a safe and inclusive environment where they can grow intellectually, socially, and emotionally. Our curriculum is tailored for both deaf and autistic learners, integrating visual learning, structured routines, and sensory-friendly approaches.
-              </div>
-            </div>
-            <div className={styles.infoCard}>
-              <div className={styles.infoCardTitle} style={{ color: 'var(--color-accent)' }}><span className={styles.infoCardIcon} style={{ color: 'var(--color-accent)' }}>💻</span>Innovating Through Technology</div>
-              <div className={styles.infoCardText}>
-                We are leaders in assistive technology and accessible digital content, ensuring that every child has the tools they need to succeed. From early sign language acquisition to interactive learning platforms, our programs are designed to foster communication, independence, and self-expression.
-              </div>
-            </div>
+
+      {/* What We Do Section - replaces Who We Are */}
+      <section style={{ fontFamily: "'Poppins',sans-serif", color: '#222', background: '#f9fafc', padding: '3rem 1rem', maxWidth: 1100, margin: '2rem auto', lineHeight: 1.8, borderRadius: '1.5rem', boxShadow: '0 2px 12px rgba(44,82,130,0.04)' }}>
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <h1 style={{ color: '#2c5282', fontSize: '2.2rem', marginBottom: '0.5rem' }}>What We Do</h1>
+          <p style={{ fontSize: '1.1rem', maxWidth: 900, margin: 'auto' }}>
+            At <strong>KCSD</strong>, we design and deliver <strong>inclusive educational programs</strong> that empower 
+            <strong>Deaf and Autistic children</strong> to learn, communicate, and thrive through cooperation and creativity. 
+            Our initiatives blend <strong>education, innovation, and advocacy</strong>, building strong bridges between 
+            communities, classrooms, and technology to ensure every child’s right to quality, accessible learning.
+          </p>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(250px,1fr))', gap: '1.8rem', marginTop: '2rem' }}>
+          {/* Education */}
+          <div style={{ background: '#edf2f7', padding: '1.5rem', borderRadius: '1rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+            <h2 style={{ color: '#2b6cb0' }}>📚 Education</h2>
+            <p>We provide <strong>specialized literacy, numeracy, and communication programs</strong> that integrate 
+            sign language, visual aids, and sensory play to strengthen early learning foundations and cognitive development.</p>
+            <p>Our curriculum encourages <strong>curiosity, confidence, and a lifelong love of learning</strong> through 
+            structured, engaging, and child-centered experiences.</p>
+          </div>
+          {/* Inclusion */}
+          <div style={{ background: '#fefcbf', padding: '1.5rem', borderRadius: '1rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+            <h2 style={{ color: '#b7791f' }}>🧩 Inclusion</h2>
+            <p>Our <strong>physical and online classrooms</strong> are designed to meet the diverse needs of 
+            <strong>Deaf and Autistic learners</strong>, fostering communication, empathy, creativity, and confidence.</p>
+            <p>Through <strong>personalized teaching methods</strong>, structured routines, and sensory-friendly environments, 
+            every learner is supported according to their unique strengths and pace.</p>
+          </div>
+          {/* Innovation */}
+          <div style={{ background: '#e6fffa', padding: '1.5rem', borderRadius: '1rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+            <h2 style={{ color: '#319795' }}>💡 Innovation</h2>
+            <p><strong>KCSD</strong> leads in the development of <strong>assistive technologies, educational apps, and sign language eBooks</strong> 
+            that make learning accessible, interactive, and fun.</p>
+            <p>Using <strong>visual storytelling, mobile learning, and gamified tools</strong>, we ensure every child has a 
+            <strong>voice, agency, and platform for self-expression</strong> in both digital and real-world spaces.</p>
+          </div>
+          {/* Community */}
+          <div style={{ background: '#ebf8ff', padding: '1.5rem', borderRadius: '1rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+            <h2 style={{ color: '#2b6cb0' }}>🤝 Community</h2>
+            <p>We collaborate with <strong>families, universities, and global partners</strong> to promote inclusive education, 
+            share research, and build sustainable support systems for <strong>Deaf and Autistic learners</strong>.</p>
+            <p>Our outreach programs inspire <strong>acceptance, partnership, and lifelong learning</strong>, 
+            ensuring that inclusion extends beyond the classroom into every aspect of society.</p>
           </div>
         </div>
+        <div style={{ marginTop: '3rem', textAlign: 'center' }}>
+          <h2 style={{ color: '#2c5282' }}>🌍 Our Vision</h2>
+          <p style={{ fontSize: '1.1rem', maxWidth: 800, margin: 'auto' }}>
+            To be <strong>Africa’s leading center for inclusive, technology-driven education</strong> that empowers every 
+            <strong>Deaf and Autistic child</strong> to reach their fullest potential and contribute meaningfully to the world.
+          </p>
+        </div>
+        <footer style={{ marginTop: '3rem', textAlign: 'center', fontSize: '0.9rem', color: '#555' }}>
+          © Kenya Christian School for the Deaf (KCSD) • Empowering Deaf and Autistic Learners through Inclusive Education
+        </footer>
       </section>
 
       {/* Learning Objectives Section (added below Hero) */}
