@@ -254,9 +254,7 @@ const KCSDHomepage = () => {
             <strong>Deaf and Autistic child</strong> to reach their fullest potential and contribute meaningfully to the world.
           </p>
         </div>
-        <footer style={{ marginTop: '3rem', textAlign: 'center', fontSize: '0.9rem', color: '#555' }}>
-          © Kenya Christian School for the Deaf (KCSD) • Empowering Deaf and Autistic Learners through Inclusive Education
-        </footer>
+        {/* Footer removed as requested */}
       </section>
 
       {/* Learning Objectives Section (added below Hero) */}
